@@ -1,0 +1,65 @@
+body {
+  background: #eee;
+  padding: 0;
+  margin: 0;
+}
+
+div#auth {
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+div#auth .auth-wrapper {
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+div#auth .auth-wrapper .login-content {
+  overflow: hidden;
+  padding-top: 15vh;
+}
+
+div#auth .auth-wrapper .login-content .login-button {
+  margin-bottom: 35px;
+}
+
+div#auth .auth-wrapper .login-content .register-link {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+div#auth .auth-wrapper .card-header {
+  padding: 25px 0;
+}
+
+div#auth .auth-wrapper .card-header a {
+  font-size: 2.1rem;
+  text-transform: uppercase;
+}
+
+div#auth .auth-wrapper .card-header a:hover {
+  color: #0d47a1 !important;
+}
+
+div#auth .auth-wrapper .card-content {
+  padding: 15px 24px;
+}
+
+div#auth .auth-wrapper .card-content .row {
+  margin-bottom: 0;
+}
+
+.register-content {
+  padding: 5vh 0;
+  overflow: visible;
+}
+
+.register-content .register-button {
+  margin-bottom: 35px;
+}
+
+.register-content .login-link {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+

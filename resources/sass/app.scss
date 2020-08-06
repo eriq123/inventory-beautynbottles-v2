@@ -1,0 +1,75 @@
+// Fonts
+// @import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+// @import 'variables';
+
+// Bootstrap
+// @import '~bootstrap/scss/bootstrap';
+
+body {
+    background: #eee;
+    padding: 0;
+    margin: 0;
+}
+
+$primary-text: #ff4081; //accent1
+$primary-bg: #fce4ec; //l5
+$primary-hover-bg: #f8bbd0; //l4
+$primary-hover-text: #0d47a1; //blue darken 4
+
+div#auth {
+    height: 100vh;
+    box-sizing: border-box;
+
+    .auth-wrapper {
+        max-width: 550px;
+        margin: 0 auto;
+        .login-content {
+            overflow: hidden;
+            padding-top: 15vh;
+
+            .login-button {
+                margin-bottom: 35px;
+            }
+
+            .register-link {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+        }
+
+        .card-header {
+            padding: 25px 0;
+            a {
+                font-size: 2.1rem;
+                text-transform: uppercase;
+                &:hover {
+                    color: $primary-hover-text !important;
+                    // background-color: $primary-hover-bg;
+                }
+            }
+        }
+
+        .card-content {
+            padding: 15px 24px;
+            .row {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.register-content {
+    padding: 5vh 0;
+    overflow: visible;
+
+    .register-button {
+        margin-bottom: 35px;
+    }
+
+    .login-link {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+}
