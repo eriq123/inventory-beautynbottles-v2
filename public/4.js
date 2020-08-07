@@ -50,20 +50,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {},
+  components: {
+    "app-autocomplete": function appAutocomplete() {
+      return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! @/components/common/autocomplete.vue */ "./resources/js/components/common/autocomplete.vue"));
+    }
+  },
   data: function data() {
     return {
-      code: null,
       category_collection: [],
-      debounceTimer: 0,
+      code: 0,
       loading: false,
       name: null,
       selectedCategory: null
@@ -73,14 +69,12 @@ __webpack_require__.r(__webpack_exports__);
     addCategory: function addCategory() {
       var _this = this;
 
-      // console.log("i am add category method");
       if (this.name) {
         this.loading = true;
         axios.post("/products/category/add", {
           name: this.name
         }).then(function (response) {
-          _this.$emit("showSnackbar", "".concat(response.data.category.name, " added.")); // console.log(response.data);
-
+          _this.$emit("showSnackbar", "".concat(response.data.category.name, " added."));
 
           _this.loading = false;
         })["catch"](function (error) {
@@ -119,19 +113,10 @@ __webpack_require__.r(__webpack_exports__);
         _this2.loading = false;
       });
     },
-    debounceSearch: function debounceSearch() {
-      var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 300;
-      clearTimeout(this.debounceTimer);
-      this.loading = true;
-      this.debounceTimer = setTimeout(function () {
-        // console.log("i am debounce function.");
-        this.categorySearch();
-      }.bind(this), delay);
-    },
     deleteCategory: function deleteCategory() {
       var _this3 = this;
 
-      console.log("i am delete category method");
+      this.loading = true;
 
       if (this.code) {
         axios.post("/products/category/delete", {
@@ -142,12 +127,16 @@ __webpack_require__.r(__webpack_exports__);
           _this3.name = null;
 
           _this3.$emit("showSnackbar", "".concat(response.data.category.name, " deleted."));
+
+          _this3.loading = false;
         })["catch"](function (error) {
           if (error.response) {
             console.log(error.response);
 
             _this3.$emit("showSnackbar", "Something went wrong.", "red darken-1");
           }
+
+          _this3.loading = false;
         });
       } else {
         this.$emit("showSnackbar", "Please select category first.", "red darken-1");
@@ -157,29 +146,35 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       if (this.name && this.code > 0) {
+        this.loading = true;
         axios.post("/products/category/update", {
           id: this.code,
           name: this.name
         }).then(function (response) {
-          console.log(response.data);
-
           _this4.$emit("showSnackbar", "".concat(response.data.category.name, " updated."));
+
+          _this4.loading = false;
         })["catch"](function (error) {
           if (error.response) {
             console.log(error.response);
 
             _this4.$emit("showSnackbar", "Something went wrong.", "red darken-1");
           }
+
+          _this4.loading = false;
         });
       } else {
         this.$emit("showSnackbar", "Please select category first.", "red darken-1");
       }
+    },
+    nameChange: function nameChange(value) {
+      this.name = value;
+    },
+    selectedChange: function selectedChange(value) {
+      this.selectedCategory = value;
     }
   },
   watch: {
-    name: function name(value) {
-      this.debounceSearch();
-    },
     selectedCategory: function selectedCategory(value) {
       if (value) {
         this.code = value.id;
@@ -272,37 +267,20 @@ var render = function() {
       _c(
         "v-card-text",
         [
-          _c("v-autocomplete", {
-            staticClass: "mx-2",
+          _c("app-autocomplete", {
             attrs: {
-              "search-input": _vm.name,
-              loading: _vm.loading,
               items: _vm.category_collection,
-              "item-text": "name",
-              "item-value": "id",
-              "return-object": "",
-              "no-filter": "",
-              "hide-no-data": "",
-              "hide-details": "",
-              clearable: "",
-              outlined: "",
               label: "Category Name",
-              color: "pink accent-1"
+              loading: _vm.loading,
+              selected: _vm.selectedCategory
             },
             on: {
-              "update:searchInput": function($event) {
-                _vm.name = $event
+              autocompleteSearch: _vm.categorySearch,
+              loadingChange: function($event) {
+                _vm.loading = true
               },
-              "update:search-input": function($event) {
-                _vm.name = $event
-              }
-            },
-            model: {
-              value: _vm.selectedCategory,
-              callback: function($$v) {
-                _vm.selectedCategory = $$v
-              },
-              expression: "selectedCategory"
+              nameChange: _vm.nameChange,
+              selectedChange: _vm.selectedChange
             }
           })
         ],

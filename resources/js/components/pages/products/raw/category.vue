@@ -18,23 +18,16 @@
             >
         </v-card-title>
         <v-card-text>
-            <v-autocomplete
-                :search-input.sync="name"
-                :loading="loading"
+            <app-autocomplete
+                @autocompleteSearch="categorySearch"
+                @loadingChange="loading = true"
+                @nameChange="nameChange"
+                @selectedChange="selectedChange"
                 :items="category_collection"
-                v-model="selectedCategory"
-                item-text="name"
-                item-value="id"
-                return-object
-                no-filter
-                hide-no-data
-                hide-details
-                clearable
-                outlined
-                class="mx-2"
-                label="Category Name"
-                color="pink accent-1"
-            ></v-autocomplete>
+                :label="'Category Name'"
+                :loading="loading"
+                :selected="selectedCategory"
+            ></app-autocomplete>
         </v-card-text>
         <v-card-actions>
             <v-btn text color="blue darken-3" @click="updateCategory()"
@@ -48,12 +41,13 @@
 </template>
 <script>
 export default {
-    props: {},
+    components: {
+        "app-autocomplete": () => import("@/components/common/autocomplete.vue")
+    },
     data() {
         return {
-            code: null,
             category_collection: [],
-            debounceTimer: 0,
+            code: 0,
             loading: false,
             name: null,
             selectedCategory: null
@@ -61,7 +55,6 @@ export default {
     },
     methods: {
         addCategory() {
-            // console.log("i am add category method");
             if (this.name) {
                 this.loading = true;
                 axios
@@ -71,7 +64,6 @@ export default {
                             "showSnackbar",
                             `${response.data.category.name} added.`
                         );
-                        // console.log(response.data);
                         this.loading = false;
                     })
                     .catch(error => {
@@ -118,20 +110,8 @@ export default {
                     this.loading = false;
                 });
         },
-        debounceSearch(delay = 300) {
-            clearTimeout(this.debounceTimer);
-            this.loading = true;
-
-            this.debounceTimer = setTimeout(
-                function() {
-                    // console.log("i am debounce function.");
-                    this.categorySearch();
-                }.bind(this),
-                delay
-            );
-        },
         deleteCategory() {
-            console.log("i am delete category method");
+            this.loading = true;
             if (this.code) {
                 axios
                     .post("/products/category/delete", {
@@ -145,6 +125,7 @@ export default {
                             "showSnackbar",
                             `${response.data.category.name} deleted.`
                         );
+                        this.loading = false;
                     })
                     .catch(error => {
                         if (error.response) {
@@ -155,6 +136,7 @@ export default {
                                 "red darken-1"
                             );
                         }
+                        this.loading = false;
                     });
             } else {
                 this.$emit(
@@ -166,18 +148,18 @@ export default {
         },
         updateCategory() {
             if (this.name && this.code > 0) {
+                this.loading = true;
                 axios
                     .post("/products/category/update", {
                         id: this.code,
                         name: this.name
                     })
                     .then(response => {
-                        console.log(response.data);
-
                         this.$emit(
                             "showSnackbar",
                             `${response.data.category.name} updated.`
                         );
+                        this.loading = false;
                     })
                     .catch(error => {
                         if (error.response) {
@@ -189,6 +171,7 @@ export default {
                                 "red darken-1"
                             );
                         }
+                        this.loading = false;
                     });
             } else {
                 this.$emit(
@@ -197,12 +180,15 @@ export default {
                     "red darken-1"
                 );
             }
+        },
+        nameChange(value) {
+            this.name = value;
+        },
+        selectedChange(value) {
+            this.selectedCategory = value;
         }
     },
     watch: {
-        name(value) {
-            this.debounceSearch();
-        },
         selectedCategory(value) {
             if (value) {
                 this.code = value.id;

@@ -74,8 +74,6 @@ __webpack_require__.r(__webpack_exports__);
         axios.post("/products/add", {
           name: this.name
         }).then(function (response) {
-          console.log(response);
-
           _this.$emit("showSnackbar", "".concat(response.data.product.name, " added."));
 
           _this.loading = false;
@@ -129,8 +127,6 @@ __webpack_require__.r(__webpack_exports__);
           id: this.code,
           name: this.name
         }).then(function (response) {
-          console.log(response.data);
-
           _this3.$emit("showSnackbar", "".concat(response.data.product.name, " updated."));
 
           _this3.loading = false;

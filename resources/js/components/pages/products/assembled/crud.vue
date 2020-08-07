@@ -60,7 +60,6 @@ export default {
                 axios
                     .post("/products/add", { name: this.name })
                     .then(response => {
-                        console.log(response);
                         this.$emit(
                             "showSnackbar",
                             `${response.data.product.name} added.`
@@ -131,8 +130,6 @@ export default {
                         name: this.name
                     })
                     .then(response => {
-                        console.log(response.data);
-
                         this.$emit(
                             "showSnackbar",
                             `${response.data.product.name} updated.`
