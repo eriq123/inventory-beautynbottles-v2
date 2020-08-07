@@ -27,7 +27,7 @@ Route::middleware(['auth', 'web'])->group(function () {
 
         Route::prefix('raw')->group(function () {
             Route::get('/', 'MainController@raw');
-            Route::post('view', 'Products\RawController@view');
+            Route::post('view', 'Products\RawController@view'); //api
             Route::post('add', 'Products\RawController@store');
             Route::post('update', 'Products\RawController@update');
             Route::post('delete', 'Products\RawController@destroy');
@@ -36,7 +36,7 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::prefix('assembled')->group(function () {
             Route::get('/', 'MainController@assembled');
         });
-        Route::post('search', 'Products\ProductsController@search');
+        Route::post('search', 'Products\ProductsController@search'); //api
         Route::post('add', 'Products\ProductsController@store');
         Route::post('update', 'Products\ProductsController@update');
         Route::post('delete', 'Products\ProductsController@destroy');

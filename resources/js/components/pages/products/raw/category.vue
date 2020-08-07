@@ -104,6 +104,7 @@ export default {
                     } else {
                         this.category_collection = [];
                     }
+                    this.loading = false;
                 })
                 .catch(error => {
                     if (error.response) {
@@ -114,6 +115,7 @@ export default {
                         );
                         console.log(error.response);
                     }
+                    this.loading = false;
                 });
         },
         debounceSearch(delay = 300) {
@@ -124,7 +126,6 @@ export default {
                 function() {
                     // console.log("i am debounce function.");
                     this.categorySearch();
-                    this.loading = false;
                 }.bind(this),
                 delay
             );

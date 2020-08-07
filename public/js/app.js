@@ -14712,8 +14712,6 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
               _c("v-subheader", [_vm._v("Inventory")]),
               _vm._v(" "),
               _c("app-sidebar", {
@@ -70796,10 +70794,10 @@ var app = new Vue({
   vuetify: _vuetify_index__WEBPACK_IMPORTED_MODULE_0__["default"],
   components: {
     "app-product-raw": function appProductRaw() {
-      return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
+      return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
     },
     "app-product-assembled": function appProductAssembled() {
-      return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
+      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
     }
   }
 }); // render: h => h(App),

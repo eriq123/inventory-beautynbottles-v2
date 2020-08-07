@@ -27,7 +27,7 @@
                     </v-list-item-title>
                 </v-list-item>
 
-                <v-divider></v-divider>
+                <!-- <v-divider></v-divider> -->
 
                 <v-subheader>Inventory</v-subheader>
                 <app-sidebar :items="inventories" :route="route"></app-sidebar>

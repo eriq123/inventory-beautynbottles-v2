@@ -18,23 +18,16 @@
             >
         </v-card-title>
         <v-card-text>
-            <v-autocomplete
-                :search-input.sync="name"
-                :loading="loading"
+            <app-autocomplete
+                @autocompleteSearch="productSearch"
+                @loadingChange="loading = true"
+                @nameChange="nameChange"
+                @selectedChange="selectedChange"
                 :items="product_collection"
-                v-model="selectedProduct"
-                item-text="name"
-                item-value="id"
-                return-object
-                no-filter
-                hide-no-data
-                hide-details
-                clearable
-                outlined
-                class="mx-2"
-                label="Product Name"
-                color="pink accent-1"
-            ></v-autocomplete>
+                :label="'Product Name'"
+                :loading="loading"
+                :selected="selectedProduct"
+            ></app-autocomplete>
         </v-card-text>
         <v-card-actions>
             <v-btn text color="blue darken-3" @click="updateProduct()"
@@ -48,14 +41,16 @@
 </template>
 <script>
 export default {
+    components: {
+        "app-autocomplete": () => import("@/components/common/autocomplete.vue")
+    },
     data() {
         return {
-            code: null,
-            loading: false,
+            code: 0,
             name: null,
             product_collection: [],
             selectedProduct: null,
-            debounceTimer: 0
+            loading: false
         };
     },
     methods: {
@@ -93,6 +88,7 @@ export default {
         },
         deleteProduct() {
             if (this.code) {
+                this.loading = true;
                 axios
                     .post("/products/delete", {
                         id: this.code
@@ -105,6 +101,7 @@ export default {
                             "showSnackbar",
                             `${response.data.product.name} deleted.`
                         );
+                        this.loading = false;
                     })
                     .catch(error => {
                         if (error.response) {
@@ -115,6 +112,7 @@ export default {
                                 "red darken-1"
                             );
                         }
+                        this.loading = false;
                     });
             } else {
                 this.$emit(
@@ -126,6 +124,7 @@ export default {
         },
         updateProduct() {
             if (this.name && this.code > 0) {
+                this.loading = true;
                 axios
                     .post("/products/update", {
                         id: this.code,
@@ -138,6 +137,7 @@ export default {
                             "showSnackbar",
                             `${response.data.product.name} updated.`
                         );
+                        this.loading = false;
                     })
                     .catch(error => {
                         if (error.response) {
@@ -149,6 +149,7 @@ export default {
                                 "red darken-1"
                             );
                         }
+                        this.loading = false;
                     });
             } else {
                 this.$emit(
@@ -169,6 +170,7 @@ export default {
                     } else {
                         this.product_collection = [];
                     }
+                    this.loading = false;
                 })
                 .catch(error => {
                     if (error.response) {
@@ -179,33 +181,23 @@ export default {
                         );
                         console.log(error.response);
                     }
+                    this.loading = false;
                 });
         },
-        debounceSearch(delay = 300) {
-            clearTimeout(this.debounceTimer);
-            this.loading = true;
-
-            this.debounceTimer = setTimeout(
-                function() {
-                    this.productSearch();
-                    this.loading = false;
-                }.bind(this),
-                delay
-            );
+        nameChange(value) {
+            this.name = value;
+        },
+        selectedChange(value) {
+            this.selectedProduct = value;
         }
     },
-
     watch: {
-        name(value) {
-            this.debounceSearch();
-        },
         selectedProduct(value) {
             if (value) {
                 this.code = value.id;
             } else {
                 this.code = 0;
             }
-            // this.$emit("selectedProduct", value);
         }
     }
 };

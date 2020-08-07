@@ -11,4 +11,9 @@ class Product extends Model
     {
         return ucfirst($name);
     }
+
+    public function raws()
+    {
+        return $this->belongsToMany(Raw::class);
+    }
 }
