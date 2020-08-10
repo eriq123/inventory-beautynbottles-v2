@@ -28,7 +28,8 @@
                     <template #dialogForm>
                         <v-col cols="12" sm="6">
                             <v-text-field
-                                label="Raw item name"
+                                autofocus
+                                label="Name"
                                 v-model="formData.name"
                             ></v-text-field>
                         </v-col>
@@ -52,6 +53,10 @@
 
             <v-spacer></v-spacer>
 
+            <app-raw-info
+                :message="'Click on table rows to update the record.'"
+            ></app-raw-info>
+
             <v-slide-x-reverse-transition>
                 <div v-if="autocomplete">
                     Filtered by: {{ selected.name.toUpperCase() }}
@@ -59,19 +64,25 @@
             </v-slide-x-reverse-transition>
         </v-card-title>
 
-        <v-data-table :headers="headers" :items="rawItems" :loading="loading">
-            <template v-slot:item.action="{ item }">
+        <v-data-table
+            :headers="headers"
+            :items="rawItems"
+            :loading="loading"
+            @click:row="editDialog"
+        >
+            <!-- <template v-slot:item.action="{ item }">
                 <v-btn text color="blue darken-3" @click="editDialog(item)">
                     Edit
                 </v-btn>
-            </template>
+            </template> -->
         </v-data-table>
     </v-card>
 </template>
 <script>
 export default {
     components: {
-        "app-raw-dialog": () => import("./dialog.vue")
+        "app-raw-dialog": () => import("./dialog.vue"),
+        "app-raw-info": () => import("@/components/common/infoTooltip")
     },
     props: {
         selected: {
@@ -128,12 +139,12 @@ export default {
                 {
                     text: "Reorder Point",
                     value: "reorder_point"
-                },
-                {
-                    text: "Action",
-                    value: "action",
-                    sortable: false
                 }
+                // {
+                //     text: "Action",
+                //     value: "action",
+                //     sortable: false
+                // }
             ],
             loading: false,
             rawItems: [],
@@ -248,6 +259,11 @@ export default {
                         }
                     });
             }
+        }
+    },
+    watch: {
+        selected: function(value) {
+            this.getOrFilterRaw();
         }
     }
 };

@@ -13,9 +13,9 @@
             </v-slide-x-reverse-transition>
 
             <v-spacer></v-spacer>
-            <v-btn text outlined color="green darken-4" @click="addProduct()"
-                >Add</v-btn
-            >
+            <v-btn text outlined color="green darken-4" @click="addProduct()">
+                Add
+            </v-btn>
         </v-card-title>
         <v-card-text>
             <app-autocomplete
@@ -27,6 +27,7 @@
                 :label="'Product Name'"
                 :loading="loading"
                 :selected="selectedProduct"
+                class="mx-2"
             ></app-autocomplete>
         </v-card-text>
         <v-card-actions>
@@ -162,6 +163,7 @@ export default {
                     name: this.name
                 })
                 .then(response => {
+                    console.log(response.data.product);
                     if (response.data.product.length > 0) {
                         this.product_collection = response.data.product;
                     } else {
@@ -189,12 +191,13 @@ export default {
         }
     },
     watch: {
-        selectedProduct(value) {
+        selectedProduct: function(value) {
             if (value) {
                 this.code = value.id;
             } else {
                 this.code = 0;
             }
+            this.$emit("selectedProduct", value);
         }
     }
 };

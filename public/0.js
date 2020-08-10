@@ -96,7 +96,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("v-autocomplete", {
-    staticClass: "mx-2",
     attrs: {
       "search-input": _vm.name,
       loading: _vm.loading,
@@ -105,6 +104,7 @@ var render = function() {
       "item-text": "name",
       "item-value": "id",
       "return-object": "",
+      autofocus: "",
       "no-filter": "",
       "hide-no-data": "",
       "hide-details": "",

@@ -49,7 +49,7 @@ export default {
                 {
                     icon: "file-document-multiple-outline",
                     title: "Report",
-                    link: "/inventory/reports"
+                    link: "/inventory/report"
                 },
                 {
                     icon: "all-inclusive",

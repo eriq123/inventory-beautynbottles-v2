@@ -14,6 +14,6 @@ class Product extends Model
 
     public function raws()
     {
-        return $this->belongsToMany(Raw::class);
+        return $this->belongsToMany(Raw::class)->withPivot('quantity')->withTimestamps();
     }
 }

@@ -8,13 +8,13 @@
         item-text="name"
         item-value="id"
         return-object
+        autofocus
         no-filter
         hide-no-data
         hide-details
         hide-selected
         clearable
         outlined
-        class="mx-2"
         color="pink accent-1"
     ></v-autocomplete>
 </template>
@@ -65,7 +65,7 @@ export default {
     },
 
     watch: {
-        name(value) {
+        name: function(value) {
             this.$emit("nameChange", value);
             this.debounceSearch();
         }

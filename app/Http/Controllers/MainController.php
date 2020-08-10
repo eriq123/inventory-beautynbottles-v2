@@ -28,4 +28,18 @@ class MainController extends Controller
         $this->data['user'] = Auth::user();
         return view('pages.products.assembled', $this->data);
     }
+
+    public function flow()
+    {
+        $this->data['route'] = json_encode("/inventory/flow");
+        $this->data['user'] = Auth::user();
+        return view('pages.inventory.flow', $this->data);
+    }
+
+    public function report()
+    {
+        $this->data['route'] = json_encode("/inventory/report");
+        $this->data['user'] = Auth::user();
+        return view('pages.inventory.report', $this->data);
+    }
 }

@@ -27,6 +27,7 @@
                 :label="'Category Name'"
                 :loading="loading"
                 :selected="selectedCategory"
+                class="mx-2"
             ></app-autocomplete>
         </v-card-text>
         <v-card-actions>
@@ -189,7 +190,7 @@ export default {
         }
     },
     watch: {
-        selectedCategory(value) {
+        selectedCategory: function(value) {
             if (value) {
                 this.code = value.id;
             } else {

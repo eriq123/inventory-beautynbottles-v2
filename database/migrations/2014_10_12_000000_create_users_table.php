@@ -67,7 +67,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('raw_id');
-            $table->string('quantity');
+            $table->integer('quantity');
             $table->timestamps();
 
             $table->foreign('product_id')
@@ -77,6 +77,16 @@ class CreateUsersTable extends Migration
             $table->foreign('raw_id')
                 ->references('id')->on('raws')
                 ->onDelete('cascade');
+        });
+
+        Schema::create('reports', function (Blueprint $table) {
+            $table->id();
+            $table->string('product_name')->nullable();
+            $table->string('category_name');
+            $table->string('raw_name');
+            $table->integer('quantity');
+            $table->string('status');
+            $table->timestamps();
         });
     }
 
@@ -93,5 +103,6 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('raws');
         Schema::dropIfExists('products');
         Schema::dropIfExists('product_raw');
+        Schema::dropIfExists('reports');
     }
 }

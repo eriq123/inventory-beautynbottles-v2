@@ -25,7 +25,11 @@ const app = new Vue({
         "app-product-raw": () =>
             import("./components/pages/products/rawContainer.vue"),
         "app-product-assembled": () =>
-            import("./components/pages/products/assembledContainer.vue")
+            import("./components/pages/products/assembledContainer.vue"),
+        "app-product-flow": () =>
+            import("./components/pages/inventory/flowContainer.vue"),
+        "app-product-report": () =>
+            import("./components/pages/inventory/reportContainer.vue")
     }
 });
 // render: h => h(App),
