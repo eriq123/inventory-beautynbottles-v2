@@ -17,7 +17,7 @@
         </v-app-bar>
 
         <v-navigation-drawer v-model="sidebar" app>
-            <v-list nav dense>
+            <v-list nav>
                 <v-list-item class="outlined pink lighten-5">
                     <v-list-item-title
                         class="title pink--text text--accent-1 mt-5 px-3"
@@ -27,13 +27,25 @@
                     </v-list-item-title>
                 </v-list-item>
 
-                <!-- <v-divider></v-divider> -->
-
-                <v-subheader>Inventory</v-subheader>
+                <!-- <v-subheader>Inventory</v-subheader>
                 <app-sidebar :items="inventories" :route="route"></app-sidebar>
                 <v-subheader>Products</v-subheader>
-                <app-sidebar :items="products" :route="route"></app-sidebar>
+                <app-sidebar :items="products" :route="route"></app-sidebar> -->
             </v-list>
+
+            <v-list-group value="true" color="pink accent-1">
+                <template v-slot:activator>
+                    <v-list-item-title>Inventory</v-list-item-title>
+                </template>
+                <app-sidebar :items="inventories" :route="route"></app-sidebar>
+            </v-list-group>
+
+            <v-list-group value="true" color="pink accent-1">
+                <template v-slot:activator>
+                    <v-list-item-title>Products</v-list-item-title>
+                </template>
+                <app-sidebar :items="products" :route="route"></app-sidebar>
+            </v-list-group>
         </v-navigation-drawer>
     </section>
 </template>

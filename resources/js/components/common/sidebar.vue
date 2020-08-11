@@ -4,8 +4,8 @@
             v-for="(item, index) in items"
             :key="index"
             :href="item.link"
+            link
         >
-            <!-- :class="item.link === route ? 'pink lighten-5' : ''" -->
             <v-list-item-icon>
                 <v-icon
                     :class="

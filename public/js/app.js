@@ -2148,6 +2148,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route", "user"],
   data: function data() {
@@ -14686,7 +14698,7 @@ var render = function() {
         [
           _c(
             "v-list",
-            { attrs: { nav: "", dense: "" } },
+            { attrs: { nav: "" } },
             [
               _c(
                 "v-list-item",
@@ -14710,15 +14722,49 @@ var render = function() {
                   )
                 ],
                 1
-              ),
-              _vm._v(" "),
-              _c("v-subheader", [_vm._v("Inventory")]),
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list-group",
+            {
+              attrs: { value: "true", color: "pink accent-1" },
+              scopedSlots: _vm._u([
+                {
+                  key: "activator",
+                  fn: function() {
+                    return [_c("v-list-item-title", [_vm._v("Inventory")])]
+                  },
+                  proxy: true
+                }
+              ])
+            },
+            [
               _vm._v(" "),
               _c("app-sidebar", {
                 attrs: { items: _vm.inventories, route: _vm.route }
-              }),
-              _vm._v(" "),
-              _c("v-subheader", [_vm._v("Products")]),
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list-group",
+            {
+              attrs: { value: "true", color: "pink accent-1" },
+              scopedSlots: _vm._u([
+                {
+                  key: "activator",
+                  fn: function() {
+                    return [_c("v-list-item-title", [_vm._v("Products")])]
+                  },
+                  proxy: true
+                }
+              ])
+            },
+            [
               _vm._v(" "),
               _c("app-sidebar", {
                 attrs: { items: _vm.products, route: _vm.route }
@@ -14761,7 +14807,7 @@ var render = function() {
     _vm._l(_vm.items, function(item, index) {
       return _c(
         "v-list-item",
-        { key: index, attrs: { href: item.link } },
+        { key: index, attrs: { href: item.link, link: "" } },
         [
           _c(
             "v-list-item-icon",
