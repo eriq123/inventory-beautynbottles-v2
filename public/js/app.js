@@ -2160,6 +2160,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route", "user"],
   data: function data() {
@@ -14673,6 +14680,20 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-btn",
+            { attrs: { href: "#", color: "pink accent-1", text: "" } },
+            [
+              _c("v-icon", { staticClass: "mr-1" }, [
+                _vm._v("mdi-account-circle-outline")
+              ]),
+              _vm._v("\n            " + _vm._s(_vm.fullName) + "\n        ")
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-divider", { attrs: { vertical: "" } }),
+          _vm._v(" "),
+          _c(
+            "v-btn",
             {
               staticClass: "pink--text text--accent-1",
               attrs: { text: "", href: "/logout" }
@@ -14696,37 +14717,6 @@ var render = function() {
           }
         },
         [
-          _c(
-            "v-list",
-            { attrs: { nav: "" } },
-            [
-              _c(
-                "v-list-item",
-                { staticClass: "outlined pink lighten-5" },
-                [
-                  _c(
-                    "v-list-item-title",
-                    {
-                      staticClass: "title pink--text text--accent-1 mt-5 px-3"
-                    },
-                    [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(_vm.fullName) +
-                          "\n                    "
-                      ),
-                      _c("p", { staticClass: "caption" }, [
-                        _vm._v("@" + _vm._s(this.user.username))
-                      ])
-                    ]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
           _c(
             "v-list-group",
             {

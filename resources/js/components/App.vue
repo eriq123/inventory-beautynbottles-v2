@@ -11,13 +11,20 @@
 
             <v-spacer></v-spacer>
 
+            <v-btn href="#" color="pink accent-1" text>
+                <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
+                {{ fullName }}
+            </v-btn>
+
+            <v-divider vertical></v-divider>
+
             <v-btn text href="/logout" class="pink--text text--accent-1"
                 >logout</v-btn
             >
         </v-app-bar>
 
         <v-navigation-drawer v-model="sidebar" app>
-            <v-list nav>
+            <!-- <v-list nav>
                 <v-list-item class="outlined pink lighten-5">
                     <v-list-item-title
                         class="title pink--text text--accent-1 mt-5 px-3"
@@ -25,13 +32,13 @@
                         {{ fullName }}
                         <p class="caption">@{{ this.user.username }}</p>
                     </v-list-item-title>
-                </v-list-item>
+                </v-list-item> -->
 
-                <!-- <v-subheader>Inventory</v-subheader>
+            <!-- <v-subheader>Inventory</v-subheader>
                 <app-sidebar :items="inventories" :route="route"></app-sidebar>
                 <v-subheader>Products</v-subheader>
                 <app-sidebar :items="products" :route="route"></app-sidebar> -->
-            </v-list>
+            <!-- </v-list> -->
 
             <v-list-group value="true" color="pink accent-1">
                 <template v-slot:activator>
