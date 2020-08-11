@@ -5,45 +5,28 @@
                 <span class="headline">{{ this.title }}</span>
             </v-card-title>
             <v-card-text>
-                <v-container>
-                    <!-- this is for product raw items -->
-                    <!-- <v-card outlined v-if="dialog.raws">
-                        <v-chip-group column class="mx-3">
-                            <v-chip
-                                v-for="(raw, index) in dialog.raws"
-                                :key="index"
-                            >
-                                {{ raw.quantity }}x
-                                {{ raw.name }}
-                            </v-chip>
-                        </v-chip-group>
-                    </v-card> -->
-                    <!-- this is for the form -->
-                    <v-row>
-                        <v-col sm="4">
-                            <v-switch
-                                v-model="toggleDialog"
-                                inset
-                                ripple
-                                :color="action == 'add' ? 'success' : 'error'"
-                                :label="toggleLabel"
-                            >
-                            </v-switch>
-                        </v-col>
-                        <v-col sm="8">
-                            <v-text-field
-                                autofocus
-                                type="number"
-                                label="Quantity"
-                            ></v-text-field>
-                        </v-col>
-                    </v-row>
-                </v-container>
+                <v-row no-gutters>
+                    <v-col sm="4">
+                        <v-switch
+                            v-model="toggleDialog"
+                            inset
+                            ripple
+                            :color="action == 'add' ? 'success' : 'error'"
+                            :label="toggleLabel"
+                        >
+                        </v-switch>
+                    </v-col>
+                    <v-col sm="8">
+                        <slot name="quantity"></slot>
+                    </v-col>
+                </v-row>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn text @click="$emit('dialogshowchange')">Cancel</v-btn>
-                <v-btn text color="green darken-3">Save</v-btn>
+                <v-btn text color="green darken-3" @click="saveProductRaw()"
+                    >Save</v-btn
+                >
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -63,6 +46,10 @@ export default {
         },
         switchState: {
             type: Boolean
+        },
+        id: {
+            type: Number,
+            required: true
         }
     },
     data() {
@@ -74,9 +61,17 @@ export default {
             minus: {
                 true: "Sold",
                 false: "Loss"
-            },
-            status: null
+            }
         };
+    },
+    methods: {
+        saveProductRaw() {
+            this.$emit("saveproductraw", {
+                action: this.action,
+                status: this.toggleLabel,
+                id: this.id
+            });
+        }
     },
     computed: {
         showDialog: {
@@ -107,11 +102,6 @@ export default {
             }
         }
     },
-    watch: {
-        switchState: function() {
-            this.status = this.toggleLabel;
-            console.log(`status is ${this.status}`);
-        }
-    }
+    watch: {}
 };
 </script>

@@ -11,7 +11,14 @@
 
     <title>{{ config('app.name') ?: "App name not found." }}</title>
 
-    <link rel="stylesheet" href="{{ mix('css/app.css')}}">
+    {{-- <link rel="stylesheet" href="{{ mix('css/app.css')}}"> --}}
+    <style>
+        body {
+            background: #eee;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
 
 </head>
 

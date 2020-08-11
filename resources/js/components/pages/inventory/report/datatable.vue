@@ -16,29 +16,36 @@
                 </v-chip-group>
             </td>
         </template>
-        <template v-slot:item.actions="{ item }">
-            <v-btn
-                fab
-                x-small
-                outlined
-                color="green darken-4"
-                @click.stop="datatableclick('add', item)"
-            >
-                <v-icon>
-                    mdi-plus
-                </v-icon>
-            </v-btn>
-            <v-btn
-                fab
-                x-small
-                outlined
-                color="red darken-4"
-                @click.stop="datatableclick('minus', item)"
-            >
-                <v-icon>
-                    mdi-minus
-                </v-icon>
-            </v-btn>
+
+        <template v-slot:item.remark="{ item }">
+            <v-tooltip left>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        v-if="item.quantity <= item.reorder_point"
+                        icon
+                        color="red darken-4"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <v-icon>mdi-exclamation-thick</v-icon>
+                    </v-btn>
+                    <v-btn
+                        v-else
+                        icon
+                        color="green darken-4"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <v-icon>mdi-check-bold</v-icon>
+                    </v-btn>
+                </template>
+                <span>
+                    Quantity: {{ item.quantity }} <br />Reorder Point:
+                    {{ item.reorder_point }}
+                </span>
+            </v-tooltip>
         </template>
     </v-data-table>
 </template>
@@ -49,9 +56,6 @@ export default {
         toggleState: {
             required: true,
             type: Boolean
-        },
-        updatedItem: {
-            type: Object
         }
     },
     data() {
@@ -71,14 +75,21 @@ export default {
                     align: "start",
                     value: "name"
                 },
-                // {
-                //     text: "Raw items",
-                //     align: "start",
-                //     value: "raw_item"
-                // },
                 {
-                    text: "Actions",
-                    value: "actions"
+                    text: "Purchase",
+                    value: "purchase"
+                },
+                {
+                    text: "RTS",
+                    value: "rts"
+                },
+                {
+                    text: "Sold",
+                    value: "sold"
+                },
+                {
+                    text: "Loss",
+                    value: "loss"
                 }
             ],
             rawHeader: [
@@ -98,12 +109,24 @@ export default {
                     value: "name"
                 },
                 {
-                    text: "Quantity",
-                    value: "quantity"
+                    text: "Purchase",
+                    value: "purchase"
                 },
                 {
-                    text: "Actions",
-                    value: "actions"
+                    text: "RTS",
+                    value: "rts"
+                },
+                {
+                    text: "Sold",
+                    value: "sold"
+                },
+                {
+                    text: "Loss",
+                    value: "loss"
+                },
+                {
+                    text: "Remark",
+                    value: "remark"
                 }
             ],
             itemIndex: -1
@@ -132,6 +155,7 @@ export default {
                     toggle: this.toggleState
                 })
                 .then(response => {
+                    console.log(response.data);
                     if (this.toggleState) {
                         this.headers = this.productHeader;
                     } else {
@@ -158,13 +182,6 @@ export default {
                     this.loading = false;
                     this.$emit("toggleChange", false);
                 });
-        },
-        datatableclick(action, item) {
-            this.itemIndex = this.items.indexOf(item);
-            this.$emit("datatableclick", {
-                item: item,
-                action: action
-            });
         }
     },
 
@@ -172,11 +189,6 @@ export default {
         toggleState: function(value) {
             this.getProductRaw();
             this.expanded = [];
-        },
-        updatedItem: function(value) {
-            if (!this.toggleState) {
-                Object.assign(this.items[this.itemIndex], value);
-            }
         }
     }
 };

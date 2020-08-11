@@ -15,18 +15,28 @@
                 <app-flow-datatable
                     :toggleState="toggle.state"
                     @toggleChange="toggleChange"
-                    @addaction="addaction"
-                    @minusaction="minusaction"
+                    @datatableclick="datatableclick"
+                    :updatedItem="updatedItem"
                 >
                 </app-flow-datatable>
                 <app-flow-dialog
                     :title="dialog.title"
-                    :action="action"
+                    :action="dialog.action"
                     :dialogShow="dialog.show"
                     @dialogshowchange="dialog.show = false"
                     :switchState="dialog.toggle"
                     @togglechangestate="dialog.toggle = !dialog.toggle"
+                    @saveproductraw="saveproductraw"
+                    :id="dialog.id"
                 >
+                    <template #quantity>
+                        <v-text-field
+                            autofocus
+                            type="number"
+                            label="Quantity"
+                            v-model="dialog.quantity"
+                        ></v-text-field>
+                    </template>
                 </app-flow-dialog>
             </v-col>
         </v-row>
@@ -47,9 +57,8 @@ export default {
     },
     data() {
         return {
-            action: null,
             toggle: {
-                state: false,
+                state: true,
                 loading: false,
                 disabled: false
             },
@@ -59,9 +68,12 @@ export default {
                 toggle: true,
 
                 title: null,
-                raws: [],
+                quantity: null,
+                id: 0,
                 action: null
             },
+            stocks: 0,
+            updatedItem: {},
 
             // snackbar
             snackbar: {
@@ -73,29 +85,64 @@ export default {
         };
     },
     methods: {
-        addaction(item) {
-            // i now have the toggle state and the action
-            // action is add
-
-            this.action = "add";
-            this.actionProcess(item);
-        },
-        minusaction(item) {
-            // i now have the toggle state and the action
-            // action is minus
-            this.action = "minus";
-            this.actionProcess(item);
-        },
-        actionProcess(item) {
+        datatableclick(data) {
             if (this.toggle.state) {
-                this.dialog.title = item.name;
+                this.dialog.title = data.item.name;
             } else {
-                this.dialog.title = `${item.category.name} - ${item.name}`;
+                this.dialog.title = `${data.item.category.name} - ${data.item.name}`;
             }
+            this.dialog.action = data.action;
+            this.dialog.quantity = null;
+
+            this.stocks = data.item.quantity;
+            this.dialog.id = data.item.id;
+
             this.dialog.toggle = this.dialog.show = true;
+        },
+        saveproductraw(form) {
+            const formData = {
+                id: form.id,
+                quantity: this.dialog.quantity,
+                status: form.status,
+                action: form.action,
+                type: this.switchLabel
+            };
+
+            axios
+                .post("/inventory/flow/store", formData)
+                .then(response => {
+                    console.log(response.data);
+                    if (!this.toggle.state) {
+                        this.updatedItem = response.data.raw;
+                    }
+
+                    this.dialog.show = false;
+                    this.showSnackbar(`Record has been updated!`);
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                        if (error.response.data.error_message) {
+                            this.showSnackbar(
+                                error.response.data.error_message,
+                                "red darken-1"
+                            );
+                        } else {
+                            this.showSnackbar(
+                                `Something went wrong. Please try again.`,
+                                "red darken-1"
+                            );
+                        }
+                    }
+                });
         },
         toggleChange(value) {
             this.toggle.disabled = this.toggle.loading = value;
+        },
+        showSnackbar(message, color = "success") {
+            this.snackbar.text = message;
+            this.snackbar.color = color;
+            this.snackbar.visible = true;
         }
     },
     computed: {

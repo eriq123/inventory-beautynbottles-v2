@@ -47,9 +47,10 @@ Route::middleware(['auth', 'web'])->group(function () {
     });
 
     Route::prefix('inventory')->group(function () {
+        Route::post('toggle', 'Inventory\FlowController@toggle');
         Route::prefix('flow')->group(function () {
             Route::get('/', 'MainController@flow');
-            Route::post('toggle', 'Inventory\FlowController@toggle');
+            Route::post('store', 'Inventory\FlowController@store');
         });
         Route::prefix('report')->group(function () {
             Route::get('/', 'MainController@report');

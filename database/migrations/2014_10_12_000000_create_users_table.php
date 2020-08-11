@@ -27,10 +27,11 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->integer('active');
             // $table->unsignedBigInteger('role_id');
-            // $table->string('role_name');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+
+            $table->softDeletes();
             $table->timestamps();
 
             // $table->foreign('role_id')
@@ -41,6 +42,8 @@ class CreateUsersTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -50,6 +53,13 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->integer('quantity');
             $table->integer('reorder_point');
+
+            $table->integer('purchase')->default(0);
+            $table->integer('rts')->default(0);
+            $table->integer('sold')->default(0);
+            $table->integer('loss')->default(0);
+
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('category_id')
@@ -60,6 +70,13 @@ class CreateUsersTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+
+            $table->integer('purchase')->default(0);
+            $table->integer('rts')->default(0);
+            $table->integer('sold')->default(0);
+            $table->integer('loss')->default(0);
+
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -68,6 +85,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('raw_id');
             $table->integer('quantity');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('product_id')
@@ -81,11 +99,11 @@ class CreateUsersTable extends Migration
 
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->string('product_name')->nullable();
-            $table->string('category_name');
-            $table->string('raw_name');
+            $table->string('type');
+            $table->BigInteger('item_id');
             $table->integer('quantity');
             $table->string('status');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Inventory;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\Raw;
+use App\Report;
 use Illuminate\Http\Request;
 
 class FlowController extends Controller
@@ -25,5 +26,85 @@ class FlowController extends Controller
             $this->data['items'] = Raw::with('category')->get();
         }
         return response()->json($this->data);
+    }
+
+    public function store(Request $request)
+    {
+        if ($request->type == 'Products') {
+            $raws = Product::find($request->id)->raws()->get();
+
+            if ($request->action !== 'add') {
+                foreach ($raws as $raw) {
+                    $singleRaw = Raw::findorFail($raw->id);
+                    if ($singleRaw->quantity < ($raw->pivot->quantity * $request->quantity)) {
+                        return response()->json(['error_message' => 'Action was unsuccessful due to insufficient stocks.'], 419);
+                    }
+                }
+            }
+
+            if ($request->status == "Purchase") {
+                $raws->purchase += $request->quantity;
+            } elseif ($request->status == "RTS") {
+                $raws->rts += $request->quantity;
+            } elseif ($request->status == "Sold") {
+                $raws->sold += $request->quantity;
+            } elseif ($request->status == "Loss") {
+                $raws->loss += $request->quantity;
+            }
+            $raws->save();
+
+            foreach ($raws as $raw) {
+                $singleRaw = Raw::findorFail($raw->id);
+
+                if ($request->action == 'add') {
+                    $singleRaw->quantity += $raw->pivot->quantity * $request->quantity;
+                } else {
+                    $singleRaw->quantity -= $raw->pivot->quantity * $request->quantity;
+                }
+                $singleRaw->save();
+            }
+
+            $this->saveReport($request);
+
+            return;
+        } else {
+            $this->data['raw'] = Raw::where('id', $request->id)->with('category')->first();
+
+            if ($request->action == 'add') {
+                $this->data['raw']->quantity += $request->quantity;
+
+                if ($request->status == "Purchase") {
+                    $this->data['raw']->purchase += $request->quantity;
+                } elseif ($request->status == "RTS") {
+                    $this->data['raw']->rts += $request->quantity;
+                }
+            } else {
+                if ($this->data['raw']->quantity < $request->quantity) {
+                    return response()->json(['error_message' => 'Action was unsuccessful due to insufficient stocks.'], 419);
+                }
+
+                $this->data['raw']->quantity -= $request->quantity;
+
+                if ($request->status == "Sold") {
+                    $this->data['raw']->sold += $request->quantity;
+                } elseif ($request->status == "Loss") {
+                    $this->data['raw']->loss += $request->quantity;
+                }
+            }
+            $this->data['raw']->save();
+            $this->saveReport($request);
+
+            return response()->json($this->data);
+        }
+    }
+
+    private function saveReport($request)
+    {
+        $report = new Report();
+        $report->type = $request->type;
+        $report->item_id = $request->id;
+        $report->quantity = $request->quantity;
+        $report->status = $request->status;
+        $report->save();
     }
 }

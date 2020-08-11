@@ -1,14 +1,46 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[13],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/snackbar.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/common/snackbar.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/inventory/report/datatable.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/inventory/report/datatable.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -31,30 +63,139 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    color: {
-      type: String
-    },
-    text: {
-      required: true
-    },
-    timeout: {
-      required: true
-    },
-    visible: {
-      required: true
+    toggleState: {
+      required: true,
+      type: Boolean
     }
   },
   data: function data() {
-    return {};
+    return {
+      expanded: [],
+      headers: [],
+      items: [],
+      loading: false,
+      productHeader: [{
+        text: "Code",
+        align: "start",
+        value: "id"
+      }, {
+        text: "Product",
+        align: "start",
+        value: "name"
+      }, {
+        text: "Purchase",
+        value: "purchase"
+      }, {
+        text: "RTS",
+        value: "rts"
+      }, {
+        text: "Sold",
+        value: "sold"
+      }, {
+        text: "Loss",
+        value: "loss"
+      }],
+      rawHeader: [{
+        text: "Code",
+        align: "start",
+        value: "id"
+      }, {
+        text: "Category",
+        align: "start",
+        value: "category_name"
+      }, {
+        text: "Raw Item",
+        align: "start",
+        value: "name"
+      }, {
+        text: "Purchase",
+        value: "purchase"
+      }, {
+        text: "RTS",
+        value: "rts"
+      }, {
+        text: "Sold",
+        value: "sold"
+      }, {
+        text: "Loss",
+        value: "loss"
+      }, {
+        text: "Remark",
+        value: "remark"
+      }],
+      itemIndex: -1
+    };
+  },
+  created: function created() {
+    this.getProductRaw();
+  },
+  methods: {
+    openExpanded: function openExpanded(value) {
+      if (this.toggleState) {
+        var index = this.expanded.indexOf(value);
+
+        if (index === -1) {
+          this.expanded.push(value);
+        } else {
+          this.expanded.splice(index, 1);
+        }
+      }
+    },
+    getProductRaw: function getProductRaw() {
+      var _this = this;
+
+      this.items = [];
+      this.loading = true;
+      this.$emit("toggleChange", true);
+      axios.post("/inventory/toggle", {
+        toggle: this.toggleState
+      }).then(function (response) {
+        console.log(response.data);
+
+        if (_this.toggleState) {
+          _this.headers = _this.productHeader;
+        } else {
+          _this.headers = _this.rawHeader;
+        }
+
+        if (response.data.items.length > 0) {
+          if (response.data.toggle) {
+            _this.items = response.data.items;
+          } else {
+            _this.items = response.data.items.map(function (item) {
+              item.category_name = item.category.name;
+              return item;
+            });
+          }
+        } else {
+          _this.items = [];
+        }
+
+        _this.loading = false;
+
+        _this.$emit("toggleChange", false);
+      })["catch"](function (error) {
+        console.log(error.response);
+        _this.loading = false;
+
+        _this.$emit("toggleChange", false);
+      });
+    }
+  },
+  watch: {
+    toggleState: function toggleState(value) {
+      this.getProductRaw();
+      this.expanded = [];
+    }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae&":
-/*!******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae& ***!
-  \******************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/inventory/report/datatable.vue?vue&type=template&id=7f8f0192&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/inventory/report/datatable.vue?vue&type=template&id=7f8f0192& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -66,53 +207,143 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-snackbar",
-    {
-      attrs: {
-        app: "",
-        color: _vm.color,
-        right: "",
-        top: "",
-        rounded: "",
-        timeout: _vm.timeout,
-        value: _vm.visible
+  return _c("v-data-table", {
+    attrs: {
+      headers: _vm.headers,
+      items: _vm.items,
+      loading: _vm.loading,
+      "show-expand": _vm.toggleState,
+      expanded: _vm.expanded
+    },
+    on: {
+      "update:expanded": function($event) {
+        _vm.expanded = $event
       },
-      on: {
-        input: function($event) {
-          return _vm.$emit("hideSnackbar")
+      "click:row": _vm.openExpanded
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "expanded-item",
+        fn: function(ref) {
+          var headers = ref.headers
+          var item = ref.item
+          return [
+            _c(
+              "td",
+              { attrs: { colspan: headers.length } },
+              [
+                _c(
+                  "v-chip-group",
+                  { attrs: { column: "" } },
+                  _vm._l(item.raws, function(raw, index) {
+                    return _c("v-chip", { key: index }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(raw.pivot.quantity) +
+                          " x " +
+                          _vm._s(raw.name) +
+                          "\n                "
+                      )
+                    ])
+                  }),
+                  1
+                )
+              ],
+              1
+            )
+          ]
         }
       },
-      scopedSlots: _vm._u([
-        {
-          key: "action",
-          fn: function(ref) {
-            var attrs = ref.attrs
-            return [
-              _c(
-                "v-btn",
-                _vm._b(
-                  {
-                    attrs: { dark: "", text: "" },
-                    on: {
-                      click: function($event) {
-                        return _vm.$emit("hideSnackbar")
+      {
+        key: "item.remark",
+        fn: function(ref) {
+          var item = ref.item
+          return [
+            _c(
+              "v-tooltip",
+              {
+                attrs: { left: "" },
+                scopedSlots: _vm._u(
+                  [
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        var attrs = ref.attrs
+                        return [
+                          item.quantity <= item.reorder_point
+                            ? _c(
+                                "v-btn",
+                                _vm._g(
+                                  _vm._b(
+                                    {
+                                      attrs: {
+                                        icon: "",
+                                        color: "red darken-4",
+                                        dark: ""
+                                      }
+                                    },
+                                    "v-btn",
+                                    attrs,
+                                    false
+                                  ),
+                                  on
+                                ),
+                                [
+                                  _c("v-icon", [
+                                    _vm._v("mdi-exclamation-thick")
+                                  ])
+                                ],
+                                1
+                              )
+                            : _c(
+                                "v-btn",
+                                _vm._g(
+                                  _vm._b(
+                                    {
+                                      attrs: {
+                                        icon: "",
+                                        color: "green darken-4",
+                                        dark: ""
+                                      }
+                                    },
+                                    "v-btn",
+                                    attrs,
+                                    false
+                                  ),
+                                  on
+                                ),
+                                [_c("v-icon", [_vm._v("mdi-check-bold")])],
+                                1
+                              )
+                        ]
                       }
                     }
-                  },
-                  "v-btn",
-                  attrs,
-                  false
-                ),
-                [_vm._v("\n            Close\n        ")]
-              )
-            ]
-          }
+                  ],
+                  null,
+                  true
+                )
+              },
+              [
+                _vm._v(" "),
+                _c("span", [
+                  _vm._v(
+                    "\n                Quantity: " + _vm._s(item.quantity) + " "
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "Reorder Point:\n                " +
+                      _vm._s(item.reorder_point) +
+                      "\n            "
+                  )
+                ])
+              ]
+            )
+          ]
         }
-      ])
-    },
-    [_vm._v("\n    " + _vm._s(this.text) + "\n\n    ")]
-  )
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -121,130 +352,18 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \********************************************************************/
+/***/ "./resources/js/components/pages/inventory/report/datatable.vue":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/pages/inventory/report/datatable.vue ***!
+  \**********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () {
-        injectStyles.call(
-          this,
-          (options.functional ? this.parent : this).$root.$options.shadowRoot
-        )
-      }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functional component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-
-/***/ "./resources/js/components/common/snackbar.vue":
-/*!*****************************************************!*\
-  !*** ./resources/js/components/common/snackbar.vue ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./snackbar.vue?vue&type=template&id=0663e0ae& */ "./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae&");
-/* harmony import */ var _snackbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./snackbar.vue?vue&type=script&lang=js& */ "./resources/js/components/common/snackbar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _datatable_vue_vue_type_template_id_7f8f0192___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datatable.vue?vue&type=template&id=7f8f0192& */ "./resources/js/components/pages/inventory/report/datatable.vue?vue&type=template&id=7f8f0192&");
+/* harmony import */ var _datatable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./datatable.vue?vue&type=script&lang=js& */ "./resources/js/components/pages/inventory/report/datatable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -253,9 +372,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _snackbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _datatable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _datatable_vue_vue_type_template_id_7f8f0192___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _datatable_vue_vue_type_template_id_7f8f0192___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -265,38 +384,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/common/snackbar.vue"
+component.options.__file = "resources/js/components/pages/inventory/report/datatable.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/common/snackbar.vue?vue&type=script&lang=js&":
-/*!******************************************************************************!*\
-  !*** ./resources/js/components/common/snackbar.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************/
+/***/ "./resources/js/components/pages/inventory/report/datatable.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/pages/inventory/report/datatable.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./snackbar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/snackbar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_datatable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./datatable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/inventory/report/datatable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_datatable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae&":
-/*!************************************************************************************!*\
-  !*** ./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae& ***!
-  \************************************************************************************/
+/***/ "./resources/js/components/pages/inventory/report/datatable.vue?vue&type=template&id=7f8f0192&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/pages/inventory/report/datatable.vue?vue&type=template&id=7f8f0192& ***!
+  \*****************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./snackbar.vue?vue&type=template&id=0663e0ae& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_datatable_vue_vue_type_template_id_7f8f0192___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./datatable.vue?vue&type=template&id=7f8f0192& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/inventory/report/datatable.vue?vue&type=template&id=7f8f0192&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_datatable_vue_vue_type_template_id_7f8f0192___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_datatable_vue_vue_type_template_id_7f8f0192___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
