@@ -15,6 +15,7 @@ Route::get('logout', 'AuthController@logout')->name('logout');
 Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/', 'MainController@index');
+    Route::get('/account', 'MainController@account');
 
     Route::prefix('products')->group(function () {
 

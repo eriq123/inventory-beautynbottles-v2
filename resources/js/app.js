@@ -22,6 +22,7 @@ const app = new Vue({
     el: "#app",
     vuetify,
     components: {
+        "app-account": () => import("./components/pages/accountContainer.vue"),
         "app-product-raw": () =>
             import("./components/pages/products/rawContainer.vue"),
         "app-product-assembled": () =>

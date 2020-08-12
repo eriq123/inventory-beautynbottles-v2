@@ -7,11 +7,16 @@ use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
+    public function account()
+    {
+        $this->data['route'] = json_encode("/account");
+        $this->data['user'] = Auth::user();
+        return view('pages.account', $this->data);
+    }
+
     public function index()
     {
-        $this->data['route'] = json_encode("/products/raw");
-        $this->data['user'] = Auth::user();
-        return view('pages.products.raw', $this->data);
+        return redirect('/inventory/report');
     }
 
 

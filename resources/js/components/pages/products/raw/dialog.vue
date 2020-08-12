@@ -24,12 +24,12 @@
                 color="red darken-3"
                 text
                 v-if="dialogOperation == 'Edit'"
-                @click="$emit('deleteRaw')"
+                @click="$emit('deleteraw')"
                 >Delete</v-btn
             >
             <v-spacer></v-spacer>
-            <v-btn text @click="$emit('close')">Cancel</v-btn>
-            <v-btn color="green darken-3" text @click="$emit('saveUpdateRaw')"
+            <v-btn text @click="$emit('dialogshowchange')">Cancel</v-btn>
+            <v-btn color="green darken-3" text @click="$emit('saveupdateraw')"
                 >Save</v-btn
             >
             <!-- <slot name="buttons"></slot> -->

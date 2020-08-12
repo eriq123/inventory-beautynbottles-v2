@@ -21,9 +21,9 @@
                 <app-raw-dialog
                     :dialogCategory="dialog.category"
                     :dialogOperation="dialog.operation"
-                    @deleteRaw="deleteRaw"
-                    @close="close"
-                    @saveUpdateRaw="saveUpdateRaw"
+                    @deleteraw="deleteRaw"
+                    @saveupdateraw="saveUpdateRaw"
+                    @dialogshowchange="showForm = !showForm"
                 >
                     <template #dialogForm>
                         <v-col cols="12" sm="6">
@@ -157,24 +157,18 @@ export default {
     },
     methods: {
         addDialog() {
-            this.closeReset();
+            this.close();
             this.dialog.operation = "Add";
             this.dialog.category = this.selected.name;
             this.formData.category_id = this.selected.id;
         },
-        closeReset() {
+        close() {
             this.formData = Object.assign({}, this.resetForm);
             this.rawIndex = null;
             this.dialog = {
                 operation: null,
                 category: null
             };
-        },
-        close() {
-            this.showForm = false;
-            this.$nextTick(() => {
-                this.closeReset();
-            });
         },
         deleteRaw() {
             axios
@@ -196,11 +190,17 @@ export default {
                 });
         },
         editDialog(raw) {
-            this.closeReset();
+            this.close();
             this.rawIndex = this.rawItems.indexOf(raw);
             this.dialog.category = raw.category.name;
-            this.formData = raw;
             this.dialog.operation = "Edit";
+
+            this.formData.category_id = raw.category_id;
+            this.formData.id = raw.id;
+            this.formData.name = raw.name;
+            this.formData.quantity = raw.quantity;
+            this.formData.reorder_point = raw.reorder_point;
+
             this.showForm = true;
         },
         getOrFilterRaw() {
@@ -223,42 +223,35 @@ export default {
                 });
         },
         saveUpdateRaw() {
-            if (this.dialog.operation == "Add") {
-                axios
-                    .post("/products/raw/add", this.formData)
-                    .then(response => {
-                        const raw = response.data.raw;
-                        raw.category_name = raw.category.name;
+            axios
+                .post(
+                    this.dialog.operation == "Add"
+                        ? "/products/raw/add"
+                        : "/products/raw/update",
+                    this.formData
+                )
+                .then(response => {
+                    const raw = response.data.raw;
+                    raw.category_name = raw.category.name;
 
+                    if (this.dialog.operation == "Add") {
                         this.$emit("showSnackbar", `${raw.name} added.`);
                         this.rawItems.push(raw);
-                        this.close();
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            console.log(error.response);
-                        }
-                    });
-            } else {
-                axios
-                    .post("/products/raw/update", this.formData)
-                    .then(response => {
-                        const raw = response.data.raw;
-                        raw.category_name = raw.category.name;
-
+                    } else {
                         this.$emit(
                             "showSnackbar",
                             `${raw.name} has been updated.`
                         );
                         Object.assign(this.rawItems[this.rawIndex], raw);
-                        this.close();
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            console.log(error.response);
-                        }
-                    });
-            }
+                    }
+
+                    this.showForm = false;
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                    }
+                });
         }
     },
     watch: {
