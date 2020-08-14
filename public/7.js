@@ -5,190 +5,9 @@
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/inventory/report/datatable.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************************************************************************************************************************/
 /*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    toggleState: {
-      required: true,
-      type: Boolean
-    }
-  },
-  data: function data() {
-    return {
-      expanded: [],
-      headers: [],
-      items: [],
-      loading: false,
-      productHeader: [{
-        text: "Code",
-        align: "start",
-        value: "id"
-      }, {
-        text: "Product",
-        align: "start",
-        value: "name"
-      }, {
-        text: "Purchase",
-        value: "purchase"
-      }, {
-        text: "RTS",
-        value: "rts"
-      }, {
-        text: "Sold",
-        value: "sold"
-      }, {
-        text: "Loss",
-        value: "loss"
-      }],
-      rawHeader: [{
-        text: "Code",
-        align: "start",
-        value: "id"
-      }, {
-        text: "Category",
-        align: "start",
-        value: "category_name"
-      }, {
-        text: "Raw Item",
-        align: "start",
-        value: "name"
-      }, {
-        text: "Purchase",
-        value: "purchase"
-      }, {
-        text: "RTS",
-        value: "rts"
-      }, {
-        text: "Sold",
-        value: "sold"
-      }, {
-        text: "Loss",
-        value: "loss"
-      }, {
-        text: "Remark",
-        value: "remark"
-      }],
-      itemIndex: -1
-    };
-  },
-  created: function created() {
-    this.getProductRaw();
-  },
-  methods: {
-    openExpanded: function openExpanded(value) {
-      if (this.toggleState) {
-        var index = this.expanded.indexOf(value);
-
-        if (index === -1) {
-          this.expanded.push(value);
-        } else {
-          this.expanded.splice(index, 1);
-        }
-      }
-    },
-    getProductRaw: function getProductRaw() {
-      var _this = this;
-
-      this.items = [];
-      this.loading = true;
-      this.$emit("toggleChange", true);
-      axios.post("/inventory/toggle", {
-        toggle: this.toggleState
-      }).then(function (response) {
-        console.log(response.data);
-
-        if (_this.toggleState) {
-          _this.headers = _this.productHeader;
-        } else {
-          _this.headers = _this.rawHeader;
-        }
-
-        if (response.data.items.length > 0) {
-          if (response.data.toggle) {
-            _this.items = response.data.items;
-          } else {
-            _this.items = response.data.items.map(function (item) {
-              item.category_name = item.category.name;
-              return item;
-            });
-          }
-        } else {
-          _this.items = [];
-        }
-
-        _this.loading = false;
-
-        _this.$emit("toggleChange", false);
-      })["catch"](function (error) {
-        console.log(error.response);
-        _this.loading = false;
-
-        _this.$emit("toggleChange", false);
-      });
-    }
-  },
-  watch: {
-    toggleState: function toggleState(value) {
-      this.getProductRaw();
-      this.expanded = [];
-    }
-  }
-});
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\xampp\\htdocs\\bnb3\\resources\\js\\components\\pages\\inventory\\report\\datatable.vue: Unexpected token, expected \",\" (67:16)\n\n\u001b[0m \u001b[90m 65 | \u001b[39m                    value\u001b[33m:\u001b[39m \u001b[32m\"purchase\"\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 66 | \u001b[39m                }\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 67 | \u001b[39m                {\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 | \u001b[39m                    text\u001b[33m:\u001b[39m \u001b[32m\"RTS\"\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 69 | \u001b[39m                    value\u001b[33m:\u001b[39m \u001b[32m\"rts\"\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 | \u001b[39m                }\u001b[33m,\u001b[39m\u001b[0m\n    at Parser._raise (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:757:17)\n    at Parser.raiseWithData (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:750:17)\n    at Parser.raise (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:744:17)\n    at Parser.unexpected (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:8834:16)\n    at Parser.expect (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:8820:28)\n    at Parser.parseExprList (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10804:14)\n    at Parser.parseExprAtom (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10064:32)\n    at Parser.parseExprSubscripts (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9688:23)\n    at Parser.parseMaybeUnary (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9668:21)\n    at Parser.parseExprOps (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9538:23)\n    at Parser.parseMaybeConditional (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9511:23)\n    at Parser.parseMaybeAssign (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9466:21)\n    at Parser.parseObjectProperty (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10636:101)\n    at Parser.parseObjPropValue (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10661:101)\n    at Parser.parseObjectMember (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10585:10)\n    at Parser.parseObj (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10494:25)\n    at Parser.parseExprAtom (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10090:28)\n    at Parser.parseExprSubscripts (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9688:23)\n    at Parser.parseMaybeUnary (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9668:21)\n    at Parser.parseExprOps (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9538:23)\n    at Parser.parseMaybeConditional (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9511:23)\n    at Parser.parseMaybeAssign (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9466:21)\n    at Parser.parseExpression (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:9418:23)\n    at Parser.parseReturnStatement (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:11577:28)\n    at Parser.parseStatementContent (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:11258:21)\n    at Parser.parseStatement (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:11210:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:11785:25)\n    at Parser.parseBlockBody (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:11771:10)\n    at Parser.parseBlock (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:11755:10)\n    at Parser.parseFunctionBody (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10758:24)\n    at Parser.parseFunctionBodyAndFinish (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10741:10)\n    at Parser.parseMethod (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10703:10)\n    at Parser.parseObjectMethod (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10619:19)\n    at Parser.parseObjPropValue (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10661:23)\n    at Parser.parseObjectMember (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10585:10)\n    at Parser.parseObj (C:\\xampp\\htdocs\\bnb3\\node_modules\\@babel\\parser\\lib\\index.js:10494:25)");
 
 /***/ }),
 
@@ -259,87 +78,34 @@ var render = function() {
         fn: function(ref) {
           var item = ref.item
           return [
-            _c(
-              "v-tooltip",
-              {
-                attrs: { left: "" },
-                scopedSlots: _vm._u(
-                  [
-                    {
-                      key: "activator",
-                      fn: function(ref) {
-                        var on = ref.on
-                        var attrs = ref.attrs
-                        return [
-                          item.quantity <= item.reorder_point
-                            ? _c(
-                                "v-btn",
-                                _vm._g(
-                                  _vm._b(
-                                    {
-                                      attrs: {
-                                        icon: "",
-                                        color: "red darken-4",
-                                        dark: ""
-                                      }
-                                    },
-                                    "v-btn",
-                                    attrs,
-                                    false
-                                  ),
-                                  on
-                                ),
-                                [
-                                  _c("v-icon", [
-                                    _vm._v("mdi-exclamation-thick")
-                                  ])
-                                ],
-                                1
-                              )
-                            : _c(
-                                "v-btn",
-                                _vm._g(
-                                  _vm._b(
-                                    {
-                                      attrs: {
-                                        icon: "",
-                                        color: "green darken-4",
-                                        dark: ""
-                                      }
-                                    },
-                                    "v-btn",
-                                    attrs,
-                                    false
-                                  ),
-                                  on
-                                ),
-                                [_c("v-icon", [_vm._v("mdi-check-bold")])],
-                                1
-                              )
-                        ]
-                      }
-                    }
-                  ],
-                  null,
-                  true
+            item.quantity <= item.reorder_point
+              ? _c(
+                  "v-btn",
+                  { attrs: { icon: "", color: "red darken-4", dark: "" } },
+                  [_c("v-icon", [_vm._v("mdi-exclamation-thick")])],
+                  1
                 )
-              },
-              [
-                _vm._v(" "),
-                _c("span", [
-                  _vm._v(
-                    "\n                Quantity: " + _vm._s(item.quantity) + " "
-                  ),
-                  _c("br"),
-                  _vm._v(
-                    "Reorder Point:\n                " +
-                      _vm._s(item.reorder_point) +
-                      "\n            "
-                  )
-                ])
-              ]
-            )
+              : _c(
+                  "v-btn",
+                  { attrs: { icon: "", color: "green darken-4", dark: "" } },
+                  [_c("v-icon", [_vm._v("mdi-check-bold")])],
+                  1
+                )
           ]
+        }
+      },
+      {
+        key: "item.sold",
+        fn: function(ref) {
+          var item = ref.item
+          return [_vm._v(" (" + _vm._s(item.sold) + ") ")]
+        }
+      },
+      {
+        key: "item.loss",
+        fn: function(ref) {
+          var item = ref.item
+          return [_vm._v(" (" + _vm._s(item.loss) + ") ")]
         }
       }
     ])

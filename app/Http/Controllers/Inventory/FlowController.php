@@ -42,16 +42,17 @@ class FlowController extends Controller
                 }
             }
 
+            $product = Product::find($request->id);
             if ($request->status == "Purchase") {
-                $raws->purchase += $request->quantity;
+                $product->purchase += $request->quantity;
             } elseif ($request->status == "RTS") {
-                $raws->rts += $request->quantity;
+                $product->rts += $request->quantity;
             } elseif ($request->status == "Sold") {
-                $raws->sold += $request->quantity;
+                $product->sold += $request->quantity;
             } elseif ($request->status == "Loss") {
-                $raws->loss += $request->quantity;
+                $product->loss += $request->quantity;
             }
-            $raws->save();
+            $product->save();
 
             foreach ($raws as $raw) {
                 $singleRaw = Raw::findorFail($raw->id);

@@ -18,35 +18,20 @@
         </template>
 
         <template v-slot:item.remark="{ item }">
-            <v-tooltip left>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        v-if="item.quantity <= item.reorder_point"
-                        icon
-                        color="red darken-4"
-                        dark
-                        v-bind="attrs"
-                        v-on="on"
-                    >
-                        <v-icon>mdi-exclamation-thick</v-icon>
-                    </v-btn>
-                    <v-btn
-                        v-else
-                        icon
-                        color="green darken-4"
-                        dark
-                        v-bind="attrs"
-                        v-on="on"
-                    >
-                        <v-icon>mdi-check-bold</v-icon>
-                    </v-btn>
-                </template>
-                <span>
-                    Quantity: {{ item.quantity }} <br />Reorder Point:
-                    {{ item.reorder_point }}
-                </span>
-            </v-tooltip>
+            <v-btn
+                v-if="item.quantity <= item.reorder_point"
+                icon
+                color="red darken-4"
+                dark
+            >
+                <v-icon>mdi-exclamation-thick</v-icon>
+            </v-btn>
+            <v-btn v-else icon color="green darken-4" dark>
+                <v-icon>mdi-check-bold</v-icon>
+            </v-btn>
         </template>
+        <template #item.sold="{item}"> ({{ item.sold }}) </template>
+        <template #item.loss="{item}"> ({{ item.loss }}) </template>
     </v-data-table>
 </template>
 
@@ -76,9 +61,9 @@ export default {
                     value: "name"
                 },
                 {
-                    text: "Purchase",
+                    text: "Assembled",
                     value: "purchase"
-                },
+                }
                 {
                     text: "RTS",
                     value: "rts"
@@ -123,6 +108,10 @@ export default {
                 {
                     text: "Loss",
                     value: "loss"
+                },
+                {
+                    text: "Available Units",
+                    value: "quantity"
                 },
                 {
                     text: "Remark",

@@ -188,6 +188,8 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         if (error.response) {
           console.log(error.response);
+
+          _this.$emit("showSnackbar", "Something went wrong.", "red darken-1");
         }
       });
     },
@@ -218,6 +220,8 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         if (error.response) {
           console.log(error.response);
+
+          _this2.$emit("showSnackbar", "Something went wrong.", "red darken-1");
         }
       });
     },
@@ -242,6 +246,8 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         if (error.response) {
           console.log(error.response);
+
+          _this3.$emit("showSnackbar", "Something went wrong.", "red darken-1");
         }
       });
     }

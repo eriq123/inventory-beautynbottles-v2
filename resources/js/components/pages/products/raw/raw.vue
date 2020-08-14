@@ -186,6 +186,11 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
+                        this.$emit(
+                            "showSnackbar",
+                            "Something went wrong.",
+                            "red darken-1"
+                        );
                     }
                 });
         },
@@ -219,6 +224,11 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
+                        this.$emit(
+                            "showSnackbar",
+                            "Something went wrong.",
+                            "red darken-1"
+                        );
                     }
                 });
         },
@@ -250,6 +260,11 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
+                        this.$emit(
+                            "showSnackbar",
+                            "Something went wrong.",
+                            "red darken-1"
+                        );
                     }
                 });
         }
