@@ -63,7 +63,7 @@ export default {
                 {
                     text: "Assembled",
                     value: "purchase"
-                }
+                },
                 {
                     text: "RTS",
                     value: "rts"

@@ -14,29 +14,36 @@ class CreateUsersTable extends Migration
     public function up()
     {
 
-        // Schema::create('roles', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->string('name');
-        //     $table->timestamps();
-        // });
+        Schema::create('bases', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('converts', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('base_id');
+            $table->string('name');
+            $table->integer('value')->default(0);
+            $table->timestamps();
+
+            $table->foreign('base_id')
+                ->references('id')->on('bases')
+                ->onDelete('cascade');
+        });
 
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('username')->unique();
-            $table->integer('active');
-            // $table->unsignedBigInteger('role_id');
-            $table->timestamp('email_verified_at')->nullable();
+            $table->integer('active')->default(1);
+            $table->integer('is_admin')->default(0);
             $table->string('password');
             $table->rememberToken();
 
             $table->softDeletes();
             $table->timestamps();
-
-            // $table->foreign('role_id')
-            //     ->references('id')->on('roles')
-            //     ->onDelete('cascade');
         });
 
         Schema::create('categories', function (Blueprint $table) {
@@ -51,8 +58,8 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->string('name');
-            $table->integer('quantity');
-            $table->integer('reorder_point');
+            $table->integer('quantity')->default(0);
+            $table->integer('reorder_point')->default(0);
 
             $table->integer('purchase')->default(0);
             $table->integer('rts')->default(0);
@@ -97,14 +104,22 @@ class CreateUsersTable extends Migration
                 ->onDelete('cascade');
         });
 
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->BigInteger('item_id');
-            $table->integer('quantity');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('raw_id');
+            $table->integer('quantity')->default(0);
             $table->string('status');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('raw_id')
+                ->references('id')->on('raws')
+                ->onDelete('cascade');
         });
     }
 
@@ -116,11 +131,12 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
-        // Schema::dropIfExists('roles');
         Schema::dropIfExists('categories');
         Schema::dropIfExists('raws');
         Schema::dropIfExists('products');
         Schema::dropIfExists('product_raw');
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('logs');
+        Schema::dropIfExists('bases');
+        Schema::dropIfExists('converts');
     }
 }

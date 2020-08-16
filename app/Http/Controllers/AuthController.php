@@ -24,8 +24,7 @@ class AuthController extends Controller
         $username = $request->username;
         $password = $request->password;
 
-        // if (Auth::attempt(['username' => $username, 'password' => $password, 'active' => 1])) {
-        if (Auth::attempt(['username' => $username, 'password' => $password])) {
+        if (Auth::attempt(['username' => $username, 'password' => $password, 'active' => 1])) {
             return redirect('/');
         }
 
@@ -38,9 +37,9 @@ class AuthController extends Controller
             return redirect()->back()->withErrors(['password' => 'Password is incorrect.']);
         }
 
-        // if (!$this->data['user']->active) {
-        //     return redirect()->back()->withErrors(['active' => 'Your account is not active yet. Please contact admin for support.']);
-        // }
+        if (!$this->data['user']->active) {
+            return redirect()->back()->withErrors(['active' => 'Your account is not active yet. Please contact admin for support.']);
+        }
 
         return redirect()->back();
     }
@@ -53,13 +52,16 @@ class AuthController extends Controller
             'password' => 'required|confirmed'
         ]);
 
-        $user = User::create(request(['first_name', 'last_name', 'username', 'password', 'active']));
-        // $user = User::create(request(['first_name', 'last_name', 'username', 'password', 'active', 'role_id', 'role_name']));
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+        ]);
 
-        // active is set to 1 by default
-        // Auth::login($user);
+        Auth::login($user);
 
-        return redirect()->back();
+        return redirect('/');
     }
 
     public function logout()
