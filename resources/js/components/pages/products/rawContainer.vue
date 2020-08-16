@@ -11,7 +11,6 @@
             >
                 <app-raw-category
                     @selectedCategory="selectedCategory"
-                    @showSnackbar="showSnackbar"
                 ></app-raw-category>
             </v-col>
         </v-row>
@@ -20,18 +19,9 @@
                 <app-raw
                     :selected="selected"
                     :autocomplete="autocomplete"
-                    @showSnackbar="showSnackbar"
                 ></app-raw>
             </v-col>
         </v-row>
-
-        <app-snackbar
-            :color="snackbar.color"
-            :text="snackbar.text"
-            :timeout="snackbar.timeout"
-            :visible="snackbar.visible"
-            @hideSnackbar="snackbar.visible = false"
-        ></app-snackbar>
     </v-container>
 </template>
 
@@ -48,14 +38,6 @@ export default {
             selected: {
                 id: null,
                 name: null
-            },
-
-            // snackbar
-            snackbar: {
-                color: "success",
-                text: null,
-                timeout: 2000,
-                visible: false
             }
         };
     },
@@ -71,12 +53,6 @@ export default {
                 };
                 this.autocomplete = false;
             }
-        },
-
-        showSnackbar(message, color = "success") {
-            this.snackbar.text = message;
-            this.snackbar.color = color;
-            this.snackbar.visible = true;
         }
     }
 };

@@ -75,20 +75,29 @@ __webpack_require__.r(__webpack_exports__);
         axios.post("/products/add", {
           name: this.name
         }).then(function (response) {
-          _this.$emit("showSnackbar", "".concat(response.data.product.name, " added."));
+          _this.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(response.data.product.name, " added.")
+          });
 
           _this.loading = false;
         })["catch"](function (error) {
           if (error.response) {
             console.log(error.response);
 
-            _this.$emit("showSnackbar", "Something went wrong.", "red darken-1");
+            _this.$store.commit("showSnackbar", {
+              color: false,
+              text: "Something went wrong."
+            });
           }
 
           _this.loading = false;
         });
       } else {
-        this.$emit("showSnackbar", "Product name is required.", "red darken-1");
+        this.$store.commit("showSnackbar", {
+          color: false,
+          text: "Product name is required."
+        });
       }
     },
     deleteProduct: function deleteProduct() {
@@ -103,20 +112,29 @@ __webpack_require__.r(__webpack_exports__);
           _this2.code = 0;
           _this2.name = null;
 
-          _this2.$emit("showSnackbar", "".concat(response.data.product.name, " deleted."));
+          _this2.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(response.data.product.name, " deleted.")
+          });
 
           _this2.loading = false;
         })["catch"](function (error) {
           if (error.response) {
             console.log(error.response);
 
-            _this2.$emit("showSnackbar", "Something went wrong.", "red darken-1");
+            _this2.$store.commit("showSnackbar", {
+              color: false,
+              text: "Something went wrong."
+            });
           }
 
           _this2.loading = false;
         });
       } else {
-        this.$emit("showSnackbar", "Please select product first.", "red darken-1");
+        this.$store.commit("showSnackbar", {
+          color: false,
+          text: "Please select product first."
+        });
       }
     },
     updateProduct: function updateProduct() {
@@ -128,20 +146,29 @@ __webpack_require__.r(__webpack_exports__);
           id: this.code,
           name: this.name
         }).then(function (response) {
-          _this3.$emit("showSnackbar", "".concat(response.data.product.name, " updated."));
+          _this3.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(response.data.product.name, " updated.")
+          });
 
           _this3.loading = false;
         })["catch"](function (error) {
           if (error.response) {
             console.log(error.response);
 
-            _this3.$emit("showSnackbar", "Something went wrong.", "red darken-1");
+            _this3.$store.commit("showSnackbar", {
+              color: false,
+              text: "Something went wrong."
+            });
           }
 
           _this3.loading = false;
         });
       } else {
-        this.$emit("showSnackbar", "Please select product first.", "red darken-1");
+        this.$store.commit("showSnackbar", {
+          color: false,
+          text: "Please select product first."
+        });
       }
     },
     productSearch: function productSearch() {
@@ -161,7 +188,10 @@ __webpack_require__.r(__webpack_exports__);
         _this4.loading = false;
       })["catch"](function (error) {
         if (error.response) {
-          _this4.$emit("showSnackbar", "Something went wrong.", "red darken-1");
+          _this4.$store.commit("showSnackbar", {
+            color: false,
+            text: "Something went wrong."
+          });
 
           console.log(error.response);
         }

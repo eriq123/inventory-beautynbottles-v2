@@ -1,18 +1,23 @@
 <template>
     <v-snackbar
         app
-        :color="color"
         right
         top
         rounded
-        :timeout="timeout"
+        timeout="2000"
+        :color="color"
         :value="visible"
-        @input="$emit('hideSnackbar')"
+        @input="$store.commit('closeSnackbar')"
     >
         {{ this.text }}
 
         <template v-slot:action="{ attrs }">
-            <v-btn dark text v-bind="attrs" @click="$emit('hideSnackbar')">
+            <v-btn
+                dark
+                text
+                v-bind="attrs"
+                @click="$store.commit('closeSnackbar')"
+            >
                 Close
             </v-btn>
         </template>
@@ -25,9 +30,6 @@ export default {
             type: String
         },
         text: {
-            required: true
-        },
-        timeout: {
             required: true
         },
         visible: {

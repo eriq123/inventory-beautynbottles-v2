@@ -63,19 +63,19 @@ export default {
                 {
                     text: "Assembled",
                     value: "purchase"
-                },
-                {
-                    text: "RTS",
-                    value: "rts"
-                },
-                {
-                    text: "Sold",
-                    value: "sold"
-                },
-                {
-                    text: "Loss",
-                    value: "loss"
                 }
+                // {
+                //     text: "RTS",
+                //     value: "rts"
+                // },
+                // {
+                //     text: "Sold",
+                //     value: "sold"
+                // },
+                // {
+                //     text: "Loss",
+                //     value: "loss"
+                // }
             ],
             rawHeader: [
                 {

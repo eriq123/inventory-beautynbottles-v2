@@ -180,7 +180,10 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/products/raw/delete", {
         id: this.formData.id
       }).then(function (response) {
-        _this.$emit("showSnackbar", "".concat(response.data.raw.name, " deleted."));
+        _this.$store.commit("showSnackbar", {
+          color: true,
+          text: "".concat(response.data.raw.name, " deleted.")
+        });
 
         _this.rawItems.splice(_this.rawIndex, 1);
 
@@ -189,7 +192,10 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response) {
           console.log(error.response);
 
-          _this.$emit("showSnackbar", "Something went wrong.", "red darken-1");
+          _this.$store.commit("showSnackbar", {
+            color: false,
+            text: "Something went wrong."
+          });
         }
       });
     },
@@ -221,7 +227,10 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response) {
           console.log(error.response);
 
-          _this2.$emit("showSnackbar", "Something went wrong.", "red darken-1");
+          _this2.$store.commit("showSnackbar", {
+            color: false,
+            text: "Something went wrong."
+          });
         }
       });
     },
@@ -233,11 +242,17 @@ __webpack_require__.r(__webpack_exports__);
         raw.category_name = raw.category.name;
 
         if (_this3.dialog.operation == "Add") {
-          _this3.$emit("showSnackbar", "".concat(raw.name, " added."));
+          _this3.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(raw.name, " added.")
+          });
 
           _this3.rawItems.push(raw);
         } else {
-          _this3.$emit("showSnackbar", "".concat(raw.name, " has been updated."));
+          _this3.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(raw.name, " has been updated.")
+          });
 
           Object.assign(_this3.rawItems[_this3.rawIndex], raw);
         }
@@ -247,7 +262,10 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response) {
           console.log(error.response);
 
-          _this3.$emit("showSnackbar", "Something went wrong.", "red darken-1");
+          _this3.$store.commit("showSnackbar", {
+            color: false,
+            text: "Something went wrong."
+          });
         }
       });
     }

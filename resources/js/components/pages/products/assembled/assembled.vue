@@ -178,11 +178,10 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$emit(
-                            "showSnackbar",
-                            "Something went wrong. Please try again.",
-                            "red darken-1"
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: false,
+                            text: "Something went wrong."
+                        });
                     }
                 });
         },
@@ -205,11 +204,10 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$emit(
-                            "showSnackbar",
-                            "Something went wrong. Please try again.",
-                            "red darken-1"
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: false,
+                            text: "Something went wrong."
+                        });
                     }
                     this.autocompleteLoading = false;
                 });
@@ -226,25 +224,26 @@ export default {
                             units_needed: this.formData.quantity
                         };
                         this.assembledItems.push(raw);
-                        this.$emit("showSnackbar", `${this.raw_name} added.`);
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `${this.raw_name} added.`
+                        });
                         this.showForm = false;
                     })
                     .catch(error => {
                         if (error.response) {
                             console.log(error.response);
-                            this.$emit(
-                                "showSnackbar",
-                                "Something went wrong. Please try again.",
-                                "red darken-1"
-                            );
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: "Something went wrong."
+                            });
                         }
                     });
             } else {
-                this.$emit(
-                    "showSnackbar",
-                    "Units needed field is required.",
-                    "red darken-1"
-                );
+                this.$store.commit("showSnackbar", {
+                    color: false,
+                    text: "Units needed field is required."
+                });
             }
         },
         selectedChange(value) {
@@ -264,18 +263,20 @@ export default {
                 .post("/products/assembled/detach", this.formData)
                 .then(response => {
                     console.log(response.data);
-                    this.$emit("showSnackbar", `${item.name} removed.`);
+                    this.$store.commit("showSnackbar", {
+                        color: true,
+                        text: `${item.name} removed.`
+                    });
                     this.assembledItems.splice(assembledIndex, 1);
                     this.datatable.loading = false;
                 })
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$emit(
-                            "showSnackbar",
-                            "Something went wrong. Please try again.",
-                            "red darken-1"
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: false,
+                            text: "Something went wrong."
+                        });
                     }
                 });
         }

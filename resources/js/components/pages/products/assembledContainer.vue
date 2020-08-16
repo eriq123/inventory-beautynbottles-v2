@@ -13,7 +13,6 @@
             >
                 <app-assembled-crud
                     @selectedProduct="selectedProduct"
-                    @showSnackbar="showSnackbar"
                 ></app-assembled-crud>
             </v-col>
         </v-row>
@@ -23,18 +22,9 @@
                     :autocomplete="autocomplete"
                     :selectedName="selected.name"
                     :selectedID="selected.id"
-                    @showSnackbar="showSnackbar"
                 ></app-assembled>
             </v-col>
         </v-row>
-
-        <app-snackbar
-            :color="snackbar.color"
-            :text="snackbar.text"
-            :timeout="snackbar.timeout"
-            :visible="snackbar.visible"
-            @hideSnackbar="snackbar.visible = false"
-        ></app-snackbar>
     </v-container>
 </template>
 
@@ -52,15 +42,7 @@ export default {
                 name: null
             },
             selectedRaws: [],
-            autocomplete: false,
-
-            // snackbar
-            snackbar: {
-                color: "success",
-                text: null,
-                timeout: 2000,
-                visible: false
-            }
+            autocomplete: false
         };
     },
     methods: {
@@ -77,11 +59,6 @@ export default {
                 this.autocomplete = false;
             }
             // this.getOrFilterAssembled();
-        },
-        showSnackbar(message, color = "success") {
-            this.snackbar.text = message;
-            this.snackbar.color = color;
-            this.snackbar.visible = true;
         }
     }
 };

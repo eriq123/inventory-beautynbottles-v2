@@ -36,16 +36,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-raw-category": function appRawCategory() {
@@ -62,13 +52,6 @@ __webpack_require__.r(__webpack_exports__);
       selected: {
         id: null,
         name: null
-      },
-      // snackbar
-      snackbar: {
-        color: "success",
-        text: null,
-        timeout: 2000,
-        visible: false
       }
     };
   },
@@ -84,12 +67,6 @@ __webpack_require__.r(__webpack_exports__);
         };
         this.autocomplete = false;
       }
-    },
-    showSnackbar: function showSnackbar(message) {
-      var color = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "success";
-      this.snackbar.text = message;
-      this.snackbar.color = color;
-      this.snackbar.visible = true;
     }
   }
 });
@@ -131,10 +108,7 @@ var render = function() {
             },
             [
               _c("app-raw-category", {
-                on: {
-                  selectedCategory: _vm.selectedCategory,
-                  showSnackbar: _vm.showSnackbar
-                }
+                on: { selectedCategory: _vm.selectedCategory }
               })
             ],
             1
@@ -153,29 +127,14 @@ var render = function() {
                 attrs: {
                   selected: _vm.selected,
                   autocomplete: _vm.autocomplete
-                },
-                on: { showSnackbar: _vm.showSnackbar }
+                }
               })
             ],
             1
           )
         ],
         1
-      ),
-      _vm._v(" "),
-      _c("app-snackbar", {
-        attrs: {
-          color: _vm.snackbar.color,
-          text: _vm.snackbar.text,
-          timeout: _vm.snackbar.timeout,
-          visible: _vm.snackbar.visible
-        },
-        on: {
-          hideSnackbar: function($event) {
-            _vm.snackbar.visible = false
-          }
-        }
-      })
+      )
     ],
     1
   )

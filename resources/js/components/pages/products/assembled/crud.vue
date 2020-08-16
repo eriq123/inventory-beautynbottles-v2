@@ -61,29 +61,27 @@ export default {
                 axios
                     .post("/products/add", { name: this.name })
                     .then(response => {
-                        this.$emit(
-                            "showSnackbar",
-                            `${response.data.product.name} added.`
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `${response.data.product.name} added.`
+                        });
                         this.loading = false;
                     })
                     .catch(error => {
                         if (error.response) {
                             console.log(error.response);
-                            this.$emit(
-                                "showSnackbar",
-                                "Something went wrong.",
-                                "red darken-1"
-                            );
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: "Something went wrong."
+                            });
                         }
                         this.loading = false;
                     });
             } else {
-                this.$emit(
-                    "showSnackbar",
-                    "Product name is required.",
-                    "red darken-1"
-                );
+                this.$store.commit("showSnackbar", {
+                    color: false,
+                    text: "Product name is required."
+                });
             }
         },
         deleteProduct() {
@@ -97,29 +95,27 @@ export default {
                         this.selectedProduct = null;
                         this.code = 0;
                         this.name = null;
-                        this.$emit(
-                            "showSnackbar",
-                            `${response.data.product.name} deleted.`
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `${response.data.product.name} deleted.`
+                        });
                         this.loading = false;
                     })
                     .catch(error => {
                         if (error.response) {
                             console.log(error.response);
-                            this.$emit(
-                                "showSnackbar",
-                                "Something went wrong.",
-                                "red darken-1"
-                            );
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: "Something went wrong."
+                            });
                         }
                         this.loading = false;
                     });
             } else {
-                this.$emit(
-                    "showSnackbar",
-                    "Please select product first.",
-                    "red darken-1"
-                );
+                this.$store.commit("showSnackbar", {
+                    color: false,
+                    text: "Please select product first."
+                });
             }
         },
         updateProduct() {
@@ -131,30 +127,27 @@ export default {
                         name: this.name
                     })
                     .then(response => {
-                        this.$emit(
-                            "showSnackbar",
-                            `${response.data.product.name} updated.`
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `${response.data.product.name} updated.`
+                        });
                         this.loading = false;
                     })
                     .catch(error => {
                         if (error.response) {
                             console.log(error.response);
-
-                            this.$emit(
-                                "showSnackbar",
-                                "Something went wrong.",
-                                "red darken-1"
-                            );
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: "Something went wrong."
+                            });
                         }
                         this.loading = false;
                     });
             } else {
-                this.$emit(
-                    "showSnackbar",
-                    "Please select product first.",
-                    "red darken-1"
-                );
+                this.$store.commit("showSnackbar", {
+                    color: false,
+                    text: "Please select product first."
+                });
             }
         },
         productSearch() {
@@ -173,11 +166,10 @@ export default {
                 })
                 .catch(error => {
                     if (error.response) {
-                        this.$emit(
-                            "showSnackbar",
-                            "Something went wrong.",
-                            "red darken-1"
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: false,
+                            text: "Something went wrong."
+                        });
                         console.log(error.response);
                     }
                     this.loading = false;

@@ -70,16 +70,19 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Assembled",
         value: "purchase"
-      }, {
-        text: "RTS",
-        value: "rts"
-      }, {
-        text: "Sold",
-        value: "sold"
-      }, {
-        text: "Loss",
-        value: "loss"
-      }],
+      } // {
+      //     text: "RTS",
+      //     value: "rts"
+      // },
+      // {
+      //     text: "Sold",
+      //     value: "sold"
+      // },
+      // {
+      //     text: "Loss",
+      //     value: "loss"
+      // }
+      ],
       rawHeader: [{
         text: "Code",
         align: "start",

@@ -176,21 +176,20 @@ export default {
                     id: this.formData.id
                 })
                 .then(response => {
-                    this.$emit(
-                        "showSnackbar",
-                        `${response.data.raw.name} deleted.`
-                    );
+                    this.$store.commit("showSnackbar", {
+                        color: true,
+                        text: `${response.data.raw.name} deleted.`
+                    });
                     this.rawItems.splice(this.rawIndex, 1);
                     this.close();
                 })
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$emit(
-                            "showSnackbar",
-                            "Something went wrong.",
-                            "red darken-1"
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: false,
+                            text: "Something went wrong."
+                        });
                     }
                 });
         },
@@ -224,11 +223,10 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$emit(
-                            "showSnackbar",
-                            "Something went wrong.",
-                            "red darken-1"
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: false,
+                            text: "Something went wrong."
+                        });
                     }
                 });
         },
@@ -245,13 +243,16 @@ export default {
                     raw.category_name = raw.category.name;
 
                     if (this.dialog.operation == "Add") {
-                        this.$emit("showSnackbar", `${raw.name} added.`);
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `${raw.name} added.`
+                        });
                         this.rawItems.push(raw);
                     } else {
-                        this.$emit(
-                            "showSnackbar",
-                            `${raw.name} has been updated.`
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `${raw.name} has been updated.`
+                        });
                         Object.assign(this.rawItems[this.rawIndex], raw);
                     }
 
@@ -260,11 +261,10 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$emit(
-                            "showSnackbar",
-                            "Something went wrong.",
-                            "red darken-1"
-                        );
+                        this.$store.commit("showSnackbar", {
+                            color: false,
+                            text: "Something went wrong."
+                        });
                     }
                 });
         }

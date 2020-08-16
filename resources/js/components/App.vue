@@ -11,21 +11,21 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn href="#" color="pink accent-1" text v-if="user.is_admin">
+            <v-btn href="#" color="pink accent-1" text>
                 <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
-                {{ fullName }} (ADMIN)
-            </v-btn>
-
-            <v-btn href="#" color="pink accent-1" text v-else>
-                <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
-                {{ fullName }}
+                <template v-if="user.is_admin">
+                    {{ fullName }} (ADMIN)
+                </template>
+                <template v-else>
+                    {{ fullName }}
+                </template>
             </v-btn>
 
             <v-divider vertical></v-divider>
 
-            <v-btn text href="/logout" class="pink--text text--accent-1"
-                >logout</v-btn
-            >
+            <v-btn text href="/logout" class="pink--text text--accent-1">
+                logout
+            </v-btn>
         </v-app-bar>
 
         <v-navigation-drawer v-model="sidebar" app>
@@ -60,12 +60,21 @@
                 </v-list-group>
             </template>
         </v-navigation-drawer>
+
+        <app-snackbar
+            :color="this.$store.state.snackbar.color"
+            :text="this.$store.state.snackbar.text"
+            :visible="this.$store.state.snackbar.visible"
+        ></app-snackbar>
     </section>
 </template>
 
 <script>
 export default {
     props: ["route", "user"],
+    components: {
+        "app-snackbar": () => import("./common/snackbar")
+    },
     data() {
         return {
             sidebar: true,

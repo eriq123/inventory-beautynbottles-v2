@@ -39,16 +39,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-assembled-crud": function appAssembledCrud() {
@@ -66,14 +56,7 @@ __webpack_require__.r(__webpack_exports__);
         name: null
       },
       selectedRaws: [],
-      autocomplete: false,
-      // snackbar
-      snackbar: {
-        color: "success",
-        text: null,
-        timeout: 2000,
-        visible: false
-      }
+      autocomplete: false
     };
   },
   methods: {
@@ -90,12 +73,6 @@ __webpack_require__.r(__webpack_exports__);
         this.autocomplete = false;
       } // this.getOrFilterAssembled();
 
-    },
-    showSnackbar: function showSnackbar(message) {
-      var color = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "success";
-      this.snackbar.text = message;
-      this.snackbar.color = color;
-      this.snackbar.visible = true;
     }
   }
 });
@@ -139,10 +116,7 @@ var render = function() {
             },
             [
               _c("app-assembled-crud", {
-                on: {
-                  selectedProduct: _vm.selectedProduct,
-                  showSnackbar: _vm.showSnackbar
-                }
+                on: { selectedProduct: _vm.selectedProduct }
               })
             ],
             1
@@ -162,29 +136,14 @@ var render = function() {
                   autocomplete: _vm.autocomplete,
                   selectedName: _vm.selected.name,
                   selectedID: _vm.selected.id
-                },
-                on: { showSnackbar: _vm.showSnackbar }
+                }
               })
             ],
             1
           )
         ],
         1
-      ),
-      _vm._v(" "),
-      _c("app-snackbar", {
-        attrs: {
-          color: _vm.snackbar.color,
-          text: _vm.snackbar.text,
-          timeout: _vm.snackbar.timeout,
-          visible: _vm.snackbar.visible
-        },
-        on: {
-          hideSnackbar: function($event) {
-            _vm.snackbar.visible = false
-          }
-        }
-      })
+      )
     ],
     1
   )

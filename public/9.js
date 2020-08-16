@@ -184,7 +184,10 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response) {
           console.log(error.response);
 
-          _this.$emit("showSnackbar", "Something went wrong. Please try again.", "red darken-1");
+          _this.$store.commit("showSnackbar", {
+            color: false,
+            text: "Something went wrong."
+          });
         }
       });
     },
@@ -208,7 +211,10 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response) {
           console.log(error.response);
 
-          _this2.$emit("showSnackbar", "Something went wrong. Please try again.", "red darken-1");
+          _this2.$store.commit("showSnackbar", {
+            color: false,
+            text: "Something went wrong."
+          });
         }
 
         _this2.autocompleteLoading = false;
@@ -227,18 +233,27 @@ __webpack_require__.r(__webpack_exports__);
 
           _this3.assembledItems.push(raw);
 
-          _this3.$emit("showSnackbar", "".concat(_this3.raw_name, " added."));
+          _this3.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(_this3.raw_name, " added.")
+          });
 
           _this3.showForm = false;
         })["catch"](function (error) {
           if (error.response) {
             console.log(error.response);
 
-            _this3.$emit("showSnackbar", "Something went wrong. Please try again.", "red darken-1");
+            _this3.$store.commit("showSnackbar", {
+              color: false,
+              text: "Something went wrong."
+            });
           }
         });
       } else {
-        this.$emit("showSnackbar", "Units needed field is required.", "red darken-1");
+        this.$store.commit("showSnackbar", {
+          color: false,
+          text: "Units needed field is required."
+        });
       }
     },
     selectedChange: function selectedChange(value) {
@@ -260,7 +275,10 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/products/assembled/detach", this.formData).then(function (response) {
         console.log(response.data);
 
-        _this4.$emit("showSnackbar", "".concat(item.name, " removed."));
+        _this4.$store.commit("showSnackbar", {
+          color: true,
+          text: "".concat(item.name, " removed.")
+        });
 
         _this4.assembledItems.splice(assembledIndex, 1);
 
@@ -269,7 +287,10 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response) {
           console.log(error.response);
 
-          _this4.$emit("showSnackbar", "Something went wrong. Please try again.", "red darken-1");
+          _this4.$store.commit("showSnackbar", {
+            color: false,
+            text: "Something went wrong."
+          });
         }
       });
     }

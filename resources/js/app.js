@@ -2,17 +2,14 @@ require("./bootstrap");
 
 window.Vue = require("vue");
 import vuetify from "./vuetify/index";
+import store from "./vuex/index";
 
-// no vue router and vuex plan
-// but that would mean i have to implement an spa authentication instead of using the laravel builtin authentication
-// and vuerouter here
 Vue.component(
     "app-sidebar",
     require("./components/common/sidebar.vue").default
 );
 Vue.component("app-header-sidebar", require("./components/App.vue").default);
 
-// it would be useful to use vuex here
 Vue.component(
     "app-snackbar",
     require("./components/common/snackbar.vue").default
@@ -21,6 +18,7 @@ Vue.component(
 const app = new Vue({
     el: "#app",
     vuetify,
+    store,
     components: {
         "app-account": () => import("./components/pages/accountContainer.vue"),
         "app-product-raw": () =>
