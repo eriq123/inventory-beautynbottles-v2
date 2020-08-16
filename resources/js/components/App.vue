@@ -11,7 +11,12 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn href="#" color="pink accent-1" text>
+            <v-btn href="#" color="pink accent-1" text v-if="user.is_admin">
+                <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
+                {{ fullName }} (ADMIN)
+            </v-btn>
+
+            <v-btn href="#" color="pink accent-1" text v-else>
                 <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
                 {{ fullName }}
             </v-btn>
@@ -24,19 +29,36 @@
         </v-app-bar>
 
         <v-navigation-drawer v-model="sidebar" app>
-            <v-list-group value="true" color="pink accent-1">
-                <template v-slot:activator>
-                    <v-list-item-title>Inventory</v-list-item-title>
-                </template>
-                <app-sidebar :items="inventories" :route="route"></app-sidebar>
-            </v-list-group>
+            <template v-if="user.is_admin">
+                <v-list-group value="true" color="pink accent-1">
+                    <template v-slot:activator>
+                        <v-list-item-title>Inventory (ADMIN)</v-list-item-title>
+                    </template>
+                    <app-sidebar
+                        :items="inventories"
+                        :route="route"
+                    ></app-sidebar>
+                </v-list-group>
+            </template>
 
-            <v-list-group value="true" color="pink accent-1">
-                <template v-slot:activator>
-                    <v-list-item-title>Products</v-list-item-title>
-                </template>
-                <app-sidebar :items="products" :route="route"></app-sidebar>
-            </v-list-group>
+            <template v-else>
+                <v-list-group value="true" color="pink accent-1">
+                    <template v-slot:activator>
+                        <v-list-item-title>Inventory</v-list-item-title>
+                    </template>
+                    <app-sidebar
+                        :items="inventories"
+                        :route="route"
+                    ></app-sidebar>
+                </v-list-group>
+
+                <v-list-group value="true" color="pink accent-1">
+                    <template v-slot:activator>
+                        <v-list-item-title>Products</v-list-item-title>
+                    </template>
+                    <app-sidebar :items="products" :route="route"></app-sidebar>
+                </v-list-group>
+            </template>
         </v-navigation-drawer>
     </section>
 </template>

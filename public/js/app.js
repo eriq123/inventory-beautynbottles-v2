@@ -2151,6 +2151,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route", "user"],
   data: function data() {
@@ -14662,17 +14684,33 @@ var render = function() {
           _vm._v(" "),
           _c("v-spacer"),
           _vm._v(" "),
-          _c(
-            "v-btn",
-            { attrs: { href: "#", color: "pink accent-1", text: "" } },
-            [
-              _c("v-icon", { staticClass: "mr-1" }, [
-                _vm._v("mdi-account-circle-outline")
-              ]),
-              _vm._v("\n            " + _vm._s(_vm.fullName) + "\n        ")
-            ],
-            1
-          ),
+          _vm.user.is_admin
+            ? _c(
+                "v-btn",
+                { attrs: { href: "#", color: "pink accent-1", text: "" } },
+                [
+                  _c("v-icon", { staticClass: "mr-1" }, [
+                    _vm._v("mdi-account-circle-outline")
+                  ]),
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(_vm.fullName) +
+                      " (ADMIN)\n        "
+                  )
+                ],
+                1
+              )
+            : _c(
+                "v-btn",
+                { attrs: { href: "#", color: "pink accent-1", text: "" } },
+                [
+                  _c("v-icon", { staticClass: "mr-1" }, [
+                    _vm._v("mdi-account-circle-outline")
+                  ]),
+                  _vm._v("\n            " + _vm._s(_vm.fullName) + "\n        ")
+                ],
+                1
+              ),
           _vm._v(" "),
           _c("v-divider", { attrs: { vertical: "" } }),
           _vm._v(" "),
@@ -14701,53 +14739,91 @@ var render = function() {
           }
         },
         [
-          _c(
-            "v-list-group",
-            {
-              attrs: { value: "true", color: "pink accent-1" },
-              scopedSlots: _vm._u([
-                {
-                  key: "activator",
-                  fn: function() {
-                    return [_c("v-list-item-title", [_vm._v("Inventory")])]
+          _vm.user.is_admin
+            ? [
+                _c(
+                  "v-list-group",
+                  {
+                    attrs: { value: "true", color: "pink accent-1" },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "activator",
+                          fn: function() {
+                            return [
+                              _c("v-list-item-title", [
+                                _vm._v("Inventory (ADMIN)")
+                              ])
+                            ]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      493896259
+                    )
                   },
-                  proxy: true
-                }
-              ])
-            },
-            [
-              _vm._v(" "),
-              _c("app-sidebar", {
-                attrs: { items: _vm.inventories, route: _vm.route }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list-group",
-            {
-              attrs: { value: "true", color: "pink accent-1" },
-              scopedSlots: _vm._u([
-                {
-                  key: "activator",
-                  fn: function() {
-                    return [_c("v-list-item-title", [_vm._v("Products")])]
+                  [
+                    _vm._v(" "),
+                    _c("app-sidebar", {
+                      attrs: { items: _vm.inventories, route: _vm.route }
+                    })
+                  ],
+                  1
+                )
+              ]
+            : [
+                _c(
+                  "v-list-group",
+                  {
+                    attrs: { value: "true", color: "pink accent-1" },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "activator",
+                        fn: function() {
+                          return [
+                            _c("v-list-item-title", [_vm._v("Inventory")])
+                          ]
+                        },
+                        proxy: true
+                      }
+                    ])
                   },
-                  proxy: true
-                }
-              ])
-            },
-            [
-              _vm._v(" "),
-              _c("app-sidebar", {
-                attrs: { items: _vm.products, route: _vm.route }
-              })
-            ],
-            1
-          )
+                  [
+                    _vm._v(" "),
+                    _c("app-sidebar", {
+                      attrs: { items: _vm.inventories, route: _vm.route }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-list-group",
+                  {
+                    attrs: { value: "true", color: "pink accent-1" },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "activator",
+                        fn: function() {
+                          return [_c("v-list-item-title", [_vm._v("Products")])]
+                        },
+                        proxy: true
+                      }
+                    ])
+                  },
+                  [
+                    _vm._v(" "),
+                    _c("app-sidebar", {
+                      attrs: { items: _vm.products, route: _vm.route }
+                    })
+                  ],
+                  1
+                )
+              ]
         ],
-        1
+        2
       )
     ],
     1

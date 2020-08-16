@@ -32,8 +32,8 @@ class RawController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'quantity' => 'required|integer',
-            'reorder_point' => 'required|integer',
+            'quantity' => 'required',
+            'reorder_point' => 'required',
             'category_id' => 'required'
         ]);
     }
