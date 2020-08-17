@@ -4,16 +4,7 @@ window.Vue = require("vue");
 import vuetify from "./vuetify/index";
 import store from "./vuex/index";
 
-Vue.component(
-    "app-sidebar",
-    require("./components/common/sidebar.vue").default
-);
 Vue.component("app-header-sidebar", require("./components/App.vue").default);
-
-Vue.component(
-    "app-snackbar",
-    require("./components/common/snackbar.vue").default
-);
 
 const app = new Vue({
     el: "#app",

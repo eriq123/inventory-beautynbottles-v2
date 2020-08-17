@@ -40,13 +40,6 @@
                 </app-flow-dialog>
             </v-col>
         </v-row>
-        <app-snackbar
-            :color="snackbar.color"
-            :text="snackbar.text"
-            :timeout="snackbar.timeout"
-            :visible="snackbar.visible"
-            @hideSnackbar="snackbar.visible = false"
-        ></app-snackbar>
     </v-container>
 </template>
 <script>
@@ -73,15 +66,7 @@ export default {
                 action: null
             },
             stocks: 0,
-            updatedItem: {},
-
-            // snackbar
-            snackbar: {
-                color: "success",
-                text: null,
-                timeout: 2000,
-                visible: false
-            }
+            updatedItem: {}
         };
     },
     methods: {
@@ -117,32 +102,30 @@ export default {
                     }
 
                     this.dialog.show = false;
-                    this.showSnackbar(`Record has been updated!`);
+                    this.$store.commit("showSnackbar", {
+                        color: true,
+                        text: `Record has been updated!`
+                    });
                 })
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
                         if (error.response.data.error_message) {
-                            this.showSnackbar(
-                                error.response.data.error_message,
-                                "red darken-1"
-                            );
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: error.response.data.error_message
+                            });
                         } else {
-                            this.showSnackbar(
-                                `Something went wrong. Please try again.`,
-                                "red darken-1"
-                            );
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: `Something went wrong. `
+                            });
                         }
                     }
                 });
         },
         toggleChange(value) {
             this.toggle.disabled = this.toggle.loading = value;
-        },
-        showSnackbar(message, color = "success") {
-            this.snackbar.text = message;
-            this.snackbar.color = color;
-            this.snackbar.visible = true;
         }
     },
     computed: {

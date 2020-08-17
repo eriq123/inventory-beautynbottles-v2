@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function view()
+    {
+        $this->data['category']  = Category::all();
+
+        return response()->json($this->data);
+    }
+
     private function validation($request)
     {
         $request->validate([

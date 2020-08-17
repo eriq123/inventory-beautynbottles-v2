@@ -1,82 +1,190 @@
 <template>
-    <v-card outlined>
-        <v-card-title>
-            Category
-
-            <v-slide-x-reverse-transition>
-                <v-chip outlined class="mx-2" v-if="selectedCategory">
-                    Code: {{ this.code || 0 }}
-                    <v-icon small class="ml-3" @click="selectedCategory = null"
-                        >mdi-close</v-icon
+    <v-row>
+        <v-col sm="10" offset-sm="1">
+            <v-card flat>
+                <v-card-title>
+                    Category
+                    <v-btn
+                        text
+                        outlined
+                        color="green darken-4"
+                        class="ml-3"
+                        @click="showAddForm"
                     >
-                </v-chip>
-            </v-slide-x-reverse-transition>
+                        Add
+                    </v-btn>
+                </v-card-title>
 
-            <v-spacer></v-spacer>
-            <v-btn text outlined color="green darken-4" @click="addCategory()"
-                >Add</v-btn
-            >
-        </v-card-title>
-        <v-card-text>
-            <app-autocomplete
-                @autocompleteSearch="categorySearch"
-                @loadingChange="loading = true"
-                @nameChange="nameChange"
-                @selectedChange="selectedChange"
-                :items="category_collection"
-                :label="'Category Name'"
-                :loading="loading"
-                :selected="selectedCategory"
-                class="mx-2"
-            ></app-autocomplete>
-        </v-card-text>
-        <v-card-actions>
-            <v-btn text color="blue darken-3" @click="updateCategory()"
-                >Edit</v-btn
-            >
-            <v-btn text color="red darken-3" @click="deleteCategory()"
-                >Delete</v-btn
-            >
-        </v-card-actions>
-    </v-card>
+                <v-data-table
+                    :headers="headers"
+                    :items="items"
+                    :loading="loading"
+                    @click:row="showRawItems"
+                >
+                    <template #item.id="{item}">
+                        CI - {{ item.id.toString().padStart(4, "0") }}
+                    </template>
+                    <template #item.action="{item}">
+                        <v-btn
+                            text
+                            color="blue darken-4"
+                            @click.stop="showUpdateForm(item)"
+                            >Update</v-btn
+                        >
+                        <v-btn
+                            text
+                            color="red darken-4"
+                            @click.stop="deleteProcess(item)"
+                            >Delete</v-btn
+                        >
+                    </template>
+
+                    <template #body.prepend v-if="showForm">
+                        <tr>
+                            <td>
+                                {{ customID }}
+                            </td>
+                            <td>
+                                <v-text-field
+                                    autofocus
+                                    label="Category Name"
+                                    v-model="formData.category_name"
+                                ></v-text-field>
+                            </td>
+                            <td>
+                                <v-btn
+                                    text
+                                    outlined
+                                    color="green darken-4"
+                                    class="ml-1 my-1"
+                                    @click.stop="submitForm"
+                                >
+                                    Save
+                                </v-btn>
+                                <v-btn
+                                    text
+                                    outlined
+                                    class="ml-1 my-1"
+                                    @click.stop="showForm = !showForm"
+                                >
+                                    Cancel
+                                </v-btn>
+                            </td>
+                        </tr>
+                    </template>
+                </v-data-table>
+            </v-card>
+        </v-col>
+    </v-row>
 </template>
+
 <script>
 export default {
-    components: {
-        "app-autocomplete": () => import("@/components/common/autocomplete.vue")
-    },
+    components: {},
     data() {
         return {
-            category_collection: [],
-            code: 0,
+            headers: [
+                {
+                    text: "Code",
+                    align: "start",
+                    value: "id"
+                },
+                {
+                    text: "Category Name",
+                    align: "start",
+                    value: "name"
+                },
+                {
+                    text: "Action",
+                    value: "action",
+                    sortable: false
+                }
+            ],
+            items: [],
             loading: false,
-            name: null,
-            selectedCategory: null
+
+            showForm: false,
+            deleteForm: false,
+            formData: {
+                action: null,
+                id: 0,
+                category_name: null
+            },
+            itemIndex: -1
         };
     },
+    mounted() {
+        this.getCategories();
+    },
     methods: {
-        addCategory() {
-            if (this.name) {
-                this.loading = true;
-                axios
-                    .post("/products/category/add", { name: this.name })
-                    .then(response => {
-                        this.$store.commit("showSnackbar", {
-                            color: true,
-                            text: `${response.data.category.name} added.`
-                        });
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            console.log(error.response);
+        getCategories() {
+            this.loading = true;
+            axios
+                .post("/products/category/view")
+                .then(response => {
+                    this.items = response.data.category;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                        this.errorAlert();
+                    }
+                    this.loading = false;
+                });
+        },
+        showAddForm() {
+            this.formData.action = "add";
+            this.formData.id = 0;
+            this.formData.category_name = null;
+            this.itemIndex = -1;
+            this.showForm = true;
+        },
+        showUpdateForm(item) {
+            this.formData.action = "update";
+            this.formData.id = item.id;
+            this.formData.category_name = item.name;
+            this.itemIndex = this.items.indexOf(item);
+            this.showForm = true;
+        },
+        deleteProcess(item) {
+            if (item.id) {
+                if (confirm(`Are you sure you want to delete ${item.name}`)) {
+                    this.loading = true;
+                    axios
+                        .post("/products/category/delete", {
+                            id: item.id
+                        })
+                        .then(response => {
                             this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
+                                color: true,
+                                text: `${response.data.category.name} deleted.`
                             });
-                        }
-                        this.loading = false;
-                    });
+                            this.itemIndex = this.items.indexOf(item);
+                            this.items.splice(this.itemIndex, 1);
+                            this.loading = false;
+                        })
+                        .catch(error => {
+                            if (error.response) {
+                                console.log(error.response);
+                                this.errorAlert();
+                            }
+                            this.loading = false;
+                        });
+                }
+            } else {
+                this.errorAlert();
+            }
+        },
+        submitForm() {
+            if (this.formData.category_name) {
+                this.loading = true;
+                if (this.formData.action == "add") {
+                    this.processAdd();
+                } else {
+                    this.processUpdate();
+                }
+                this.showForm = false;
             } else {
                 this.$store.commit("showSnackbar", {
                     color: false,
@@ -84,111 +192,68 @@ export default {
                 });
             }
         },
-        categorySearch() {
+        processAdd() {
             axios
-                .post("/products/category/search", {
-                    name: this.name
+                .post("/products/category/add", {
+                    name: this.formData.category_name
                 })
                 .then(response => {
-                    if (response.data.category.length > 0) {
-                        this.category_collection = response.data.category;
-                    } else {
-                        this.category_collection = [];
-                    }
+                    this.$store.commit("showSnackbar", {
+                        color: true,
+                        text: `${response.data.category.name} added.`
+                    });
+                    console.log(response.data.category);
+                    this.items.push(response.data.category);
                     this.loading = false;
                 })
                 .catch(error => {
                     if (error.response) {
-                        this.$store.commit("showSnackbar", {
-                            color: false,
-                            text: "Something went wrong."
-                        });
                         console.log(error.response);
+                        this.errorAlert();
                     }
                     this.loading = false;
                 });
         },
-        deleteCategory() {
-            this.loading = true;
-            if (this.code) {
-                axios
-                    .post("/products/category/delete", {
-                        id: this.code
-                    })
-                    .then(response => {
-                        this.selectedCategory = null;
-                        this.code = 0;
-                        this.name = null;
-                        this.$store.commit("showSnackbar", {
-                            color: true,
-                            text: `${response.data.category.name} deleted.`
-                        });
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            console.log(error.response);
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
-                            });
-                        }
-                        this.loading = false;
+        processUpdate() {
+            axios
+                .post("/products/category/update", {
+                    id: this.formData.id,
+                    name: this.formData.category_name
+                })
+                .then(response => {
+                    this.$store.commit("showSnackbar", {
+                        color: true,
+                        text: `${response.data.category.name} updated.`
                     });
-            } else {
-                this.$store.commit("showSnackbar", {
-                    color: false,
-                    text: "Please select category first."
+                    Object.assign(
+                        this.items[this.itemIndex],
+                        response.data.category
+                    );
+                    this.loading = false;
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                        this.errorAlert();
+                    }
+                    this.loading = false;
                 });
-            }
         },
-        updateCategory() {
-            if (this.name && this.code > 0) {
-                this.loading = true;
-                axios
-                    .post("/products/category/update", {
-                        id: this.code,
-                        name: this.name
-                    })
-                    .then(response => {
-                        this.$store.commit("showSnackbar", {
-                            color: true,
-                            text: `${response.data.category.name} updated.`
-                        });
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            console.log(error.response);
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
-                            });
-                        }
-                        this.loading = false;
-                    });
-            } else {
-                this.$store.commit("showSnackbar", {
-                    color: false,
-                    text: "Please select category first."
-                });
-            }
+        showRawItems(item) {
+            this.$emit("showrawitems", item);
         },
-        nameChange(value) {
-            this.name = value;
-        },
-        selectedChange(value) {
-            this.selectedCategory = value;
+        errorAlert() {
+            this.$store.commit("showSnackbar", {
+                color: false,
+                text: "Something went wrong."
+            });
         }
     },
-    watch: {
-        selectedCategory: function(value) {
-            if (value) {
-                this.code = value.id;
-            } else {
-                this.code = 0;
-            }
-            this.$emit("selectedCategory", value);
+    computed: {
+        customID: function() {
+            return this.formData.id > 0
+                ? `CI - ${this.formData.id.toString().padStart(4, "0")}`
+                : "N/A";
         }
     }
 };

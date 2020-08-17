@@ -1,40 +1,40 @@
 <template>
     <v-card outlined>
         <v-card-title>
-            Product
+            Category
 
             <v-slide-x-reverse-transition>
-                <v-chip outlined class="mx-2" v-if="selectedProduct">
+                <v-chip outlined class="mx-2" v-if="selectedCategory">
                     Code: {{ this.code || 0 }}
-                    <v-icon small class="ml-3" @click="selectedProduct = null"
+                    <v-icon small class="ml-3" @click="selectedCategory = null"
                         >mdi-close</v-icon
                     >
                 </v-chip>
             </v-slide-x-reverse-transition>
 
             <v-spacer></v-spacer>
-            <v-btn text outlined color="green darken-4" @click="addProduct()">
-                Add
-            </v-btn>
+            <v-btn text outlined color="green darken-4" @click="addCategory()"
+                >Add</v-btn
+            >
         </v-card-title>
         <v-card-text>
             <app-autocomplete
-                @autocompleteSearch="productSearch"
+                @autocompleteSearch="categorySearch"
                 @loadingChange="loading = true"
                 @nameChange="nameChange"
                 @selectedChange="selectedChange"
-                :items="product_collection"
-                :label="'Product Name'"
+                :items="category_collection"
+                :label="'Category Name'"
                 :loading="loading"
-                :selected="selectedProduct"
+                :selected="selectedCategory"
                 class="mx-2"
             ></app-autocomplete>
         </v-card-text>
         <v-card-actions>
-            <v-btn text color="blue darken-3" @click="updateProduct()"
+            <v-btn text color="blue darken-3" @click="updateCategory()"
                 >Edit</v-btn
             >
-            <v-btn text color="red darken-3" @click="deleteProduct()"
+            <v-btn text color="red darken-3" @click="deleteCategory()"
                 >Delete</v-btn
             >
         </v-card-actions>
@@ -47,23 +47,23 @@ export default {
     },
     data() {
         return {
+            category_collection: [],
             code: 0,
+            loading: false,
             name: null,
-            product_collection: [],
-            selectedProduct: null,
-            loading: false
+            selectedCategory: null
         };
     },
     methods: {
-        addProduct() {
+        addCategory() {
             if (this.name) {
                 this.loading = true;
                 axios
-                    .post("/products/add", { name: this.name })
+                    .post("/products/category/add", { name: this.name })
                     .then(response => {
                         this.$store.commit("showSnackbar", {
                             color: true,
-                            text: `${response.data.product.name} added.`
+                            text: `${response.data.category.name} added.`
                         });
                         this.loading = false;
                     })
@@ -80,87 +80,20 @@ export default {
             } else {
                 this.$store.commit("showSnackbar", {
                     color: false,
-                    text: "Product name is required."
+                    text: "Category name is required."
                 });
             }
         },
-        deleteProduct() {
-            if (this.code) {
-                this.loading = true;
-                axios
-                    .post("/products/delete", {
-                        id: this.code
-                    })
-                    .then(response => {
-                        this.selectedProduct = null;
-                        this.code = 0;
-                        this.name = null;
-                        this.$store.commit("showSnackbar", {
-                            color: true,
-                            text: `${response.data.product.name} deleted.`
-                        });
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            console.log(error.response);
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
-                            });
-                        }
-                        this.loading = false;
-                    });
-            } else {
-                this.$store.commit("showSnackbar", {
-                    color: false,
-                    text: "Please select product first."
-                });
-            }
-        },
-        updateProduct() {
-            if (this.name && this.code > 0) {
-                this.loading = true;
-                axios
-                    .post("/products/update", {
-                        id: this.code,
-                        name: this.name
-                    })
-                    .then(response => {
-                        this.$store.commit("showSnackbar", {
-                            color: true,
-                            text: `${response.data.product.name} updated.`
-                        });
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            console.log(error.response);
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
-                            });
-                        }
-                        this.loading = false;
-                    });
-            } else {
-                this.$store.commit("showSnackbar", {
-                    color: false,
-                    text: "Please select product first."
-                });
-            }
-        },
-        productSearch() {
+        categorySearch() {
             axios
-                .post("/products/search", {
+                .post("/products/category/search", {
                     name: this.name
                 })
                 .then(response => {
-                    console.log(response.data.product);
-                    if (response.data.product.length > 0) {
-                        this.product_collection = response.data.product;
+                    if (response.data.category.length > 0) {
+                        this.category_collection = response.data.category;
                     } else {
-                        this.product_collection = [];
+                        this.category_collection = [];
                     }
                     this.loading = false;
                 })
@@ -175,21 +108,87 @@ export default {
                     this.loading = false;
                 });
         },
+        deleteCategory() {
+            this.loading = true;
+            if (this.code) {
+                axios
+                    .post("/products/category/delete", {
+                        id: this.code
+                    })
+                    .then(response => {
+                        this.selectedCategory = null;
+                        this.code = 0;
+                        this.name = null;
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `${response.data.category.name} deleted.`
+                        });
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            console.log(error.response);
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: "Something went wrong."
+                            });
+                        }
+                        this.loading = false;
+                    });
+            } else {
+                this.$store.commit("showSnackbar", {
+                    color: false,
+                    text: "Please select category first."
+                });
+            }
+        },
+        updateCategory() {
+            if (this.name && this.code > 0) {
+                this.loading = true;
+                axios
+                    .post("/products/category/update", {
+                        id: this.code,
+                        name: this.name
+                    })
+                    .then(response => {
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `${response.data.category.name} updated.`
+                        });
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            console.log(error.response);
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: "Something went wrong."
+                            });
+                        }
+                        this.loading = false;
+                    });
+            } else {
+                this.$store.commit("showSnackbar", {
+                    color: false,
+                    text: "Please select category first."
+                });
+            }
+        },
         nameChange(value) {
             this.name = value;
         },
         selectedChange(value) {
-            this.selectedProduct = value;
+            this.selectedCategory = value;
         }
     },
     watch: {
-        selectedProduct: function(value) {
+        selectedCategory: function(value) {
             if (value) {
-                this.code = value.getCustomId;
+                this.code = value.id;
             } else {
                 this.code = 0;
             }
-            this.$emit("selectedProduct", value);
+            this.$emit("selectedCategory", value);
         }
     }
 };

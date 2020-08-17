@@ -24,15 +24,16 @@ Route::middleware(['auth', 'web'])->group(function () {
 
             Route::prefix('category')->group(function () {
                 Route::post('add', 'Products\CategoryController@store');
-                Route::post('search', 'Products\CategoryController@search'); //api
+                Route::post('view', 'Products\CategoryController@view');
+                Route::post('search', 'Products\CategoryController@search');
                 Route::post('update', 'Products\CategoryController@update');
                 Route::post('delete', 'Products\CategoryController@destroy');
             });
 
             Route::prefix('raw')->group(function () {
                 Route::get('/', 'MainController@raw');
-                Route::post('search', 'Products\RawController@search'); //api
-                Route::post('view', 'Products\RawController@view'); //api
+                Route::post('search', 'Products\RawController@search');
+                Route::post('view', 'Products\RawController@view');
                 Route::post('add', 'Products\RawController@store');
                 Route::post('update', 'Products\RawController@update');
                 Route::post('delete', 'Products\RawController@destroy');
@@ -44,7 +45,7 @@ Route::middleware(['auth', 'web'])->group(function () {
                 Route::post('detach', 'Products\AssembledController@detach');
                 Route::post('view', 'Products\AssembledController@view');
             });
-            Route::post('search', 'Products\ProductsController@search'); //api
+            Route::post('search', 'Products\ProductsController@search');
             Route::post('add', 'Products\ProductsController@store');
             Route::post('update', 'Products\ProductsController@update');
             Route::post('delete', 'Products\ProductsController@destroy');

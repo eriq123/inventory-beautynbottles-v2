@@ -9,6 +9,21 @@ class Raw extends Model
 {
     use SoftDeletes;
 
+    public function getNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class)->withPivot('quantity')->withTimestamps();
+    }
+
     public function getQuantityAttribute($value)
     {
         return $value / 100;
@@ -61,20 +76,5 @@ class Raw extends Model
     public function setLossAttribute($value)
     {
         $this->attributes['loss'] = $value * 100;
-    }
-
-    public function getNameAttribute($value)
-    {
-        return ucfirst($value);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function products()
-    {
-        return $this->belongsToMany(Product::class)->withPivot('quantity')->withTimestamps();
     }
 }

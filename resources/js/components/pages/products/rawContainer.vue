@@ -1,25 +1,42 @@
 <template>
     <v-container>
-        <v-row>
-            <v-col
-                sm="8"
-                offset-sm="2"
-                md="6"
-                offset-md="3"
-                xl="4"
-                offset-xl="4"
-            >
-                <app-raw-category
-                    @selectedCategory="selectedCategory"
-                ></app-raw-category>
-            </v-col>
-        </v-row>
-        <v-row>
+        <app-raw-category
+            @showrawitems="showrawitems"
+            v-if="!selected"
+        ></app-raw-category>
+        <v-row v-if="selected">
             <v-col>
-                <app-raw
-                    :selected="selected"
-                    :autocomplete="autocomplete"
-                ></app-raw>
+                <v-card flat>
+                    <app-raw-dialog></app-raw-dialog>
+                    <v-card-title>
+                        {{ this.category.name }} raw items
+                        <v-btn
+                            text
+                            outlined
+                            color="green darken-4"
+                            class="ml-3"
+                            @click="showAddForm"
+                        >
+                            Add
+                        </v-btn>
+
+                        <v-spacer></v-spacer>
+
+                        <v-btn text @click="selected = false">
+                            Back to categories
+                        </v-btn>
+                    </v-card-title>
+
+                    <v-data-table
+                        :headers="headers"
+                        :items="items"
+                        :loading="loading"
+                    >
+                        <template #item.id="{item}">
+                            RI - {{ item.id.toString().padStart(4, "0") }}
+                        </template>
+                    </v-data-table>
+                </v-card>
             </v-col>
         </v-row>
     </v-container>
@@ -28,31 +45,83 @@
 <script>
 export default {
     components: {
-        "app-raw-category": () => import("./raw/category.vue"),
-        "app-raw": () => import("./raw/raw.vue")
+        "app-raw-category": () => import("./raw/category")
     },
     data() {
         return {
-            // autocomplete
-            autocomplete: false,
-            selected: {
-                id: null,
+            selected: false,
+            category: {},
+
+            showForm: false,
+            formData: {
+                action: null,
+                id: 0,
                 name: null
-            }
+            },
+
+            headers: [
+                {
+                    text: "Code",
+                    align: "start",
+                    value: "id"
+                },
+                {
+                    text: "Raw Item Name",
+                    value: "name"
+                },
+                {
+                    text: "Quantity",
+                    value: "quantity"
+                },
+                {
+                    text: "Description",
+                    value: "unit"
+                },
+                {
+                    text: "Reorder Point",
+                    value: "reorder_point"
+                }
+            ],
+            loading: false,
+            items: [],
+            itemIndex: -1
         };
     },
+    mounted() {},
     methods: {
-        selectedCategory(value) {
-            if (value) {
-                this.selected = value;
-                this.autocomplete = true;
-            } else {
-                this.selected = {
-                    id: null,
-                    name: null
-                };
-                this.autocomplete = false;
-            }
+        showrawitems(item) {
+            this.selected = true;
+            this.category = item;
+            this.loading = true;
+            axios
+                .post("/products/raw/view", {
+                    id: this.category.id
+                })
+                .then(response => {
+                    this.items = response.data.raw;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                        this.errorAlert();
+                    }
+                    this.loading = false;
+                });
+        },
+        showAddForm() {},
+        errorAlert() {
+            this.$store.commit("showSnackbar", {
+                color: false,
+                text: "Something went wrong."
+            });
+        }
+    },
+    computed: {
+        customID: function() {
+            return this.formData.id > 0
+                ? `RI - ${this.formData.id.toString().padStart(4, "0")}`
+                : "N/A";
         }
     }
 };

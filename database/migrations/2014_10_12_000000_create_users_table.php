@@ -60,6 +60,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->integer('quantity')->default(0);
             $table->integer('reorder_point')->default(0);
+            $table->string('unit');
+            $table->string('qr_code');
 
             $table->integer('purchase')->default(0);
             $table->integer('rts')->default(0);
@@ -77,6 +79,7 @@ class CreateUsersTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('qr_code')->nullable();
 
             $table->integer('purchase')->default(0);
             $table->integer('rts')->default(0);

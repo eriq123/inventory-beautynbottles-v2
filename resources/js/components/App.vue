@@ -62,9 +62,9 @@
         </v-navigation-drawer>
 
         <app-snackbar
-            :color="this.$store.state.snackbar.color"
-            :text="this.$store.state.snackbar.text"
-            :visible="this.$store.state.snackbar.visible"
+            :color="$store.state.snackbar.color"
+            :text="$store.state.snackbar.text"
+            :visible="$store.state.snackbar.visible"
         ></app-snackbar>
     </section>
 </template>
@@ -73,7 +73,8 @@
 export default {
     props: ["route", "user"],
     components: {
-        "app-snackbar": () => import("./common/snackbar")
+        "app-snackbar": () => import("./common/snackbar"),
+        "app-sidebar": () => import("./common/sidebar.vue")
     },
     data() {
         return {
