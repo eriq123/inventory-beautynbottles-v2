@@ -2179,6 +2179,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route", "user"],
   components: {
@@ -14633,7 +14634,11 @@ var render = function() {
               staticClass: "pink--text text--accent-1",
               attrs: { text: "", href: "/logout" }
             },
-            [_vm._v("\n            logout\n        ")]
+            [
+              _c("v-icon", { staticClass: "mr-1" }, [_vm._v("mdi-logout")]),
+              _vm._v("\n            logout\n        ")
+            ],
+            1
           )
         ],
         1

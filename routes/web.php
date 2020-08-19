@@ -16,6 +16,10 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/', 'MainController@index');
 
+    Route::prefix('units')->group(function () {
+        Route::post('all', 'UnitsController@all');
+    });
+
     Route::middleware(['user'])->group(function () {
 
         Route::get('/account', 'MainController@account');

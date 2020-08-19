@@ -66,12 +66,18 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'id' => 3,
+                    'base_id' => 1,
+                    'name' => "gallon",
+                    'value' => 385000,
+                ],
+                [
+                    'id' => 4,
                     'base_id' => 2,
                     'name' => "g",
                     'value' => 100,
                 ],
                 [
-                    'id' => 4,
+                    'id' => 5,
                     'base_id' => 2,
                     'name' => "kg",
                     'value' => 100000,

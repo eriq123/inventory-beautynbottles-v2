@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Convert extends Model
 {
+    public function base()
+    {
+        return $this->belongsTo(Base::class);
+    }
+
     public function getValueAttribute($value)
     {
         return $value / 100;

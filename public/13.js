@@ -53,21 +53,128 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-raw-category": function appRawCategory() {
       return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./raw/category */ "./resources/js/components/pages/products/raw/category.vue"));
+    },
+    "app-raw-menu": function appRawMenu() {
+      return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./raw/rawMenu */ "./resources/js/components/pages/products/raw/rawMenu.vue"));
+    },
+    "app-raw-dialog": function appRawDialog() {
+      return __webpack_require__.e(/*! import() */ 17).then(__webpack_require__.bind(null, /*! ./raw/rawDialog */ "./resources/js/components/pages/products/raw/rawDialog.vue"));
+    },
+    "app-raw-converted-units": function appRawConvertedUnits() {
+      return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./raw/rawConvertedUnits */ "./resources/js/components/pages/products/raw/rawConvertedUnits.vue"));
     }
   },
   data: function data() {
     return {
       selected: false,
-      category: {},
       showForm: false,
+      dialogAction: null,
       formData: {
-        action: null,
-        id: 0,
-        name: null
+        category_id: 0,
+        category_name: null,
+        name: null,
+        quantity: null,
+        reorder_point: null,
+        base_id: 0,
+        base_name: null
       },
       headers: [{
         text: "Code",
@@ -80,41 +187,133 @@ __webpack_require__.r(__webpack_exports__);
         text: "Quantity",
         value: "quantity"
       }, {
-        text: "Description",
-        value: "unit"
-      }, {
         text: "Reorder Point",
         value: "reorder_point"
       }],
       loading: false,
       items: [],
-      itemIndex: -1
+      itemIndex: -1,
+      base_collection: [],
+      convert_collection: [],
+      convertFiltered: [],
+      convert: {
+        quantity: {
+          name: null,
+          value: 1
+        },
+        reorder_point: {
+          name: null,
+          value: 1
+        }
+      }
     };
   },
-  mounted: function mounted() {},
-  methods: {
-    showrawitems: function showrawitems(item) {
-      var _this = this;
+  mounted: function mounted() {
+    var _this = this;
 
-      this.selected = true;
-      this.category = item;
-      this.loading = true;
-      axios.post("/products/raw/view", {
-        id: this.category.id
-      }).then(function (response) {
-        _this.items = response.data.raw;
-        _this.loading = false;
+    axios.post("/units/all").then(function (response) {
+      _this.base_collection = response.data.base;
+      _this.convert_collection = response.data.convert;
+    })["catch"](function (error) {
+      if (error.response) {
+        console.log(error.response);
+
+        _this.errorAlert();
+      }
+    });
+  },
+  methods: {
+    convertFilter: function convertFilter() {
+      var _this2 = this;
+
+      this.convertFiltered = [];
+      this.convert_collection.forEach(function (item) {
+        if (item.base_id == _this2.formData.base_id) {
+          _this2.convertFiltered.push(item);
+        }
+      });
+      this.convert.quantity.name = this.convert.reorder_point.name = this.convertFiltered[0].name;
+      this.convert.quantity.value = this.convert.reorder_point.value = this.convertFiltered[0].value;
+    },
+    processadd: function processadd() {
+      var _this3 = this;
+
+      this.formData.quantity = this.convert.quantity.value * this.formData.quantity;
+      this.formData.reorder_point = this.convert.reorder_point.value * this.formData.reorder_point;
+      axios.post(this.dialogAction == "Add" ? "/products/raw/add" : "/products/raw/update", this.formData).then(function (response) {
+        var raw = response.data.raw;
+        raw.category_name = raw.category.name;
+
+        if (_this3.dialogAction == "Add") {
+          _this3.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(raw.name, " added.")
+          });
+
+          _this3.items.push(raw);
+        } else {
+          _this3.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(raw.name, " has been updated.")
+          }); // Object.assign(this.items[this.itemIndex], raw);
+
+        }
+
+        _this3.showForm = false;
       })["catch"](function (error) {
         if (error.response) {
           console.log(error.response);
 
-          _this.errorAlert();
+          _this3.errorAlert();
         }
-
-        _this.loading = false;
       });
     },
-    showAddForm: function showAddForm() {},
+    selectedconvertquantity: function selectedconvertquantity(item) {
+      this.convert.quantity.name = item.name;
+      this.convert.quantity.value = item.value;
+    },
+    selectedconvertreorderpoint: function selectedconvertreorderpoint(item) {
+      this.convert.reorder_point.name = item.name;
+      this.convert.reorder_point.value = item.value;
+    },
+    selectunitsofmeasurement: function selectunitsofmeasurement(item) {
+      this.formData.base_id = item.id;
+      this.formData.base_name = item.name;
+      this.convertFilter();
+    },
+    showAddForm: function showAddForm() {
+      this.dialogAction = "Add";
+      this.formData.name = null;
+      this.formData.quantity = null;
+      this.formData.reorder_point = null;
+      this.formData.base_id = this.base_collection[0].id;
+      this.formData.base_name = this.base_collection[0].name;
+      this.convertFilter();
+      this.showForm = true;
+    },
+    showrawitems: function showrawitems(item) {
+      var _this4 = this;
+
+      this.selected = true;
+      this.formData.category_id = item.id;
+      this.formData.category_name = item.name;
+      this.loading = true;
+      axios.post("/products/raw/view", {
+        id: this.formData.category_id
+      }).then(function (response) {
+        _this4.items = response.data.raw;
+        console.log(response.data.raw);
+        _this4.loading = false;
+      })["catch"](function (error) {
+        if (error.response) {
+          console.log(error.response);
+
+          _this4.errorAlert();
+        }
+
+        _this4.loading = false;
+      });
+    },
     errorAlert: function errorAlert() {
       this.$store.commit("showSnackbar", {
         color: false,
@@ -122,11 +321,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  computed: {
-    customID: function customID() {
-      return this.formData.id > 0 ? "RI - ".concat(this.formData.id.toString().padStart(4, "0")) : "N/A";
-    }
-  }
+  computed: {}
 });
 
 /***/ }),
@@ -164,14 +359,12 @@ var render = function() {
                     "v-card",
                     { attrs: { flat: "" } },
                     [
-                      _c("app-raw-dialog"),
-                      _vm._v(" "),
                       _c(
                         "v-card-title",
                         [
                           _vm._v(
                             "\n                    " +
-                              _vm._s(this.category.name) +
+                              _vm._s(this.formData.category_name) +
                               " raw items\n                    "
                           ),
                           _c(
@@ -192,6 +385,228 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
+                          _c(
+                            "v-dialog",
+                            {
+                              attrs: { "max-width": "500px" },
+                              model: {
+                                value: _vm.showForm,
+                                callback: function($$v) {
+                                  _vm.showForm = $$v
+                                },
+                                expression: "showForm"
+                              }
+                            },
+                            [
+                              _c("app-raw-dialog", {
+                                attrs: {
+                                  title: _vm.dialogAction,
+                                  categoryName: _vm.formData.category_name
+                                },
+                                on: {
+                                  closedialog: function($event) {
+                                    _vm.showForm = false
+                                  },
+                                  processadd: _vm.processadd
+                                },
+                                scopedSlots: _vm._u(
+                                  [
+                                    {
+                                      key: "dialogForm",
+                                      fn: function() {
+                                        return [
+                                          _c(
+                                            "v-col",
+                                            {
+                                              staticClass: "py-0",
+                                              attrs: { cols: "12" }
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  label: "Raw item name"
+                                                },
+                                                model: {
+                                                  value: _vm.formData.name,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.formData,
+                                                      "name",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression: "formData.name"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "12" } },
+                                            [
+                                              _vm._v(
+                                                "\n                                    Unit of Measurement:\n                                    "
+                                              ),
+                                              _c("app-raw-menu", {
+                                                attrs: {
+                                                  menu: _vm.base_collection,
+                                                  selected:
+                                                    _vm.formData.base_name
+                                                },
+                                                on: {
+                                                  selectedmenu:
+                                                    _vm.selectunitsofmeasurement
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "6" } },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  type: "number",
+                                                  label: "Quantity"
+                                                },
+                                                scopedSlots: _vm._u(
+                                                  [
+                                                    {
+                                                      key: "append-outer",
+                                                      fn: function() {
+                                                        return [
+                                                          _c("app-raw-menu", {
+                                                            attrs: {
+                                                              menu:
+                                                                _vm.convertFiltered,
+                                                              selected:
+                                                                _vm.convert
+                                                                  .quantity.name
+                                                            },
+                                                            on: {
+                                                              selectedmenu:
+                                                                _vm.selectedconvertquantity
+                                                            }
+                                                          })
+                                                        ]
+                                                      },
+                                                      proxy: true
+                                                    }
+                                                  ],
+                                                  null,
+                                                  false,
+                                                  839093261
+                                                ),
+                                                model: {
+                                                  value: _vm.formData.quantity,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.formData,
+                                                      "quantity",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "formData.quantity"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("app-raw-converted-units", {
+                                            attrs: {
+                                              value: _vm.formData.quantity,
+                                              convertValue:
+                                                _vm.convert.quantity.value,
+                                              formDataBaseName:
+                                                _vm.formData.base_name
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "6" } },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  type: "number",
+                                                  label: "Reorder Point"
+                                                },
+                                                scopedSlots: _vm._u(
+                                                  [
+                                                    {
+                                                      key: "append-outer",
+                                                      fn: function() {
+                                                        return [
+                                                          _c("app-raw-menu", {
+                                                            attrs: {
+                                                              menu:
+                                                                _vm.convertFiltered,
+                                                              selected:
+                                                                _vm.convert
+                                                                  .reorder_point
+                                                                  .name
+                                                            },
+                                                            on: {
+                                                              selectedmenu:
+                                                                _vm.selectedconvertreorderpoint
+                                                            }
+                                                          })
+                                                        ]
+                                                      },
+                                                      proxy: true
+                                                    }
+                                                  ],
+                                                  null,
+                                                  false,
+                                                  4051307640
+                                                ),
+                                                model: {
+                                                  value:
+                                                    _vm.formData.reorder_point,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.formData,
+                                                      "reorder_point",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "formData.reorder_point"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("app-raw-converted-units", {
+                                            attrs: {
+                                              value: _vm.formData.reorder_point,
+                                              convertValue:
+                                                _vm.convert.reorder_point.value,
+                                              formDataBaseName:
+                                                _vm.formData.base_name
+                                            }
+                                          })
+                                        ]
+                                      },
+                                      proxy: true
+                                    }
+                                  ],
+                                  null,
+                                  false,
+                                  4087477311
+                                )
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
                           _c("v-spacer"),
                           _vm._v(" "),
                           _c(
@@ -205,10 +620,14 @@ var render = function() {
                               }
                             },
                             [
+                              _c("v-icon", { attrs: { left: "" } }, [
+                                _vm._v("mdi-arrow-left")
+                              ]),
                               _vm._v(
                                 "\n                        Back to categories\n                    "
                               )
-                            ]
+                            ],
+                            1
                           )
                         ],
                         1
@@ -236,11 +655,41 @@ var render = function() {
                                   )
                                 ]
                               }
+                            },
+                            {
+                              key: "item.quantity",
+                              fn: function(ref) {
+                                var item = ref.item
+                                return [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(item.quantity) +
+                                      " " +
+                                      _vm._s(item.base.name) +
+                                      "\n                    "
+                                  )
+                                ]
+                              }
+                            },
+                            {
+                              key: "item.reorder_point",
+                              fn: function(ref) {
+                                var item = ref.item
+                                return [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(item.reorder_point) +
+                                      " " +
+                                      _vm._s(item.base.name) +
+                                      "\n                    "
+                                  )
+                                ]
+                              }
                             }
                           ],
                           null,
                           false,
-                          773962090
+                          2027255434
                         )
                       })
                     ],

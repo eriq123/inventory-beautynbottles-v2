@@ -14,6 +14,11 @@ class Raw extends Model
         return ucfirst($value);
     }
 
+    public function base()
+    {
+        return $this->belongsTo(Base::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);

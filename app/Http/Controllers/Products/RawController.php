@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
 use App\Raw;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RawController extends Controller
@@ -11,9 +12,9 @@ class RawController extends Controller
     public function view(Request $request)
     {
         if ($request->id) {
-            $this->data['raw'] = Raw::with('category')->where('category_id', $request->id)->get();
+            $this->data['raw'] = Raw::with('base')->with('category')->where('category_id', $request->id)->get();
         } else {
-            $this->data['raw'] = Raw::with('category')->get();
+            $this->data['raw'] = Raw::with('base')->with('category')->get();
         }
         return response()->json($this->data);
     }
@@ -34,7 +35,8 @@ class RawController extends Controller
             'name' => 'required',
             'quantity' => 'required',
             'reorder_point' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'base_id' => 'required'
         ]);
     }
 
@@ -42,6 +44,7 @@ class RawController extends Controller
     {
         $this->validation($request);
         $this->data['raw'] = new Raw();
+        $this->data['raw']->qr_code = Carbon::now() . " " . $request->name;
         $this->saveRawInformation($request);
 
         return response()->json($this->data);
@@ -68,9 +71,10 @@ class RawController extends Controller
     {
         $this->data['raw']->name = $request->name;
         $this->data['raw']->category_id = $request->category_id;
+        $this->data['raw']->base_id = $request->base_id;
         $this->data['raw']->quantity = $request->quantity;
         $this->data['raw']->reorder_point = $request->reorder_point;
         $this->data['raw']->save();
-        $this->data['raw'] = Raw::with('category')->where('id', $this->data['raw']->id)->first();
+        $this->data['raw'] = Raw::with('base')->with('category')->where('id', $this->data['raw']->id)->first();
     }
 }

@@ -57,10 +57,11 @@ class CreateUsersTable extends Migration
         Schema::create('raws', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('base_id');
             $table->string('name');
             $table->integer('quantity')->default(0);
             $table->integer('reorder_point')->default(0);
-            $table->string('unit');
+            // $table->string('unit');
             $table->string('qr_code');
 
             $table->integer('purchase')->default(0);
@@ -73,6 +74,10 @@ class CreateUsersTable extends Migration
 
             $table->foreign('category_id')
                 ->references('id')->on('categories')
+                ->onDelete('cascade');
+
+            $table->foreign('base_id')
+                ->references('id')->on('bases')
                 ->onDelete('cascade');
         });
 
