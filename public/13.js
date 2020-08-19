@@ -313,7 +313,7 @@ __webpack_require__.r(__webpack_exports__);
       this.formData.base_name = item.name;
       this.convertFilter();
     },
-    showAddForm: function showAddForm() {
+    showAddDialog: function showAddDialog() {
       this.dialogAction = "Add";
       this.qrcode = null;
       this.formData.name = null;
@@ -421,7 +421,7 @@ var render = function() {
                                 outlined: "",
                                 color: "green darken-4"
                               },
-                              on: { click: _vm.showAddForm }
+                              on: { click: _vm.showAddDialog }
                             },
                             [
                               _vm._v(

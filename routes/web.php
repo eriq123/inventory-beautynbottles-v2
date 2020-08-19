@@ -36,7 +36,7 @@ Route::middleware(['auth', 'web'])->group(function () {
 
             Route::prefix('raw')->group(function () {
                 Route::get('/', 'MainController@raw');
-                // Route::post('search', 'Products\RawController@search');
+                Route::post('search', 'Products\RawController@search');
                 Route::post('view', 'Products\RawController@view');
                 Route::post('add', 'Products\RawController@store');
                 Route::post('update', 'Products\RawController@update');

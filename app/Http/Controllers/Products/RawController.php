@@ -19,15 +19,15 @@ class RawController extends Controller
         return response()->json($this->data);
     }
 
-    // public function search(Request $request)
-    // {
-    //     $this->data['raw'] = Raw::where('name', 'LIKE', $request->name . '%')
-    //         ->orderBy('name')
-    //         ->limit(5)
-    //         ->get();
+    public function search(Request $request)
+    {
+        $this->data['raw'] = Raw::where('name', 'LIKE', $request->name . '%')
+            ->orderBy('name')
+            ->limit(5)
+            ->get();
 
-    //     return response()->json($this->data);
-    // }
+        return response()->json($this->data);
+    }
 
     private function validation($request)
     {

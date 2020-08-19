@@ -14,7 +14,7 @@
                             outlined
                             color="green darken-4"
                             class="ml-3"
-                            @click="showAddForm"
+                            @click="showAddDialog"
                         >
                             Add
                         </v-btn>
@@ -303,7 +303,7 @@ export default {
             this.formData.base_name = item.name;
             this.convertFilter();
         },
-        showAddForm() {
+        showAddDialog() {
             this.dialogAction = "Add";
             this.qrcode = null;
 
