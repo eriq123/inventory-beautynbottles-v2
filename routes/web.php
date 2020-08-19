@@ -27,16 +27,16 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::prefix('products')->group(function () {
 
             Route::prefix('category')->group(function () {
-                Route::post('add', 'Products\CategoryController@store');
+                // Route::post('search', 'Products\CategoryController@search');
                 Route::post('view', 'Products\CategoryController@view');
-                Route::post('search', 'Products\CategoryController@search');
+                Route::post('add', 'Products\CategoryController@store');
                 Route::post('update', 'Products\CategoryController@update');
                 Route::post('delete', 'Products\CategoryController@destroy');
             });
 
             Route::prefix('raw')->group(function () {
                 Route::get('/', 'MainController@raw');
-                Route::post('search', 'Products\RawController@search');
+                // Route::post('search', 'Products\RawController@search');
                 Route::post('view', 'Products\RawController@view');
                 Route::post('add', 'Products\RawController@store');
                 Route::post('update', 'Products\RawController@update');

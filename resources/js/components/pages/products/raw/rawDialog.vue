@@ -20,10 +20,18 @@
         </v-card-text>
 
         <v-card-actions>
-            <!-- <v-btn color="red darken-3" text>Delete</v-btn> -->
+            <v-btn
+                text
+                color="red darken-3"
+                @click="$emit('processdelete')"
+                v-if="title !== 'Add'"
+                >Delete</v-btn
+            >
             <v-spacer></v-spacer>
             <v-btn text @click="$emit('closedialog')">Cancel</v-btn>
-            <v-btn color="green darken-3" text @click="saveRaw()">Save</v-btn>
+            <v-btn text @click="$emit('processrawsave')" color="green darken-3"
+                >Save</v-btn
+            >
         </v-card-actions>
     </v-card>
 </template>
@@ -41,12 +49,6 @@ export default {
     data() {
         return {};
     },
-    methods: {
-        saveRaw() {
-            if (this.title == "Add") {
-                this.$emit("processadd");
-            }
-        }
-    }
+    methods: {}
 };
 </script>

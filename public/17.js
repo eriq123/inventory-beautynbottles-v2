@@ -38,6 +38,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {
@@ -51,13 +59,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {};
   },
-  methods: {
-    saveRaw: function saveRaw() {
-      if (this.title == "Add") {
-        this.$emit("processadd");
-      }
-    }
-  }
+  methods: {}
 });
 
 /***/ }),
@@ -122,6 +124,21 @@ var render = function() {
       _c(
         "v-card-actions",
         [
+          _vm.title !== "Add"
+            ? _c(
+                "v-btn",
+                {
+                  attrs: { text: "", color: "red darken-3" },
+                  on: {
+                    click: function($event) {
+                      return _vm.$emit("processdelete")
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
           _c("v-spacer"),
           _vm._v(" "),
           _c(
@@ -140,10 +157,10 @@ var render = function() {
           _c(
             "v-btn",
             {
-              attrs: { color: "green darken-3", text: "" },
+              attrs: { text: "", color: "green darken-3" },
               on: {
                 click: function($event) {
-                  return _vm.saveRaw()
+                  return _vm.$emit("processrawsave")
                 }
               }
             },

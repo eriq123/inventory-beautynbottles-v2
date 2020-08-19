@@ -147,6 +147,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-raw-category": function appRawCategory() {
@@ -160,6 +168,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     "app-raw-converted-units": function appRawConvertedUnits() {
       return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./raw/rawConvertedUnits */ "./resources/js/components/pages/products/raw/rawConvertedUnits.vue"));
+    },
+    "app-raw-qrcode": function appRawQrcode() {
+      return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! qrcode.vue */ "./node_modules/qrcode.vue/dist/qrcode.vue.esm.js"));
     }
   },
   data: function data() {
@@ -167,6 +178,7 @@ __webpack_require__.r(__webpack_exports__);
       selected: false,
       showForm: false,
       dialogAction: null,
+      qrcode: null,
       formData: {
         category_id: 0,
         category_name: null,
@@ -235,29 +247,16 @@ __webpack_require__.r(__webpack_exports__);
       this.convert.quantity.name = this.convert.reorder_point.name = this.convertFiltered[0].name;
       this.convert.quantity.value = this.convert.reorder_point.value = this.convertFiltered[0].value;
     },
-    processadd: function processadd() {
+    processdelete: function processdelete() {
       var _this3 = this;
 
-      this.formData.quantity = this.convert.quantity.value * this.formData.quantity;
-      this.formData.reorder_point = this.convert.reorder_point.value * this.formData.reorder_point;
-      axios.post(this.dialogAction == "Add" ? "/products/raw/add" : "/products/raw/update", this.formData).then(function (response) {
-        var raw = response.data.raw;
-        raw.category_name = raw.category.name;
+      axios.post("/products/raw/delete", this.formData).then(function (response) {
+        _this3.$store.commit("showSnackbar", {
+          color: true,
+          text: "".concat(response.data.raw.name, " deleted.")
+        });
 
-        if (_this3.dialogAction == "Add") {
-          _this3.$store.commit("showSnackbar", {
-            color: true,
-            text: "".concat(raw.name, " added.")
-          });
-
-          _this3.items.push(raw);
-        } else {
-          _this3.$store.commit("showSnackbar", {
-            color: true,
-            text: "".concat(raw.name, " has been updated.")
-          }); // Object.assign(this.items[this.itemIndex], raw);
-
-        }
+        _this3.items.splice(_this3.itemIndex, 1);
 
         _this3.showForm = false;
       })["catch"](function (error) {
@@ -265,6 +264,39 @@ __webpack_require__.r(__webpack_exports__);
           console.log(error.response);
 
           _this3.errorAlert();
+        }
+      });
+    },
+    processrawsave: function processrawsave() {
+      var _this4 = this;
+
+      this.formData.quantity = this.convert.quantity.value * this.formData.quantity;
+      this.formData.reorder_point = this.convert.reorder_point.value * this.formData.reorder_point;
+      axios.post(this.dialogAction == "Add" ? "/products/raw/add" : "/products/raw/update", this.formData).then(function (response) {
+        var raw = response.data.raw;
+
+        if (_this4.dialogAction == "Add") {
+          _this4.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(raw.name, " added.")
+          });
+
+          _this4.items.push(raw);
+        } else {
+          _this4.$store.commit("showSnackbar", {
+            color: true,
+            text: "".concat(raw.name, " has been updated.")
+          });
+
+          Object.assign(_this4.items[_this4.itemIndex], raw);
+        }
+
+        _this4.showForm = false;
+      })["catch"](function (error) {
+        if (error.response) {
+          console.log(error.response);
+
+          _this4.errorAlert();
         }
       });
     },
@@ -283,6 +315,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     showAddForm: function showAddForm() {
       this.dialogAction = "Add";
+      this.qrcode = null;
       this.formData.name = null;
       this.formData.quantity = null;
       this.formData.reorder_point = null;
@@ -291,8 +324,21 @@ __webpack_require__.r(__webpack_exports__);
       this.convertFilter();
       this.showForm = true;
     },
+    showEditDialog: function showEditDialog(item) {
+      this.dialogAction = "Edit";
+      this.qrcode = item.qr_code;
+      this.itemIndex = this.items.indexOf(item);
+      this.formData.id = item.id;
+      this.formData.name = item.name;
+      this.formData.quantity = item.quantity;
+      this.formData.reorder_point = item.reorder_point;
+      this.formData.base_id = item.base.id;
+      this.formData.base_name = item.base.name;
+      this.convertFilter();
+      this.showForm = true;
+    },
     showrawitems: function showrawitems(item) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.selected = true;
       this.formData.category_id = item.id;
@@ -301,17 +347,16 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/products/raw/view", {
         id: this.formData.category_id
       }).then(function (response) {
-        _this4.items = response.data.raw;
-        console.log(response.data.raw);
-        _this4.loading = false;
+        _this5.items = response.data.raw;
+        _this5.loading = false;
       })["catch"](function (error) {
         if (error.response) {
           console.log(error.response);
 
-          _this4.errorAlert();
+          _this5.errorAlert();
         }
 
-        _this4.loading = false;
+        _this5.loading = false;
       });
     },
     errorAlert: function errorAlert() {
@@ -407,7 +452,8 @@ var render = function() {
                                   closedialog: function($event) {
                                     _vm.showForm = false
                                   },
-                                  processadd: _vm.processadd
+                                  processrawsave: _vm.processrawsave,
+                                  processdelete: _vm.processdelete
                                 },
                                 scopedSlots: _vm._u(
                                   [
@@ -592,7 +638,27 @@ var render = function() {
                                               formDataBaseName:
                                                 _vm.formData.base_name
                                             }
-                                          })
+                                          }),
+                                          _vm._v(" "),
+                                          _vm.qrcode
+                                            ? _c(
+                                                "v-col",
+                                                {
+                                                  staticClass: "py-0",
+                                                  attrs: { align: "center" }
+                                                },
+                                                [
+                                                  _c("app-raw-qrcode", {
+                                                    staticClass: "center-align",
+                                                    attrs: {
+                                                      value: _vm.qrcode,
+                                                      level: "H"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            : _vm._e()
                                         ]
                                       },
                                       proxy: true
@@ -600,7 +666,7 @@ var render = function() {
                                   ],
                                   null,
                                   false,
-                                  4087477311
+                                  3148865749
                                 )
                               })
                             ],
@@ -639,6 +705,7 @@ var render = function() {
                           items: _vm.items,
                           loading: _vm.loading
                         },
+                        on: { "click:row": _vm.showEditDialog },
                         scopedSlots: _vm._u(
                           [
                             {

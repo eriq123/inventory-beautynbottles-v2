@@ -24,7 +24,8 @@
                                 :title="dialogAction"
                                 :categoryName="formData.category_name"
                                 @closedialog="showForm = false"
-                                @processadd="processadd"
+                                @processrawsave="processrawsave"
+                                @processdelete="processdelete"
                             >
                                 <template #dialogForm>
                                     <v-col cols="12" class="py-0">
@@ -97,6 +98,18 @@
                                         "
                                         :formDataBaseName="formData.base_name"
                                     ></app-raw-converted-units>
+
+                                    <v-col
+                                        align="center"
+                                        class="py-0"
+                                        v-if="qrcode"
+                                    >
+                                        <app-raw-qrcode
+                                            :value="qrcode"
+                                            level="H"
+                                            class="center-align"
+                                        ></app-raw-qrcode>
+                                    </v-col>
                                 </template>
                             </app-raw-dialog>
                         </v-dialog>
@@ -113,6 +126,7 @@
                         :headers="headers"
                         :items="items"
                         :loading="loading"
+                        @click:row="showEditDialog"
                     >
                         <template #item.id="{item}">
                             RI - {{ item.id.toString().padStart(4, "0") }}
@@ -123,12 +137,6 @@
                         <template #item.reorder_point="{item}">
                             {{ item.reorder_point }} {{ item.base.name }}
                         </template>
-                        <!-- <template #item.qr="{item}">
-                            <app-qr-code
-                                :value="item.qr"
-                                level="H"
-                            ></app-qr-code>
-                        </template> -->
                     </v-data-table>
                 </v-card>
             </v-col>
@@ -142,7 +150,8 @@ export default {
         "app-raw-category": () => import("./raw/category"),
         "app-raw-menu": () => import("./raw/rawMenu"),
         "app-raw-dialog": () => import("./raw/rawDialog"),
-        "app-raw-converted-units": () => import("./raw/rawConvertedUnits")
+        "app-raw-converted-units": () => import("./raw/rawConvertedUnits"),
+        "app-raw-qrcode": () => import("qrcode.vue")
     },
     data() {
         return {
@@ -150,6 +159,7 @@ export default {
 
             showForm: false,
             dialogAction: null,
+            qrcode: null,
 
             formData: {
                 category_id: 0,
@@ -224,7 +234,25 @@ export default {
             this.convert.quantity.name = this.convert.reorder_point.name = this.convertFiltered[0].name;
             this.convert.quantity.value = this.convert.reorder_point.value = this.convertFiltered[0].value;
         },
-        processadd() {
+        processdelete() {
+            axios
+                .post("/products/raw/delete", this.formData)
+                .then(response => {
+                    this.$store.commit("showSnackbar", {
+                        color: true,
+                        text: `${response.data.raw.name} deleted.`
+                    });
+                    this.items.splice(this.itemIndex, 1);
+                    this.showForm = false;
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                        this.errorAlert();
+                    }
+                });
+        },
+        processrawsave() {
             this.formData.quantity =
                 this.convert.quantity.value * this.formData.quantity;
             this.formData.reorder_point =
@@ -238,7 +266,6 @@ export default {
                 )
                 .then(response => {
                     const raw = response.data.raw;
-                    raw.category_name = raw.category.name;
 
                     if (this.dialogAction == "Add") {
                         this.$store.commit("showSnackbar", {
@@ -251,7 +278,7 @@ export default {
                             color: true,
                             text: `${raw.name} has been updated.`
                         });
-                        // Object.assign(this.items[this.itemIndex], raw);
+                        Object.assign(this.items[this.itemIndex], raw);
                     }
 
                     this.showForm = false;
@@ -278,6 +305,7 @@ export default {
         },
         showAddForm() {
             this.dialogAction = "Add";
+            this.qrcode = null;
 
             this.formData.name = null;
             this.formData.quantity = null;
@@ -289,6 +317,24 @@ export default {
 
             this.showForm = true;
         },
+
+        showEditDialog(item) {
+            this.dialogAction = "Edit";
+            this.qrcode = item.qr_code;
+            this.itemIndex = this.items.indexOf(item);
+
+            this.formData.id = item.id;
+            this.formData.name = item.name;
+            this.formData.quantity = item.quantity;
+            this.formData.reorder_point = item.reorder_point;
+
+            this.formData.base_id = item.base.id;
+            this.formData.base_name = item.base.name;
+            this.convertFilter();
+
+            this.showForm = true;
+        },
+
         showrawitems(item) {
             this.selected = true;
             this.formData.category_id = item.id;
@@ -300,7 +346,6 @@ export default {
                 })
                 .then(response => {
                     this.items = response.data.raw;
-                    console.log(response.data.raw);
                     this.loading = false;
                 })
                 .catch(error => {
