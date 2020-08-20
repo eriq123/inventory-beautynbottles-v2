@@ -50,6 +50,7 @@ Route::middleware(['auth', 'web'])->group(function () {
                 Route::post('view', 'Products\AssembledController@view');
             });
             Route::post('search', 'Products\ProductsController@search');
+            Route::post('view', 'Products\ProductsController@view');
             Route::post('add', 'Products\ProductsController@store');
             Route::post('update', 'Products\ProductsController@update');
             Route::post('delete', 'Products\ProductsController@destroy');

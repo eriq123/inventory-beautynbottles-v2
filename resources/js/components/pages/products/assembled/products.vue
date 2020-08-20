@@ -3,7 +3,7 @@
         <v-col sm="10" offset-sm="1">
             <v-card flat>
                 <v-card-title>
-                    Category
+                    Products
                     <v-btn
                         text
                         outlined
@@ -22,7 +22,7 @@
                     @click:row="showRawItems"
                 >
                     <template #item.id="{item}">
-                        CI - {{ item.id.toString().padStart(4, "0") }}
+                        AP - {{ item.id.toString().padStart(4, "0") }}
                     </template>
                     <template #item.actions="{item}">
                         <v-btn
@@ -47,8 +47,8 @@
                             <td>
                                 <v-text-field
                                     autofocus
-                                    label="Category Name"
-                                    v-model="formData.category_name"
+                                    label="Product Name"
+                                    v-model="formData.product_name"
                                 ></v-text-field>
                             </td>
                             <td>
@@ -90,7 +90,7 @@ export default {
                     value: "id"
                 },
                 {
-                    text: "Category Name",
+                    text: "Product Name",
                     align: "start",
                     value: "name"
                 },
@@ -108,21 +108,21 @@ export default {
             formData: {
                 action: null,
                 id: 0,
-                category_name: null
+                product_name: null
             },
             itemIndex: -1
         };
     },
     mounted() {
-        this.getCategories();
+        this.getProducts();
     },
     methods: {
-        getCategories() {
+        getProducts() {
             this.loading = true;
             axios
-                .post("/products/category/view")
+                .post("/products/view")
                 .then(response => {
-                    this.items = response.data.category;
+                    this.items = response.data.product;
                     this.loading = false;
                 })
                 .catch(error => {
@@ -136,14 +136,14 @@ export default {
         showAddForm() {
             this.formData.action = "add";
             this.formData.id = 0;
-            this.formData.category_name = null;
+            this.formData.product_name = null;
             this.itemIndex = -1;
             this.showForm = true;
         },
         showUpdateForm(item) {
             this.formData.action = "update";
             this.formData.id = item.id;
-            this.formData.category_name = item.name;
+            this.formData.product_name = item.name;
             this.itemIndex = this.items.indexOf(item);
             this.showForm = true;
         },
@@ -152,13 +152,13 @@ export default {
                 if (confirm(`Are you sure you want to delete ${item.name}`)) {
                     this.loading = true;
                     axios
-                        .post("/products/category/delete", {
+                        .post("/products/delete", {
                             id: item.id
                         })
                         .then(response => {
                             this.$store.commit("showSnackbar", {
                                 color: true,
-                                text: `${response.data.category.name} deleted.`
+                                text: `${response.data.product.name} deleted.`
                             });
                             this.itemIndex = this.items.indexOf(item);
                             this.items.splice(this.itemIndex, 1);
@@ -177,7 +177,7 @@ export default {
             }
         },
         submitForm() {
-            if (this.formData.category_name) {
+            if (this.formData.product_name) {
                 this.loading = true;
                 if (this.formData.action == "add") {
                     this.processAdd();
@@ -188,22 +188,22 @@ export default {
             } else {
                 this.$store.commit("showSnackbar", {
                     color: false,
-                    text: "Category name is required."
+                    text: "Product name is required."
                 });
             }
         },
         processAdd() {
             axios
-                .post("/products/category/add", {
-                    name: this.formData.category_name
+                .post("/products/add", {
+                    name: this.formData.product_name
                 })
                 .then(response => {
                     this.$store.commit("showSnackbar", {
                         color: true,
-                        text: `${response.data.category.name} added.`
+                        text: `${response.data.product.name} added.`
                     });
-                    console.log(response.data.category);
-                    this.items.push(response.data.category);
+                    console.log(response.data.product);
+                    this.items.push(response.data.product);
                     this.loading = false;
                 })
                 .catch(error => {
@@ -216,18 +216,18 @@ export default {
         },
         processUpdate() {
             axios
-                .post("/products/category/update", {
+                .post("/products/update", {
                     id: this.formData.id,
-                    name: this.formData.category_name
+                    name: this.formData.product_name
                 })
                 .then(response => {
                     this.$store.commit("showSnackbar", {
                         color: true,
-                        text: `${response.data.category.name} updated.`
+                        text: `${response.data.product.name} updated.`
                     });
                     Object.assign(
                         this.items[this.itemIndex],
-                        response.data.category
+                        response.data.product
                     );
                     this.loading = false;
                 })
@@ -252,7 +252,7 @@ export default {
     computed: {
         customID: function() {
             return this.formData.id > 0
-                ? `CI - ${this.formData.id.toString().padStart(4, "0")}`
+                ? `AP - ${this.formData.id.toString().padStart(4, "0")}`
                 : "N/A";
         }
     }

@@ -161,16 +161,16 @@ __webpack_require__.r(__webpack_exports__);
       return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./raw/category */ "./resources/js/components/pages/products/raw/category.vue"));
     },
     "app-raw-menu": function appRawMenu() {
-      return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./raw/rawMenu */ "./resources/js/components/pages/products/raw/rawMenu.vue"));
+      return __webpack_require__.e(/*! import() */ 17).then(__webpack_require__.bind(null, /*! ./raw/rawMenu */ "./resources/js/components/pages/products/raw/rawMenu.vue"));
     },
     "app-raw-dialog": function appRawDialog() {
-      return __webpack_require__.e(/*! import() */ 17).then(__webpack_require__.bind(null, /*! ./raw/rawDialog */ "./resources/js/components/pages/products/raw/rawDialog.vue"));
+      return __webpack_require__.e(/*! import() */ 16).then(__webpack_require__.bind(null, /*! ./raw/rawDialog */ "./resources/js/components/pages/products/raw/rawDialog.vue"));
     },
     "app-raw-converted-units": function appRawConvertedUnits() {
       return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./raw/rawConvertedUnits */ "./resources/js/components/pages/products/raw/rawConvertedUnits.vue"));
     },
     "app-raw-qrcode": function appRawQrcode() {
-      return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! qrcode.vue */ "./node_modules/qrcode.vue/dist/qrcode.vue.esm.js"));
+      return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! qrcode.vue */ "./node_modules/qrcode.vue/dist/qrcode.vue.esm.js"));
     }
   },
   data: function data() {

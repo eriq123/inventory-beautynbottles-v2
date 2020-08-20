@@ -27,18 +27,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-assembled-crud": function appAssembledCrud() {
@@ -46,33 +34,73 @@ __webpack_require__.r(__webpack_exports__);
     },
     "app-assembled": function appAssembled() {
       return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./assembled/assembled.vue */ "./resources/js/components/pages/products/assembled/assembled.vue"));
+    },
+    "app-assembled-products": function appAssembledProducts() {
+      return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! ./assembled/products */ "./resources/js/components/pages/products/assembled/products.vue"));
     }
   },
   data: function data() {
     return {
-      // product selection
-      selected: {
-        id: null,
-        name: null
+      selected: false,
+      showForm: false,
+      dialogAction: null,
+      qrcode: null,
+      formData: {
+        category_id: 0,
+        category_name: null,
+        name: null,
+        quantity: null,
+        reorder_point: null,
+        base_id: 0,
+        base_name: null
       },
-      selectedRaws: [],
-      autocomplete: false
+      headers: [{
+        text: "Code",
+        align: "start",
+        value: "id"
+      }, {
+        text: "Raw Item Name",
+        value: "name"
+      }, {
+        text: "Quantity",
+        value: "quantity"
+      }, {
+        text: "Reorder Point",
+        value: "reorder_point"
+      }],
+      loading: false,
+      items: [],
+      itemIndex: -1
     };
   },
   methods: {
-    selectedProduct: function selectedProduct(value) {
-      if (value) {
-        this.selected = value;
-        this.selectedRaws = value.raws;
-        this.autocomplete = true;
-      } else {
-        this.selected = {
-          id: null,
-          name: null
-        };
-        this.autocomplete = false;
-      } // this.getOrFilterAssembled();
+    showrawitems: function showrawitems(item) {
+      var _this = this;
 
+      this.selected = true;
+      this.formData.category_id = item.id;
+      this.formData.category_name = item.name;
+      this.loading = true;
+      axios.post("/products/raw/view", {
+        id: this.formData.category_id
+      }).then(function (response) {
+        _this.items = response.data.raw;
+        _this.loading = false;
+      })["catch"](function (error) {
+        if (error.response) {
+          console.log(error.response);
+
+          _this.errorAlert();
+        }
+
+        _this.loading = false;
+      });
+    },
+    errorAlert: function errorAlert() {
+      this.$store.commit("showSnackbar", {
+        color: false,
+        text: "Something went wrong."
+      });
     }
   }
 });
@@ -97,53 +125,11 @@ var render = function() {
   return _c(
     "v-container",
     [
-      _c(
-        "v-row",
-        [
-          _c(
-            "v-col",
-            {
-              attrs: {
-                sm: "8",
-                "offset-sm": "2",
-                md: "6",
-                "offset-md": "3",
-                lg: "6",
-                "offset-lg": "3",
-                xl: "4",
-                "offset-xl": "4"
-              }
-            },
-            [
-              _c("app-assembled-crud", {
-                on: { selectedProduct: _vm.selectedProduct }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        [
-          _c(
-            "v-col",
-            [
-              _c("app-assembled", {
-                attrs: {
-                  autocomplete: _vm.autocomplete,
-                  selectedName: _vm.selected.name,
-                  selectedID: _vm.selected.id
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      )
+      !_vm.selected
+        ? _c("app-assembled-products", {
+            on: { showrawitems: _vm.showrawitems }
+          })
+        : _vm._e()
     ],
     1
   )

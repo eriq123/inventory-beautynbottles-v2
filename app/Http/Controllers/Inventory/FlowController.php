@@ -22,7 +22,7 @@ class FlowController extends Controller
             $this->data['items']->all();
         } else {
             // raw
-            $this->data['items'] = Raw::with('category')->get();
+            $this->data['items'] = Raw::with('category')->with('base')->get();
         }
         return response()->json($this->data);
     }
@@ -68,7 +68,7 @@ class FlowController extends Controller
 
             return;
         } else {
-            $this->data['raw'] = Raw::where('id', $request->id)->with('category')->first();
+            $this->data['raw'] = Raw::where('id', $request->id)->with('category')->with('base')->first();
 
             if ($request->action == 'add') {
                 $this->data['raw']->quantity += $request->quantity;

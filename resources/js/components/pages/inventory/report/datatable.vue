@@ -32,6 +32,9 @@
         </template>
         <template #item.sold="{item}"> ({{ item.sold }}) </template>
         <template #item.loss="{item}"> ({{ item.loss }}) </template>
+        <template #item.quantity="{item}">
+            {{ item.quantity }} {{ item.base.name }}
+        </template>
     </v-data-table>
 </template>
 

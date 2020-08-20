@@ -102,8 +102,8 @@ __webpack_require__.r(__webpack_exports__);
         align: "start",
         value: "name"
       }, {
-        text: "Action",
-        value: "action",
+        text: "Actions",
+        value: "actions",
         sortable: false
       }],
       items: [],
@@ -343,7 +343,7 @@ var render = function() {
                       }
                     },
                     {
-                      key: "item.action",
+                      key: "item.actions",
                       fn: function(ref) {
                         var item = ref.item
                         return [

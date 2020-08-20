@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
+    public function view()
+    {
+        $this->data['product']  = Product::all();
+
+        return response()->json($this->data);
+    }
+
     private function validation($request)
     {
         $request->validate([

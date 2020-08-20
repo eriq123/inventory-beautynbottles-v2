@@ -46,6 +46,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     toggleState: {
@@ -278,6 +281,21 @@ var render = function() {
         fn: function(ref) {
           var item = ref.item
           return [_vm._v(" (" + _vm._s(item.loss) + ") ")]
+        }
+      },
+      {
+        key: "item.quantity",
+        fn: function(ref) {
+          var item = ref.item
+          return [
+            _vm._v(
+              "\n        " +
+                _vm._s(item.quantity) +
+                " " +
+                _vm._s(item.base.name) +
+                "\n    "
+            )
+          ]
         }
       }
     ])
