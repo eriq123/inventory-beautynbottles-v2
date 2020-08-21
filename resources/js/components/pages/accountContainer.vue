@@ -14,10 +14,10 @@
                                     v-bind="attrs"
                                     v-on="on"
                                     @click="setFormData"
-                                    >mdi-reload</v-icon
+                                    >mdi-sync</v-icon
                                 >
                             </template>
-                            <span>Click me to check for updated value.</span>
+                            <span>Click me to get the updated details.</span>
                         </v-tooltip>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-4" text @click="updateAction">

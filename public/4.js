@@ -311,7 +311,7 @@ var render = function() {
                                             ),
                                             on
                                           ),
-                                          [_vm._v("mdi-reload")]
+                                          [_vm._v("mdi-sync")]
                                         )
                                       ]
                                     }
@@ -319,13 +319,13 @@ var render = function() {
                                 ],
                                 null,
                                 false,
-                                3549201651
+                                1465804389
                               )
                             },
                             [
                               _vm._v(" "),
                               _c("span", [
-                                _vm._v("Click me to check for updated value.")
+                                _vm._v("Click me to get the updated details.")
                               ])
                             ]
                           )
