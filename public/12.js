@@ -85,10 +85,7 @@ __webpack_require__.r(__webpack_exports__);
           if (error.response) {
             console.log(error.response);
 
-            _this.$store.commit("showSnackbar", {
-              color: false,
-              text: "Something went wrong."
-            });
+            _this.$store.commit("errorSnackbar");
           }
 
           _this.loading = false;
@@ -122,10 +119,7 @@ __webpack_require__.r(__webpack_exports__);
           if (error.response) {
             console.log(error.response);
 
-            _this2.$store.commit("showSnackbar", {
-              color: false,
-              text: "Something went wrong."
-            });
+            _this2.$store.commit("errorSnackbar");
           }
 
           _this2.loading = false;
@@ -156,10 +150,7 @@ __webpack_require__.r(__webpack_exports__);
           if (error.response) {
             console.log(error.response);
 
-            _this3.$store.commit("showSnackbar", {
-              color: false,
-              text: "Something went wrong."
-            });
+            _this3.$store.commit("errorSnackbar");
           }
 
           _this3.loading = false;
@@ -188,10 +179,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.loading = false;
       })["catch"](function (error) {
         if (error.response) {
-          _this4.$store.commit("showSnackbar", {
-            color: false,
-            text: "Something went wrong."
-          });
+          _this4.$store.commit("errorSnackbar");
 
           console.log(error.response);
         }

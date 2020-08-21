@@ -36,7 +36,7 @@ __webpack_require__.r(__webpack_exports__);
       return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./assembled/assembled.vue */ "./resources/js/components/pages/products/assembled/assembled.vue"));
     },
     "app-assembled-products": function appAssembledProducts() {
-      return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! ./assembled/products */ "./resources/js/components/pages/products/assembled/products.vue"));
+      return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! ./assembled/products */ "./resources/js/components/pages/products/assembled/products.vue"));
     }
   },
   data: function data() {
@@ -90,16 +90,10 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response) {
           console.log(error.response);
 
-          _this.errorAlert();
+          _this.$store.commit("errorSnackbar");
         }
 
         _this.loading = false;
-      });
-    },
-    errorAlert: function errorAlert() {
-      this.$store.commit("showSnackbar", {
-        color: false,
-        text: "Something went wrong."
       });
     }
   }

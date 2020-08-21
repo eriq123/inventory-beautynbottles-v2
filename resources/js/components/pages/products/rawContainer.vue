@@ -219,7 +219,7 @@ export default {
             .catch(error => {
                 if (error.response) {
                     console.log(error.response);
-                    this.errorAlert();
+                    this.$store.commit("errorSnackbar");
                 }
             });
     },
@@ -248,7 +248,7 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.errorAlert();
+                        this.$store.commit("errorSnackbar");
                     }
                 });
         },
@@ -286,7 +286,7 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.errorAlert();
+                        this.$store.commit("errorSnackbar");
                     }
                 });
         },
@@ -351,16 +351,10 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.errorAlert();
+                        this.$store.commit("errorSnackbar");
                     }
                     this.loading = false;
                 });
-        },
-        errorAlert() {
-            this.$store.commit("showSnackbar", {
-                color: false,
-                text: "Something went wrong."
-            });
         }
     },
     computed: {}

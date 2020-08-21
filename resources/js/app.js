@@ -20,6 +20,18 @@ const app = new Vue({
             import("./components/pages/inventory/flowContainer.vue"),
         "app-product-report": () =>
             import("./components/pages/inventory/reportContainer.vue")
+    },
+    beforeCreate: function() {
+        axios
+            .get("/user")
+            .then(response => {
+                this.$store.commit("setUser", response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    this.$store.commit("errorSnackbar");
+                }
+            });
     }
 });
 // render: h => h(App),

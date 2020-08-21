@@ -11,9 +11,9 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn href="#" color="pink accent-1" text>
+            <v-btn href="/account" color="pink accent-1" text>
                 <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
-                <template v-if="user.is_admin">
+                <template v-if="getUser.is_admin">
                     {{ fullName }} (ADMIN)
                 </template>
                 <template v-else>
@@ -30,7 +30,7 @@
         </v-app-bar>
 
         <v-navigation-drawer v-model="sidebar" app>
-            <template v-if="user.is_admin">
+            <template v-if="getUser.is_admin">
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
                         <v-list-item-title>Inventory (ADMIN)</v-list-item-title>
@@ -71,8 +71,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-    props: ["route", "user"],
+    props: ["route"],
     components: {
         "app-snackbar": () => import("./common/snackbar"),
         "app-sidebar": () => import("./common/sidebar.vue")
@@ -107,10 +108,14 @@ export default {
             ]
         };
     },
+    created() {},
     computed: {
         fullName() {
-            return this.user.first_name + " " + this.user.last_name;
-        }
+            return this.getUser.first_name + " " + this.getUser.last_name;
+        },
+        ...mapGetters({
+            getUser: "getUser"
+        })
     }
 };
 </script>

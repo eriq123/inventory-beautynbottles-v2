@@ -116,10 +116,7 @@ export default {
                                 text: error.response.data.error_message
                             });
                         } else {
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: `Something went wrong. `
-                            });
+                            this.$store.commit("errorSnackbar");
                         }
                     }
                 });

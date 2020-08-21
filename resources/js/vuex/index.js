@@ -9,6 +9,10 @@ const store = new Vuex.Store({
             color: null,
             text: null,
             visible: false
+        },
+        user: {
+            first_name: "",
+            last_name: ""
         }
     },
     mutations: {
@@ -18,8 +22,30 @@ const store = new Vuex.Store({
             state.snackbar.text = payload.text;
             state.snackbar.visible = true;
         },
+        errorSnackbar(state) {
+            state.snackbar.color = "red darken-1";
+            state.snackbar.text = "Something went wrong. Please try again.";
+            state.snackbar.visible = true;
+        },
         closeSnackbar(state) {
             state.snackbar.visible = false;
+        },
+
+        setUser(state, payload) {
+            state.user = null;
+            state.user = payload;
+        },
+        setUserFirstAndLastName(state, payload) {
+            state.user.first_name = payload.first_name;
+            state.user.last_name = payload.last_name;
+        },
+        serUsername(state, payload) {
+            state.user.username = payload;
+        }
+    },
+    getters: {
+        getUser: state => {
+            return state.user;
         }
     }
 });

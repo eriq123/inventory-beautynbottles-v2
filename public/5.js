@@ -128,10 +128,7 @@ __webpack_require__.r(__webpack_exports__);
               text: error.response.data.error_message
             });
           } else {
-            _this.$store.commit("showSnackbar", {
-              color: false,
-              text: "Something went wrong. "
-            });
+            _this.$store.commit("errorSnackbar");
           }
         }
       });

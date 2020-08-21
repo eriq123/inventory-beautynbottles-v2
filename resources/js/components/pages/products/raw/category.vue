@@ -128,7 +128,7 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.errorAlert();
+                        this.$store.commit("errorSnackbar");
                     }
                     this.loading = false;
                 });
@@ -167,13 +167,13 @@ export default {
                         .catch(error => {
                             if (error.response) {
                                 console.log(error.response);
-                                this.errorAlert();
+                                this.$store.commit("errorSnackbar");
                             }
                             this.loading = false;
                         });
                 }
             } else {
-                this.errorAlert();
+                this.$store.commit("errorSnackbar");
             }
         },
         submitForm() {
@@ -209,7 +209,7 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.errorAlert();
+                        this.$store.commit("errorSnackbar");
                     }
                     this.loading = false;
                 });
@@ -234,19 +234,13 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.errorAlert();
+                        this.$store.commit("errorSnackbar");
                     }
                     this.loading = false;
                 });
         },
         showRawItems(item) {
             this.$emit("showrawitems", item);
-        },
-        errorAlert() {
-            this.$store.commit("showSnackbar", {
-                color: false,
-                text: "Something went wrong."
-            });
         }
     },
     computed: {

@@ -22,7 +22,10 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::middleware(['user'])->group(function () {
 
+        Route::get('/user', 'MainController@user');
         Route::get('/account', 'MainController@account');
+        Route::post('/account/update', 'AccountController@update');
+        Route::post('/account/password', 'AccountController@updatePassword');
 
         Route::prefix('products')->group(function () {
 

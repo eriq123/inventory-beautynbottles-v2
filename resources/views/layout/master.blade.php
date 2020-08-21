@@ -25,7 +25,7 @@
 <body>
     <div id="app">
         <v-app>
-            <app-header-sidebar :route="{{$route}}" :user="{{$user}}"></app-header-sidebar>
+            <app-header-sidebar :route="{{$route}}"></app-header-sidebar>
 
             <v-main app>
                 @yield('content')

@@ -178,10 +178,7 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$store.commit("showSnackbar", {
-                            color: false,
-                            text: "Something went wrong."
-                        });
+                        this.$store.commit("errorSnackbar");
                     }
                 });
         },
@@ -204,10 +201,7 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$store.commit("showSnackbar", {
-                            color: false,
-                            text: "Something went wrong."
-                        });
+                        this.$store.commit("errorSnackbar");
                     }
                     this.autocompleteLoading = false;
                 });
@@ -233,10 +227,7 @@ export default {
                     .catch(error => {
                         if (error.response) {
                             console.log(error.response);
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
-                            });
+                            this.$store.commit("errorSnackbar");
                         }
                     });
             } else {
@@ -273,10 +264,7 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.$store.commit("showSnackbar", {
-                            color: false,
-                            text: "Something went wrong."
-                        });
+                        this.$store.commit("errorSnackbar");
                     }
                 });
         }

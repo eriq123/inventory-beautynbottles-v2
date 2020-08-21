@@ -70,10 +70,7 @@ export default {
                     .catch(error => {
                         if (error.response) {
                             console.log(error.response);
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
-                            });
+                            this.$store.commit("errorSnackbar");
                         }
                         this.loading = false;
                     });
@@ -104,10 +101,7 @@ export default {
                     .catch(error => {
                         if (error.response) {
                             console.log(error.response);
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
-                            });
+                            this.$store.commit("errorSnackbar");
                         }
                         this.loading = false;
                     });
@@ -136,10 +130,7 @@ export default {
                     .catch(error => {
                         if (error.response) {
                             console.log(error.response);
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: "Something went wrong."
-                            });
+                            this.$store.commit("errorSnackbar");
                         }
                         this.loading = false;
                     });
@@ -166,10 +157,7 @@ export default {
                 })
                 .catch(error => {
                     if (error.response) {
-                        this.$store.commit("showSnackbar", {
-                            color: false,
-                            text: "Something went wrong."
-                        });
+                        this.$store.commit("errorSnackbar");
                         console.log(error.response);
                     }
                     this.loading = false;
