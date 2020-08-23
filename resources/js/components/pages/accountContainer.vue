@@ -17,7 +17,9 @@
                                     >mdi-sync</v-icon
                                 >
                             </template>
-                            <span>Click me to get the updated details.</span>
+                            <span>
+                                Click me if you don't see your account details.
+                            </span>
                         </v-tooltip>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-4" text @click="updateAction">

@@ -11,18 +11,8 @@ class AssembledController extends Controller
 {
     public function view(Request $request)
     {
-        if ($request->id) {
-            $this->data['raw'] = Product::find($request->id)->raws()->orderBy('name')->get();
-        } else {
-            $this->data['raw'] = [];
-            // $this->data['raw'] = Product::with('raws')->get();
-            // $products = Product::has('raws')->get(); //i might not want this becuase i need to list all probably
-            // $this->data['items'] = $products->map(function ($v, $k) {
-            //     $v->raws = $v->raws()->orderBy('name')->get();
-            //     return $v;
-            // });
-            // $this->data['items']->all();
-        }
+        $this->data['raw'] = Product::find($request->id)->raws()->with('base')->with('category')->orderBy('name')->get();
+
         return response()->json($this->data);
     }
 
@@ -42,7 +32,19 @@ class AssembledController extends Controller
             'quantity' => $request->quantity
         ]);
 
-        $this->data['product'] = Product::find($this->data['product']->id)->raws()->get();
+        $this->data['product'] = Product::find($this->data['product']->id)->raws()->with('base')->with('category')->get();
+
+        return response()->json($this->data);
+    }
+
+    public function update(Request $request)
+    {
+        $this->validateAndFindProduct($request);
+        $this->data['product']->raws()->updateExistingPivot($request->raw_id, [
+            'quantity' => $request->quantity
+        ]);
+
+        $this->data['product'] = Product::find($this->data['product']->id)->raws()->with('base')->with('category')->get();
 
         return response()->json($this->data);
     }
@@ -53,7 +55,7 @@ class AssembledController extends Controller
         $this->validateAndFindProduct($request);
         $this->data['product']->raws()->detach($request->raw_id);
 
-        $this->data['product'] = Product::find($this->data['product']->id)->raws()->get();
+        $this->data['product'] = Product::find($this->data['product']->id)->raws()->with('base')->with('category')->get();
 
         return response()->json($this->data);
     }

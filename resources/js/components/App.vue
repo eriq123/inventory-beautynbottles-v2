@@ -23,7 +23,7 @@
 
             <v-divider vertical></v-divider>
 
-            <v-btn text href="/logout" class="pink--text text--accent-1">
+            <v-btn text @click="logout" class="pink--text text--accent-1">
                 <v-icon class="mr-1">mdi-logout</v-icon>
                 logout
             </v-btn>
@@ -109,6 +109,11 @@ export default {
         };
     },
     created() {},
+    methods: {
+        logout() {
+            window.location.href = "/logout";
+        }
+    },
     computed: {
         fullName() {
             return this.getUser.first_name + " " + this.getUser.last_name;

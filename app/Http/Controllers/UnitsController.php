@@ -15,6 +15,13 @@ class UnitsController extends Controller
         return response()->json($this->data);
     }
 
+    public function getConvertByBase(Request $request)
+    {
+        // $this->data['base'] = Base::findorFail($request->id);
+        $this->data['convert'] = Convert::with('base')->where('base_id', $request->id)->get();
+        return response()->json($this->data);
+    }
+
     // public function getBase()
     // {
     //     $this->data['base'] = Base::all();
@@ -28,9 +35,4 @@ class UnitsController extends Controller
     //     return response()->json($this->data);
     // }
 
-    // public function getConvertByBase(Request $request)
-    // {
-    //     $this->data['convert'] = Convert::with('base')->where('base_id', $request->id)->get();
-    //     return response()->json($this->data);
-    // }
 }

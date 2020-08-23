@@ -18,6 +18,7 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::prefix('units')->group(function () {
         Route::post('all', 'UnitsController@all');
+        Route::post('convertsByBase', 'UnitsController@getConvertByBase');
     });
 
     Route::middleware(['user'])->group(function () {
@@ -39,7 +40,7 @@ Route::middleware(['auth', 'web'])->group(function () {
 
             Route::prefix('raw')->group(function () {
                 Route::get('/', 'MainController@raw');
-                Route::post('search', 'Products\RawController@search');
+                // Route::post('search', 'Products\RawController@search');
                 Route::post('view', 'Products\RawController@view');
                 Route::post('add', 'Products\RawController@store');
                 Route::post('update', 'Products\RawController@update');
@@ -49,10 +50,11 @@ Route::middleware(['auth', 'web'])->group(function () {
             Route::prefix('assembled')->group(function () {
                 Route::get('/', 'MainController@assembled');
                 Route::post('attach', 'Products\AssembledController@attach');
+                Route::post('update', 'Products\AssembledController@update');
                 Route::post('detach', 'Products\AssembledController@detach');
                 Route::post('view', 'Products\AssembledController@view');
             });
-            Route::post('search', 'Products\ProductsController@search');
+            // Route::post('search', 'Products\ProductsController@search');
             Route::post('view', 'Products\ProductsController@view');
             Route::post('add', 'Products\ProductsController@store');
             Route::post('update', 'Products\ProductsController@update');

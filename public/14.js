@@ -155,6 +155,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-raw-category": function appRawCategory() {
@@ -197,10 +206,12 @@ __webpack_require__.r(__webpack_exports__);
         value: "name"
       }, {
         text: "Quantity",
-        value: "quantity"
+        value: "quantity",
+        align: "end"
       }, {
         text: "Reorder Point",
-        value: "reorder_point"
+        value: "reorder_point",
+        align: "end"
       }],
       loading: false,
       items: [],
@@ -325,7 +336,7 @@ __webpack_require__.r(__webpack_exports__);
       this.showForm = true;
     },
     showEditDialog: function showEditDialog(item) {
-      this.dialogAction = "Edit";
+      this.dialogAction = "Update";
       this.qrcode = item.qr_code;
       this.itemIndex = this.items.indexOf(item);
       this.formData.id = item.id;
@@ -693,66 +704,87 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _c("v-data-table", {
-                        attrs: {
-                          headers: _vm.headers,
-                          items: _vm.items,
-                          loading: _vm.loading
-                        },
-                        on: { "click:row": _vm.showEditDialog },
-                        scopedSlots: _vm._u(
-                          [
-                            {
-                              key: "item.id",
-                              fn: function(ref) {
-                                var item = ref.item
-                                return [
-                                  _vm._v(
-                                    "\n                        RI - " +
-                                      _vm._s(
-                                        item.id.toString().padStart(4, "0")
-                                      ) +
-                                      "\n                    "
-                                  )
-                                ]
-                              }
-                            },
-                            {
-                              key: "item.quantity",
-                              fn: function(ref) {
-                                var item = ref.item
-                                return [
-                                  _vm._v(
-                                    "\n                        " +
-                                      _vm._s(item.quantity) +
-                                      " " +
-                                      _vm._s(item.base.name) +
-                                      "\n                    "
-                                  )
-                                ]
-                              }
-                            },
-                            {
-                              key: "item.reorder_point",
-                              fn: function(ref) {
-                                var item = ref.item
-                                return [
-                                  _vm._v(
-                                    "\n                        " +
-                                      _vm._s(item.reorder_point) +
-                                      " " +
-                                      _vm._s(item.base.name) +
-                                      "\n                    "
-                                  )
-                                ]
-                              }
-                            }
-                          ],
-                          null,
-                          false,
-                          2027255434
-                        )
-                      })
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-row",
+                            [
+                              _c(
+                                "v-col",
+                                { attrs: { sm: "12" } },
+                                [
+                                  _c("v-data-table", {
+                                    attrs: {
+                                      headers: _vm.headers,
+                                      items: _vm.items,
+                                      loading: _vm.loading
+                                    },
+                                    on: { "click:row": _vm.showEditDialog },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "item.id",
+                                          fn: function(ref) {
+                                            var item = ref.item
+                                            return [
+                                              _vm._v(
+                                                "\n                                    RI -\n                                    " +
+                                                  _vm._s(
+                                                    item.id
+                                                      .toString()
+                                                      .padStart(4, "0")
+                                                  ) +
+                                                  "\n                                "
+                                              )
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          key: "item.quantity",
+                                          fn: function(ref) {
+                                            var item = ref.item
+                                            return [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(item.quantity) +
+                                                  " " +
+                                                  _vm._s(item.base.name) +
+                                                  "\n                                "
+                                              )
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          key: "item.reorder_point",
+                                          fn: function(ref) {
+                                            var item = ref.item
+                                            return [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(item.reorder_point) +
+                                                  "\n                                    " +
+                                                  _vm._s(item.base.name) +
+                                                  "\n                                "
+                                              )
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      null,
+                                      false,
+                                      846620746
+                                    )
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
                     ],
                     1
                   )

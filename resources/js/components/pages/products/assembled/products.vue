@@ -19,7 +19,7 @@
                     :headers="headers"
                     :items="items"
                     :loading="loading"
-                    @click:row="showRawItems"
+                    @click:row="productSelected"
                 >
                     <template #item.id="{item}">
                         AP - {{ item.id.toString().padStart(4, "0") }}
@@ -34,7 +34,7 @@
                         <v-btn
                             text
                             color="red darken-4"
-                            @click.stop="deleteProcess(item)"
+                            @click.stop="processDelete(item)"
                             >Delete</v-btn
                         >
                     </template>
@@ -80,6 +80,11 @@
 
 <script>
 export default {
+    props: {
+        rawItemsReady: {
+            type: Boolean
+        }
+    },
     components: {},
     data() {
         return {
@@ -117,22 +122,6 @@ export default {
         this.getProducts();
     },
     methods: {
-        getProducts() {
-            this.loading = true;
-            axios
-                .post("/products/view")
-                .then(response => {
-                    this.items = response.data.product;
-                    this.loading = false;
-                })
-                .catch(error => {
-                    if (error.response) {
-                        console.log(error.response);
-                        this.errorAlert();
-                    }
-                    this.loading = false;
-                });
-        },
         showAddForm() {
             this.formData.action = "add";
             this.formData.id = 0;
@@ -146,35 +135,6 @@ export default {
             this.formData.product_name = item.name;
             this.itemIndex = this.items.indexOf(item);
             this.showForm = true;
-        },
-        deleteProcess(item) {
-            if (item.id) {
-                if (confirm(`Are you sure you want to delete ${item.name}`)) {
-                    this.loading = true;
-                    axios
-                        .post("/products/delete", {
-                            id: item.id
-                        })
-                        .then(response => {
-                            this.$store.commit("showSnackbar", {
-                                color: true,
-                                text: `${response.data.product.name} deleted.`
-                            });
-                            this.itemIndex = this.items.indexOf(item);
-                            this.items.splice(this.itemIndex, 1);
-                            this.loading = false;
-                        })
-                        .catch(error => {
-                            if (error.response) {
-                                console.log(error.response);
-                                this.errorAlert();
-                            }
-                            this.loading = false;
-                        });
-                }
-            } else {
-                this.errorAlert();
-            }
         },
         submitForm() {
             if (this.formData.product_name) {
@@ -192,8 +152,23 @@ export default {
                 });
             }
         },
-        processAdd() {
-            axios
+        async getProducts() {
+            this.loading = true;
+            await axios
+                .post("/products/view")
+                .then(response => {
+                    this.items = response.data.product;
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                        this.$store.commit("errorSnackbar");
+                    }
+                });
+            this.loading = false;
+        },
+        async processAdd() {
+            await axios
                 .post("/products/add", {
                     name: this.formData.product_name
                 })
@@ -204,18 +179,17 @@ export default {
                     });
                     console.log(response.data.product);
                     this.items.push(response.data.product);
-                    this.loading = false;
                 })
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.errorAlert();
+                        this.$store.commit("errorSnackbar");
                     }
-                    this.loading = false;
                 });
+            this.loading = false;
         },
-        processUpdate() {
-            axios
+        async processUpdate() {
+            await axios
                 .post("/products/update", {
                     id: this.formData.id,
                     name: this.formData.product_name
@@ -229,24 +203,52 @@ export default {
                         this.items[this.itemIndex],
                         response.data.product
                     );
-                    this.loading = false;
                 })
                 .catch(error => {
                     if (error.response) {
                         console.log(error.response);
-                        this.errorAlert();
+                        this.$store.commit("errorSnackbar");
                     }
-                    this.loading = false;
                 });
+            this.loading = false;
         },
-        showRawItems(item) {
-            this.$emit("showrawitems", item);
+        async processDelete(item) {
+            if (item.id) {
+                if (confirm(`Are you sure you want to delete ${item.name}`)) {
+                    this.loading = true;
+                    await axios
+                        .post("/products/delete", {
+                            id: item.id
+                        })
+                        .then(response => {
+                            this.$store.commit("showSnackbar", {
+                                color: true,
+                                text: `${response.data.product.name} deleted.`
+                            });
+                            this.itemIndex = this.items.indexOf(item);
+                            this.items.splice(this.itemIndex, 1);
+                        })
+                        .catch(error => {
+                            if (error.response) {
+                                console.log(error.response);
+                                this.$store.commit("errorSnackbar");
+                            }
+                        });
+                    this.loading = false;
+                }
+            } else {
+                this.$store.commit("errorSnackbar");
+            }
         },
-        errorAlert() {
-            this.$store.commit("showSnackbar", {
-                color: false,
-                text: "Something went wrong."
-            });
+        productSelected(item) {
+            if (this.rawItemsReady) {
+                this.$emit("productselected", item);
+            } else {
+                this.$store.commit("showSnackbar", {
+                    color: false,
+                    text: "Raw items are still loading..."
+                });
+            }
         }
     },
     computed: {

@@ -2222,6 +2222,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   created: function created() {},
+  methods: {
+    logout: function logout() {
+      window.location.href = "/logout";
+    }
+  },
   computed: _objectSpread({
     fullName: function fullName() {
       return this.getUser.first_name + " " + this.getUser.last_name;
@@ -14643,7 +14648,8 @@ var render = function() {
             "v-btn",
             {
               staticClass: "pink--text text--accent-1",
-              attrs: { text: "", href: "/logout" }
+              attrs: { text: "" },
+              on: { click: _vm.logout }
             },
             [
               _c("v-icon", { staticClass: "mr-1" }, [_vm._v("mdi-logout")]),
@@ -71962,7 +71968,7 @@ var app = new Vue({
       return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
     },
     "app-product-assembled": function appProductAssembled() {
-      return __webpack_require__.e(/*! import() */ 10).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(10), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
     },
     "app-product-flow": function appProductFlow() {
       return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/flowContainer.vue */ "./resources/js/components/pages/inventory/flowContainer.vue"));

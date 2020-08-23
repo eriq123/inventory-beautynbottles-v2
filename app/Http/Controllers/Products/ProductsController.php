@@ -32,20 +32,20 @@ class ProductsController extends Controller
         return response()->json($this->data);
     }
 
-    public function search(Request $request)
-    {
-        $products = Product::where('name', 'LIKE', $request->name . '%')
-            ->orderBy('name')
-            ->limit(5)
-            ->get();
+    // public function search(Request $request)
+    // {
+    //     $products = Product::where('name', 'LIKE', $request->name . '%')
+    //         ->orderBy('name')
+    //         ->limit(5)
+    //         ->get();
 
-        $this->data['product'] = $products->map(function ($v, $k) {
-            $v->raws = $v->raws()->get();
-            return $v;
-        });
+    //     $this->data['product'] = $products->map(function ($v, $k) {
+    //         $v->raws = $v->raws()->get();
+    //         return $v;
+    //     });
 
-        return response()->json($this->data);
-    }
+    //     return response()->json($this->data);
+    // }
 
     public function update(Request $request)
     {

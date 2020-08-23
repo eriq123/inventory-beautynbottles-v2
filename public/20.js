@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[13],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[20],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/products/assembled/products.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************************************!*\
@@ -98,11 +98,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    rawItemsReady: {
-      type: Boolean
-    }
-  },
   components: {},
   data: function data() {
     return {
@@ -128,45 +123,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         id: 0,
         product_name: null
       },
-      itemIndex: -1
+      itemIndex: -1,
+      rawItemsReady: false
     };
   },
   mounted: function mounted() {
     this.getProducts();
+    this.loadRawItems();
   },
   methods: {
-    showAddForm: function showAddForm() {
-      this.formData.action = "add";
-      this.formData.id = 0;
-      this.formData.product_name = null;
-      this.itemIndex = -1;
-      this.showForm = true;
-    },
-    showUpdateForm: function showUpdateForm(item) {
-      this.formData.action = "update";
-      this.formData.id = item.id;
-      this.formData.product_name = item.name;
-      this.itemIndex = this.items.indexOf(item);
-      this.showForm = true;
-    },
-    submitForm: function submitForm() {
-      if (this.formData.product_name) {
-        this.loading = true;
-
-        if (this.formData.action == "add") {
-          this.processAdd();
-        } else {
-          this.processUpdate();
-        }
-
-        this.showForm = false;
-      } else {
-        this.$store.commit("showSnackbar", {
-          color: false,
-          text: "Product name is required."
-        });
-      }
-    },
     getProducts: function getProducts() {
       var _this = this;
 
@@ -198,7 +163,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    processAdd: function processAdd() {
+    loadRawItems: function loadRawItems() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
@@ -206,18 +171,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
-                return axios.post("/products/add", {
-                  name: _this2.formData.product_name
-                }).then(function (response) {
-                  _this2.$store.commit("showSnackbar", {
-                    color: true,
-                    text: "".concat(response.data.product.name, " added.")
-                  });
+                _this2.$store.commit("showSnackbar", {
+                  color: true,
+                  text: "Loading all raw items..."
+                });
 
-                  console.log(response.data.product);
+                _context2.next = 3;
+                return axios.post("/products/raw/view").then(function (response) {
+                  response.data.raw;
+                  console.log(response.data.raw);
+                  setTimeout(function () {
+                    _this2.$store.commit("showSnackbar", {
+                      color: true,
+                      text: "Raw items complete..."
+                    });
 
-                  _this2.items.push(response.data.product);
+                    _this2.rawItemsReady = true;
+                  }, 5000);
                 })["catch"](function (error) {
                   if (error.response) {
                     console.log(error.response);
@@ -225,9 +195,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     _this2.$store.commit("errorSnackbar");
                   }
                 });
-
-              case 2:
-                _this2.loading = false;
 
               case 3:
               case "end":
@@ -237,7 +204,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    processUpdate: function processUpdate() {
+    showAddForm: function showAddForm() {
+      this.formData.action = "add";
+      this.formData.id = 0;
+      this.formData.product_name = null;
+      this.itemIndex = -1;
+      this.showForm = true;
+    },
+    showUpdateForm: function showUpdateForm(item) {
+      this.formData.action = "update";
+      this.formData.id = item.id;
+      this.formData.product_name = item.name;
+      this.itemIndex = this.items.indexOf(item);
+      this.showForm = true;
+    },
+    deleteProcess: function deleteProcess(item) {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
@@ -245,17 +226,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.next = 2;
-                return axios.post("/products/update", {
-                  id: _this3.formData.id,
-                  name: _this3.formData.product_name
+                if (!item.id) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                if (!confirm("Are you sure you want to delete ".concat(item.name))) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _this3.loading = true;
+                _context3.next = 5;
+                return axios.post("/products/delete", {
+                  id: item.id
                 }).then(function (response) {
                   _this3.$store.commit("showSnackbar", {
                     color: true,
-                    text: "".concat(response.data.product.name, " updated.")
+                    text: "".concat(response.data.product.name, " deleted.")
                   });
 
-                  Object.assign(_this3.items[_this3.itemIndex], response.data.product);
+                  _this3.itemIndex = _this3.items.indexOf(item);
+
+                  _this3.items.splice(_this3.itemIndex, 1);
                 })["catch"](function (error) {
                   if (error.response) {
                     console.log(error.response);
@@ -264,10 +257,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
                 });
 
-              case 2:
+              case 5:
                 _this3.loading = false;
 
-              case 3:
+              case 6:
+                _context3.next = 9;
+                break;
+
+              case 8:
+                _this3.$store.commit("errorSnackbar");
+
+              case 9:
               case "end":
                 return _context3.stop();
             }
@@ -275,7 +275,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    processDelete: function processDelete(item) {
+    submitForm: function submitForm() {
+      if (this.formData.product_name) {
+        this.loading = true;
+
+        if (this.formData.action == "add") {
+          this.processAdd();
+        } else {
+          this.processUpdate();
+        }
+
+        this.showForm = false;
+      } else {
+        this.$store.commit("showSnackbar", {
+          color: false,
+          text: "Product name is required."
+        });
+      }
+    },
+    processAdd: function processAdd() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
@@ -283,29 +301,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                if (!item.id) {
-                  _context4.next = 8;
-                  break;
-                }
-
-                if (!confirm("Are you sure you want to delete ".concat(item.name))) {
-                  _context4.next = 6;
-                  break;
-                }
-
-                _this4.loading = true;
-                _context4.next = 5;
-                return axios.post("/products/delete", {
-                  id: item.id
+                _context4.next = 2;
+                return axios.post("/products/add", {
+                  name: _this4.formData.product_name
                 }).then(function (response) {
                   _this4.$store.commit("showSnackbar", {
                     color: true,
-                    text: "".concat(response.data.product.name, " deleted.")
+                    text: "".concat(response.data.product.name, " added.")
                   });
 
-                  _this4.itemIndex = _this4.items.indexOf(item);
+                  console.log(response.data.product);
 
-                  _this4.items.splice(_this4.itemIndex, 1);
+                  _this4.items.push(response.data.product);
                 })["catch"](function (error) {
                   if (error.response) {
                     console.log(error.response);
@@ -314,17 +321,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
                 });
 
-              case 5:
+              case 2:
                 _this4.loading = false;
 
-              case 6:
-                _context4.next = 9;
-                break;
-
-              case 8:
-                _this4.$store.commit("errorSnackbar");
-
-              case 9:
+              case 3:
               case "end":
                 return _context4.stop();
             }
@@ -332,13 +332,51 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
-    productSelected: function productSelected(item) {
+    processUpdate: function processUpdate() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return axios.post("/products/update", {
+                  id: _this5.formData.id,
+                  name: _this5.formData.product_name
+                }).then(function (response) {
+                  _this5.$store.commit("showSnackbar", {
+                    color: true,
+                    text: "".concat(response.data.product.name, " updated.")
+                  });
+
+                  Object.assign(_this5.items[_this5.itemIndex], response.data.product);
+                })["catch"](function (error) {
+                  if (error.response) {
+                    console.log(error.response);
+
+                    _this5.$store.commit("errorSnackbar");
+                  }
+                });
+
+              case 2:
+                _this5.loading = false;
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    showRawItems: function showRawItems(item) {
       if (this.rawItemsReady) {
-        this.$emit("productselected", item);
+        this.$emit("showrawitems", item);
       } else {
         this.$store.commit("showSnackbar", {
           color: false,
-          text: "Raw items are still loading..."
+          text: "Raw items are still loading, please wait."
         });
       }
     }
@@ -405,7 +443,7 @@ var render = function() {
                   items: _vm.items,
                   loading: _vm.loading
                 },
-                on: { "click:row": _vm.productSelected },
+                on: { "click:row": _vm.showRawItems },
                 scopedSlots: _vm._u(
                   [
                     {
@@ -447,7 +485,7 @@ var render = function() {
                               on: {
                                 click: function($event) {
                                   $event.stopPropagation()
-                                  return _vm.processDelete(item)
+                                  return _vm.deleteProcess(item)
                                 }
                               }
                             },

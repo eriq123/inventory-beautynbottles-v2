@@ -121,23 +121,32 @@
                             Back to categories
                         </v-btn>
                     </v-card-title>
-
-                    <v-data-table
-                        :headers="headers"
-                        :items="items"
-                        :loading="loading"
-                        @click:row="showEditDialog"
-                    >
-                        <template #item.id="{item}">
-                            RI - {{ item.id.toString().padStart(4, "0") }}
-                        </template>
-                        <template #item.quantity="{item}">
-                            {{ item.quantity }} {{ item.base.name }}
-                        </template>
-                        <template #item.reorder_point="{item}">
-                            {{ item.reorder_point }} {{ item.base.name }}
-                        </template>
-                    </v-data-table>
+                    <v-card-text>
+                        <v-row>
+                            <v-col sm="12">
+                                <v-data-table
+                                    :headers="headers"
+                                    :items="items"
+                                    :loading="loading"
+                                    @click:row="showEditDialog"
+                                >
+                                    <template #item.id="{item}">
+                                        RI -
+                                        {{
+                                            item.id.toString().padStart(4, "0")
+                                        }}
+                                    </template>
+                                    <template #item.quantity="{item}">
+                                        {{ item.quantity }} {{ item.base.name }}
+                                    </template>
+                                    <template #item.reorder_point="{item}">
+                                        {{ item.reorder_point }}
+                                        {{ item.base.name }}
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
@@ -183,11 +192,13 @@ export default {
                 },
                 {
                     text: "Quantity",
-                    value: "quantity"
+                    value: "quantity",
+                    align: "end"
                 },
                 {
                     text: "Reorder Point",
-                    value: "reorder_point"
+                    value: "reorder_point",
+                    align: "end"
                 }
             ],
             loading: false,
@@ -319,7 +330,7 @@ export default {
         },
 
         showEditDialog(item) {
-            this.dialogAction = "Edit";
+            this.dialogAction = "Update";
             this.qrcode = item.qr_code;
             this.itemIndex = this.items.indexOf(item);
 
