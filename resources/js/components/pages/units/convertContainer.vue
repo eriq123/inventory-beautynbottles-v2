@@ -37,7 +37,7 @@
                                     :loading="loading"
                                 >
                                     <template #item.id="{item}">
-                                        CU -
+                                        SUB-UNIT -
                                         {{
                                             item.id.toString().padStart(4, "0")
                                         }}
@@ -279,7 +279,7 @@ export default {
     computed: {
         customID: function() {
             return this.formData.id > 0
-                ? `CU - ${this.formData.id.toString().padStart(4, "0")}`
+                ? `SUB-UNIT - ${this.formData.id.toString().padStart(4, "0")}`
                 : "N/A";
         }
     }

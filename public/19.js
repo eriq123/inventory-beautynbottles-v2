@@ -293,7 +293,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     customID: function customID() {
-      return this.formData.id > 0 ? "CU - ".concat(this.formData.id.toString().padStart(4, "0")) : "N/A";
+      return this.formData.id > 0 ? "SUB-UNIT - ".concat(this.formData.id.toString().padStart(4, "0")) : "N/A";
     }
   }
 });
@@ -410,7 +410,7 @@ var render = function() {
                                             var item = ref.item
                                             return [
                                               _vm._v(
-                                                "\n                                    CU -\n                                    " +
+                                                "\n                                    SUB-UNIT -\n                                    " +
                                                   _vm._s(
                                                     item.id
                                                       .toString()
