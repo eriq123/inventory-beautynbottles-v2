@@ -207,8 +207,6 @@ export default {
                 this.processPasswordUpdate();
             }
         }
-    },
-    computed: {},
-    watch: {}
+    }
 };
 </script>

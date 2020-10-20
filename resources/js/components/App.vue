@@ -132,9 +132,6 @@ export default {
         }
     },
     computed: {
-        // ...mapGetters({
-        //     getUser: "getUser"
-        // }),
         fullName() {
             return (
                 this.getUserInfo.first_name + " " + this.getUserInfo.last_name

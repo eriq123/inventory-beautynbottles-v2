@@ -10,7 +10,7 @@ class ConvertController extends Controller
 {
     public function view(Request $request)
     {
-        $this->data['base'] = Convert::all();
+        $this->data['convert'] = Convert::where('base_id', $request->id)->get();
         return response()->json($this->data);
     }
 
@@ -18,6 +18,7 @@ class ConvertController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'value' => 'required',
         ]);
     }
 
@@ -25,8 +26,9 @@ class ConvertController extends Controller
     {
         $this->validation($request);
 
-        $this->data['base'] = new Convert();
-        $this->saveBaseName($request->name);
+        $this->data['convert'] = new Convert();
+        $this->data['convert']->base_id = $request->base_id;
+        $this->saveConverts($request->name, $request->value);
 
         return response()->json($this->data);
     }
@@ -35,23 +37,24 @@ class ConvertController extends Controller
     {
         $this->validation($request);
 
-        $this->data['base'] = Convert::findorFail($request->id);
-        $this->saveBaseName($request->name);
+        $this->data['convert'] = Convert::findorFail($request->id);
+        $this->saveConverts($request->name, $request->value);
 
         return response()->json($this->data);
     }
 
 
-    private function saveBaseName($name)
+    private function saveConverts($name, $value)
     {
-        $this->data['base']->name = $name;
-        $this->data['base']->save();
+        $this->data['convert']->name = $name;
+        $this->data['convert']->value = $value;
+        $this->data['convert']->save();
     }
 
     public function destroy(Request $request)
     {
-        $this->data['base'] = Convert::findorFail($request->id);
-        $this->data['base']->delete();
+        $this->data['convert'] = Convert::findorFail($request->id);
+        $this->data['convert']->delete();
 
         return response()->json($this->data);
     }

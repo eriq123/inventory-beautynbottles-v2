@@ -1,16 +1,15 @@
 <template>
     <v-container>
-        <v-row>
+        <app-base-unit
+            @showconverts="showconverts"
+            v-if="!selected"
+        ></app-base-unit>
+
+        <v-row v-if="selected">
             <v-col sm="10" offset-sm="1">
                 <v-card flat>
                     <v-card-title>
-                        <span class="mr-1">Units of Measurement:</span>
-
-                        <app-raw-menu
-                            :menu="items"
-                            :selected="menu.name"
-                            @selectedmenu="selectunitsofmeasurement"
-                        ></app-raw-menu>
+                        {{ this.base_name }}
 
                         <v-btn
                             text
@@ -21,6 +20,13 @@
                         >
                             Add
                         </v-btn>
+
+                        <v-spacer></v-spacer>
+
+                        <v-btn text @click="selected = false">
+                            <v-icon left>mdi-arrow-left</v-icon>
+                            Back to units of measurement
+                        </v-btn>
                     </v-card-title>
                     <v-card-text>
                         <v-row>
@@ -29,10 +35,9 @@
                                     :headers="headers"
                                     :items="items"
                                     :loading="loading"
-                                    @click:row="showConverts"
                                 >
                                     <template #item.id="{item}">
-                                        UNIT -
+                                        CU -
                                         {{
                                             item.id.toString().padStart(4, "0")
                                         }}
@@ -51,7 +56,6 @@
                                             >Delete</v-btn
                                         >
                                     </template>
-
                                     <template #body.prepend v-if="showForm">
                                         <tr>
                                             <td>
@@ -61,7 +65,14 @@
                                                 <v-text-field
                                                     autofocus
                                                     label="Unit Name"
-                                                    v-model="formData.base_name"
+                                                    v-model="formData.name"
+                                                ></v-text-field>
+                                            </td>
+                                            <td>
+                                                <v-text-field
+                                                    type="number"
+                                                    label="Quantity"
+                                                    v-model="formData.value"
                                                 ></v-text-field>
                                             </td>
                                             <td>
@@ -96,14 +107,14 @@
         </v-row>
     </v-container>
 </template>
-
 <script>
 export default {
     components: {
-        "app-raw-menu": () => import("@/components/pages/products/raw/rawMenu")
+        "app-base-unit": () => import("./baseContainer")
     },
     data() {
         return {
+            selected: false,
             headers: [
                 {
                     text: "Code",
@@ -115,64 +126,46 @@ export default {
                     value: "name"
                 },
                 {
+                    text: "Quantity",
+                    value: "value",
+                    align: "end"
+                },
+                {
                     text: "Actions",
                     value: "actions"
                 }
             ],
             items: [],
             loading: false,
-
-            showForm: false,
-            deleteForm: false,
             formData: {
-                action: null,
                 id: 0,
-                base_name: null
+                base_id: 0,
+                name: null,
+                value: null,
+                action: "add"
             },
             itemIndex: -1,
+            showForm: false,
 
-            menu: {
-                id: 0,
-                name: null
-            }
+            base_name: null
         };
     },
-    mounted() {
-        this.getBaseUnits();
-    },
     methods: {
-        selectunitsofmeasurement(item) {
-            this.menu.id = item.id;
-            this.menu.name = item.name;
-        },
-        getBaseUnits() {
-            this.loading = true;
-            axios
-                .post("/units/base/view")
-                .then(response => {
-                    this.items = response.data.base;
-                    this.resetMenu();
-                    this.loading = false;
-                })
-                .catch(error => {
-                    if (error.response) {
-                        console.log(error.response);
-                        this.$store.commit("errorSnackbar");
-                    }
-                    this.loading = false;
-                });
-        },
         showAddForm() {
             this.formData.action = "add";
             this.formData.id = 0;
-            this.formData.base_name = null;
+            this.formData.base_id = 0;
+            this.formData.name = null;
+            this.formData.value = null;
             this.itemIndex = -1;
             this.showForm = true;
         },
         showUpdateForm(item) {
             this.formData.action = "update";
             this.formData.id = item.id;
-            this.formData.base_name = item.name;
+            this.formData.base_id = item.base_id;
+            this.formData.name = item.name;
+            this.formData.value = item.value;
             this.itemIndex = this.items.indexOf(item);
             this.showForm = true;
         },
@@ -181,21 +174,17 @@ export default {
                 if (confirm(`Are you sure you want to delete ${item.name}`)) {
                     this.loading = true;
                     axios
-                        .post("/units/base/delete", {
+                        .post("/units/convert/delete", {
                             id: item.id
                         })
                         .then(response => {
                             this.$store.commit("showSnackbar", {
                                 color: true,
-                                text: `${response.data.base.name} deleted.`
+                                text: `${response.data.convert.name} deleted.`
                             });
                             this.itemIndex = this.items.indexOf(item);
                             this.items.splice(this.itemIndex, 1);
                             this.loading = false;
-
-                            if (this.menu.id == response.data.base.id) {
-                                this.resetMenu();
-                            }
                         })
                         .catch(error => {
                             if (error.response) {
@@ -210,7 +199,7 @@ export default {
             }
         },
         submitForm() {
-            if (this.formData.base_name) {
+            if (this.formData.name && this.formData.value >= 0) {
                 this.loading = true;
                 if (this.formData.action == "add") {
                     this.processAdd();
@@ -227,15 +216,13 @@ export default {
         },
         processAdd() {
             axios
-                .post("/units/base/add", {
-                    name: this.formData.base_name
-                })
+                .post("/units/convert/add", this.formData)
                 .then(response => {
                     this.$store.commit("showSnackbar", {
                         color: true,
-                        text: `${response.data.base.name} added.`
+                        text: `${response.data.convert.name} added.`
                     });
-                    this.items.push(response.data.base);
+                    this.items.push(response.data.convert);
                     this.loading = false;
                 })
                 .catch(error => {
@@ -248,24 +235,17 @@ export default {
         },
         processUpdate() {
             axios
-                .post("/units/base/update", {
-                    id: this.formData.id,
-                    name: this.formData.base_name
-                })
+                .post("/units/convert/update", this.formData)
                 .then(response => {
                     this.$store.commit("showSnackbar", {
                         color: true,
-                        text: `${response.data.base.name} updated.`
+                        text: `${response.data.convert.name} updated.`
                     });
                     Object.assign(
                         this.items[this.itemIndex],
-                        response.data.base
+                        response.data.convert
                     );
                     this.loading = false;
-
-                    if (response.data.base.id == this.menu.id) {
-                        this.menu.name = response.data.base.name;
-                    }
                 })
                 .catch(error => {
                     if (error.response) {
@@ -275,18 +255,32 @@ export default {
                     this.loading = false;
                 });
         },
-        resetMenu() {
-            this.menu.id = this.items[0].id;
-            this.menu.name = this.items[0].name;
-        },
-        showConverts(item) {
-            this.$emit("showconverts", item);
+        showconverts(item) {
+            this.selected = true;
+            this.formData.base_id = item.id;
+            this.base_name = item.name;
+            this.loading = true;
+            axios
+                .post("/units/convert/view", {
+                    id: this.formData.base_id
+                })
+                .then(response => {
+                    this.items = response.data.convert;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                        this.$store.commit("errorSnackbar");
+                    }
+                    this.loading = false;
+                });
         }
     },
     computed: {
         customID: function() {
             return this.formData.id > 0
-                ? `UNIT - ${this.formData.id.toString().padStart(4, "0")}`
+                ? `CU - ${this.formData.id.toString().padStart(4, "0")}`
                 : "N/A";
         }
     }

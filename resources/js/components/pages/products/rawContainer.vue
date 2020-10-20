@@ -1,9 +1,8 @@
 <template>
     <v-container>
-        <app-raw-category
-            @showrawitems="showrawitems"
-            v-if="!selected"
-        ></app-raw-category>
+        <app-raw-category @showrawitems="showrawitems" v-if="!selected">
+        </app-raw-category>
+
         <v-row v-if="selected">
             <v-col>
                 <v-card flat>

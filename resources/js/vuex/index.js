@@ -10,10 +10,6 @@ const store = new Vuex.Store({
             text: null,
             visible: false
         },
-        // user: {
-        //     first_name: "",
-        //     last_name: ""
-        // }
     },
     mutations: {
         showSnackbar(state, payload) {
@@ -30,24 +26,7 @@ const store = new Vuex.Store({
         closeSnackbar(state) {
             state.snackbar.visible = false;
         },
-
-        // setUser(state, payload) {
-        //     state.user = null;
-        //     state.user = payload;
-        // },
-        // setUserFirstAndLastName(state, payload) {
-        //     state.user.first_name = payload.first_name;
-        //     state.user.last_name = payload.last_name;
-        // },
-        // setUsername(state, payload) {
-        //     state.user.username = payload;
-        // }
     },
-    // getters: {
-    //     getUser: state => {
-    //         return state.user;
-    //     }
-    // }
 });
 
 export default store;
