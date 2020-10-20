@@ -227,6 +227,7 @@ export default {
                             });
                             this.itemIndex = this.items.indexOf(item);
                             this.items.splice(this.itemIndex, 1);
+                            this.showForm = false;
                         })
                         .catch(error => {
                             if (error.response) {

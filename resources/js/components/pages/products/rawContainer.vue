@@ -14,6 +14,7 @@
                             color="green darken-4"
                             class="ml-3"
                             @click="showAddDialog"
+                            :disabled="!base_count || !convert_count"
                         >
                             Add
                         </v-btn>
@@ -137,6 +138,18 @@
                         </v-btn>
                     </v-card-title>
                     <v-card-text>
+                        <p v-if="!base_count">
+                            Please create atleast one unit with one sub-unit:
+                            <v-btn text outlined @click="unitsCrud">
+                                Unit of Measurement
+                            </v-btn>
+                        </p>
+                        <p v-if="!convert_count">
+                            Please create atleast one sub-unit:
+                            <v-btn text outlined @click="unitsCrud">
+                                Unit of Measurement
+                            </v-btn>
+                        </p>
                         <v-row>
                             <v-col sm="12">
                                 <v-data-table
@@ -232,7 +245,9 @@ export default {
                     name: null,
                     value: 1
                 }
-            }
+            },
+            base_count: true,
+            convert_count: true
         };
     },
     mounted() {
@@ -241,6 +256,13 @@ export default {
             .then(response => {
                 this.base_collection = response.data.base;
                 this.convert_collection = response.data.convert;
+                this.base_count = response.data.base.length > 0 ? true : false;
+                this.convert_count =
+                    response.data.convert.length > 0 ? true : false;
+
+                if (this.base_count == false && this.convert_count == false) {
+                    this.convert_count = true;
+                }
             })
             .catch(error => {
                 if (error.response) {
@@ -252,7 +274,6 @@ export default {
     methods: {
         unitsCrud() {
             window.location.href = "/units/";
-            console.log("this is units crud click");
         },
         convertFilter() {
             this.convertFiltered = [];

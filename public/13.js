@@ -179,6 +179,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-raw-category": function appRawCategory() {
@@ -243,7 +256,9 @@ __webpack_require__.r(__webpack_exports__);
           name: null,
           value: 1
         }
-      }
+      },
+      base_count: true,
+      convert_count: true
     };
   },
   mounted: function mounted() {
@@ -252,6 +267,12 @@ __webpack_require__.r(__webpack_exports__);
     axios.post("/units/all").then(function (response) {
       _this.base_collection = response.data.base;
       _this.convert_collection = response.data.convert;
+      _this.base_count = response.data.base.length > 0 ? true : false;
+      _this.convert_count = response.data.convert.length > 0 ? true : false;
+
+      if (_this.base_count == false && _this.convert_count == false) {
+        _this.convert_count = true;
+      }
     })["catch"](function (error) {
       if (error.response) {
         console.log(error.response);
@@ -263,7 +284,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     unitsCrud: function unitsCrud() {
       window.location.href = "/units/";
-      console.log("this is units crud click");
     },
     convertFilter: function convertFilter() {
       var _this2 = this;
@@ -443,7 +463,8 @@ var render = function() {
                               attrs: {
                                 text: "",
                                 outlined: "",
-                                color: "green darken-4"
+                                color: "green darken-4",
+                                disabled: !_vm.base_count || !_vm.convert_count
                               },
                               on: { click: _vm.showAddDialog }
                             },
@@ -779,6 +800,54 @@ var render = function() {
                       _c(
                         "v-card-text",
                         [
+                          !_vm.base_count
+                            ? _c(
+                                "p",
+                                [
+                                  _vm._v(
+                                    "\n                        Please create atleast one unit with one sub-unit:\n                        "
+                                  ),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { text: "", outlined: "" },
+                                      on: { click: _vm.unitsCrud }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            Unit of Measurement\n                        "
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !_vm.convert_count
+                            ? _c(
+                                "p",
+                                [
+                                  _vm._v(
+                                    "\n                        Please create atleast one sub-unit:\n                        "
+                                  ),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { text: "", outlined: "" },
+                                      on: { click: _vm.unitsCrud }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            Unit of Measurement\n                        "
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "v-row",
                             [

@@ -163,6 +163,7 @@ export default {
                             this.itemIndex = this.items.indexOf(item);
                             this.items.splice(this.itemIndex, 1);
                             this.loading = false;
+                            this.showForm = false;
                         })
                         .catch(error => {
                             if (error.response) {

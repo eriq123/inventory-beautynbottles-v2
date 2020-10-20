@@ -160,7 +160,6 @@ __webpack_require__.r(__webpack_exports__);
     showAddForm: function showAddForm() {
       this.formData.action = "add";
       this.formData.id = 0;
-      this.formData.base_id = 0;
       this.formData.name = null;
       this.formData.value = null;
       this.itemIndex = -1;
@@ -169,7 +168,6 @@ __webpack_require__.r(__webpack_exports__);
     showUpdateForm: function showUpdateForm(item) {
       this.formData.action = "update";
       this.formData.id = item.id;
-      this.formData.base_id = item.base_id;
       this.formData.name = item.name;
       this.formData.value = item.value;
       this.itemIndex = this.items.indexOf(item);
@@ -194,6 +192,7 @@ __webpack_require__.r(__webpack_exports__);
             _this.items.splice(_this.itemIndex, 1);
 
             _this.loading = false;
+            _this.showForm = false;
           })["catch"](function (error) {
             if (error.response) {
               console.log(error.response);

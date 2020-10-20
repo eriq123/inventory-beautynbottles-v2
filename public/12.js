@@ -306,6 +306,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this4.itemIndex = _this4.items.indexOf(item);
 
                   _this4.items.splice(_this4.itemIndex, 1);
+
+                  _this4.showForm = false;
                 })["catch"](function (error) {
                   if (error.response) {
                     console.log(error.response);

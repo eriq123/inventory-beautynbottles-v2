@@ -204,6 +204,7 @@ __webpack_require__.r(__webpack_exports__);
             _this2.items.splice(_this2.itemIndex, 1);
 
             _this2.loading = false;
+            _this2.showForm = false;
 
             if (_this2.menu.id == response.data.base.id) {
               _this2.resetMenu();

@@ -172,6 +172,7 @@ __webpack_require__.r(__webpack_exports__);
             _this2.items.splice(_this2.itemIndex, 1);
 
             _this2.loading = false;
+            _this2.showForm = false;
           })["catch"](function (error) {
             if (error.response) {
               console.log(error.response);

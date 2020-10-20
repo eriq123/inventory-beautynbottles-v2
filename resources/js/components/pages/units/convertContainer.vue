@@ -154,7 +154,6 @@ export default {
         showAddForm() {
             this.formData.action = "add";
             this.formData.id = 0;
-            this.formData.base_id = 0;
             this.formData.name = null;
             this.formData.value = null;
             this.itemIndex = -1;
@@ -163,7 +162,6 @@ export default {
         showUpdateForm(item) {
             this.formData.action = "update";
             this.formData.id = item.id;
-            this.formData.base_id = item.base_id;
             this.formData.name = item.name;
             this.formData.value = item.value;
             this.itemIndex = this.items.indexOf(item);
@@ -185,6 +183,7 @@ export default {
                             this.itemIndex = this.items.indexOf(item);
                             this.items.splice(this.itemIndex, 1);
                             this.loading = false;
+                            this.showForm = false;
                         })
                         .catch(error => {
                             if (error.response) {
