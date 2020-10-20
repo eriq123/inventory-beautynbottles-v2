@@ -2187,6 +2187,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route"],
@@ -2201,24 +2204,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       sidebar: true,
-      inventories: [{
-        icon: "file-document-multiple-outline",
-        title: "Report",
-        link: "/inventory/report"
-      }, {
-        icon: "all-inclusive",
-        title: "Flow",
-        link: "/inventory/flow"
-      }],
-      products: [{
-        icon: "format-line-style",
-        title: "Raw",
-        link: "/products/raw"
-      }, {
-        icon: "format-line-weight",
-        title: "Assembled",
-        link: "/products/assembled"
-      }]
+      users: {
+        inventories: [{
+          icon: "file-document-multiple-outline",
+          title: "Report",
+          link: "/inventory/report"
+        }, {
+          icon: "all-inclusive",
+          title: "Flow",
+          link: "/inventory/flow"
+        }],
+        products: [{
+          icon: "format-line-style",
+          title: "Raw",
+          link: "/products/raw"
+        }, {
+          icon: "format-line-weight",
+          title: "Assembled",
+          link: "/products/assembled"
+        }]
+      },
+      admin: {
+        settings: [{
+          icon: "format-line-style",
+          title: "Units of Measurement",
+          link: "/units"
+        }]
+      }
     };
   },
   created: function created() {},
@@ -2227,13 +2239,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       window.location.href = "/logout";
     }
   },
-  computed: _objectSpread({
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getUser: "getUser"
+  })), {}, {
     fullName: function fullName() {
       return this.getUser.first_name + " " + this.getUser.last_name;
     }
-  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    getUser: "getUser"
-  }))
+  }),
+  watch: {// getUser: function(value) {
+    //     this.getUser = value;
+    // }
+  }
 });
 
 /***/ }),
@@ -14687,7 +14703,7 @@ var render = function() {
                           fn: function() {
                             return [
                               _c("v-list-item-title", [
-                                _vm._v("Inventory (ADMIN)")
+                                _vm._v("Settings (ADMIN)")
                               ])
                             ]
                           },
@@ -14696,13 +14712,13 @@ var render = function() {
                       ],
                       null,
                       false,
-                      493896259
+                      1123045964
                     )
                   },
                   [
                     _vm._v(" "),
                     _c("app-sidebar", {
-                      attrs: { items: _vm.inventories, route: _vm.route }
+                      attrs: { items: _vm.admin.settings, route: _vm.route }
                     })
                   ],
                   1
@@ -14728,7 +14744,7 @@ var render = function() {
                   [
                     _vm._v(" "),
                     _c("app-sidebar", {
-                      attrs: { items: _vm.inventories, route: _vm.route }
+                      attrs: { items: _vm.users.inventories, route: _vm.route }
                     })
                   ],
                   1
@@ -14751,7 +14767,7 @@ var render = function() {
                   [
                     _vm._v(" "),
                     _c("app-sidebar", {
-                      attrs: { items: _vm.products, route: _vm.route }
+                      attrs: { items: _vm.users.products, route: _vm.route }
                     })
                   ],
                   1
@@ -71961,14 +71977,17 @@ var app = new Vue({
   vuetify: _vuetify_index__WEBPACK_IMPORTED_MODULE_0__["default"],
   store: _vuex_index__WEBPACK_IMPORTED_MODULE_1__["default"],
   components: {
+    "app-units": function appUnits() {
+      return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./components/pages/units/baseContainer.vue */ "./resources/js/components/pages/units/baseContainer.vue"));
+    },
     "app-account": function appAccount() {
       return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/pages/accountContainer.vue */ "./resources/js/components/pages/accountContainer.vue"));
     },
     "app-product-raw": function appProductRaw() {
-      return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
+      return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
     },
     "app-product-assembled": function appProductAssembled() {
-      return Promise.all(/*! import() */[__webpack_require__.e(10), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(15), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
     },
     "app-product-flow": function appProductFlow() {
       return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/flowContainer.vue */ "./resources/js/components/pages/inventory/flowContainer.vue"));

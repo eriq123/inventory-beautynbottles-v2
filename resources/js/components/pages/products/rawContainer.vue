@@ -36,7 +36,23 @@
                                         </v-text-field>
                                     </v-col>
                                     <v-col cols="12">
-                                        Unit of Measurement:
+                                        <v-tooltip left>
+                                            <template
+                                                v-slot:activator="{ on, attrs }"
+                                            >
+                                                <v-btn
+                                                    text
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    @click="unitsCrud"
+                                                >
+                                                    Unit of Measurement:
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                Update units of measurement.
+                                            </span>
+                                        </v-tooltip>
                                         <app-raw-menu
                                             :menu="base_collection"
                                             :selected="formData.base_name"
@@ -235,6 +251,10 @@ export default {
             });
     },
     methods: {
+        unitsCrud() {
+            window.location.href = "/units/";
+            console.log("this is units crud click");
+        },
         convertFilter() {
             this.convertFiltered = [];
             this.convert_collection.forEach(item => {

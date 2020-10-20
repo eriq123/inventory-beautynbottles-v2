@@ -17,16 +17,36 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/', 'MainController@index');
 
     Route::prefix('units')->group(function () {
+        Route::get('/', 'MainController@units');
+
         Route::post('all', 'UnitsController@all');
         Route::post('convertsByBase', 'UnitsController@getConvertByBase');
+
+        // base
+        Route::prefix('base')->group(function () {
+            Route::post('view', 'Units\BaseController@view');
+            Route::post('add', 'Units\BaseController@store');
+            Route::post('update', 'Units\BaseController@update');
+            Route::post('delete', 'Units\BaseController@destroy');
+        });
+        // convert
+        Route::prefix('convert')->group(function () {
+            Route::post('view', 'Units\ConvertController@view');
+            Route::post('add', 'Units\ConvertController@store');
+            Route::post('update', 'Units\ConvertController@update');
+            Route::post('delete', 'Units\ConvertController@destroy');
+        });
+    });
+
+    Route::prefix('account')->group(function () {
+        Route::get('/', 'MainController@account');
+        Route::post('update', 'AccountController@update');
+        Route::post('password', 'AccountController@updatePassword');
     });
 
     Route::middleware(['user'])->group(function () {
 
         Route::get('/user', 'MainController@user');
-        Route::get('/account', 'MainController@account');
-        Route::post('/account/update', 'AccountController@update');
-        Route::post('/account/password', 'AccountController@updatePassword');
 
         Route::prefix('products')->group(function () {
 

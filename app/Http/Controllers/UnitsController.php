@@ -17,22 +17,7 @@ class UnitsController extends Controller
 
     public function getConvertByBase(Request $request)
     {
-        // $this->data['base'] = Base::findorFail($request->id);
         $this->data['convert'] = Convert::with('base')->where('base_id', $request->id)->get();
         return response()->json($this->data);
     }
-
-    // public function getBase()
-    // {
-    //     $this->data['base'] = Base::all();
-    //     $this->data['selectedBase'] = $this->data['base']->first();
-    //     return response()->json($this->data);
-    // }
-
-    // public function getBaseById(Request $request)
-    // {
-    //     $this->data['base'] = Base::findOrFail($request->id);
-    //     return response()->json($this->data);
-    // }
-
 }

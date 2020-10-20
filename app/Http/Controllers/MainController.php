@@ -12,10 +12,15 @@ class MainController extends Controller
         return response()->json(Auth::user());
     }
 
+    public function units()
+    {
+        $this->data['route'] = json_encode("/units");
+        return view('pages.units', $this->data);
+    }
+
     public function account()
     {
         $this->data['route'] = json_encode("/account");
-        // $this->data['user'] = Auth::user();
         return view('pages.account', $this->data);
     }
 
@@ -28,28 +33,24 @@ class MainController extends Controller
     public function raw()
     {
         $this->data['route'] = json_encode("/products/raw");
-        // $this->data['user'] = Auth::user();
         return view('pages.products.raw', $this->data);
     }
 
     public function assembled()
     {
         $this->data['route'] = json_encode("/products/assembled");
-        // $this->data['user'] = Auth::user();
         return view('pages.products.assembled', $this->data);
     }
 
     public function flow()
     {
         $this->data['route'] = json_encode("/inventory/flow");
-        // $this->data['user'] = Auth::user();
         return view('pages.inventory.flow', $this->data);
     }
 
     public function report()
     {
         $this->data['route'] = json_encode("/inventory/report");
-        // $this->data['user'] = Auth::user();
         return view('pages.inventory.report', $this->data);
     }
 }

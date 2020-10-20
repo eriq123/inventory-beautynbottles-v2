@@ -33,10 +33,10 @@
             <template v-if="getUser.is_admin">
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
-                        <v-list-item-title>Inventory (ADMIN)</v-list-item-title>
+                        <v-list-item-title>Settings (ADMIN)</v-list-item-title>
                     </template>
                     <app-sidebar
-                        :items="inventories"
+                        :items="admin.settings"
                         :route="route"
                     ></app-sidebar>
                 </v-list-group>
@@ -48,7 +48,7 @@
                         <v-list-item-title>Inventory</v-list-item-title>
                     </template>
                     <app-sidebar
-                        :items="inventories"
+                        :items="users.inventories"
                         :route="route"
                     ></app-sidebar>
                 </v-list-group>
@@ -57,7 +57,10 @@
                     <template v-slot:activator>
                         <v-list-item-title>Products</v-list-item-title>
                     </template>
-                    <app-sidebar :items="products" :route="route"></app-sidebar>
+                    <app-sidebar
+                        :items="users.products"
+                        :route="route"
+                    ></app-sidebar>
                 </v-list-group>
             </template>
         </v-navigation-drawer>
@@ -82,30 +85,41 @@ export default {
         return {
             sidebar: true,
 
-            inventories: [
-                {
-                    icon: "file-document-multiple-outline",
-                    title: "Report",
-                    link: "/inventory/report"
-                },
-                {
-                    icon: "all-inclusive",
-                    title: "Flow",
-                    link: "/inventory/flow"
-                }
-            ],
-            products: [
-                {
-                    icon: "format-line-style",
-                    title: "Raw",
-                    link: "/products/raw"
-                },
-                {
-                    icon: "format-line-weight",
-                    title: "Assembled",
-                    link: "/products/assembled"
-                }
-            ]
+            users: {
+                inventories: [
+                    {
+                        icon: "file-document-multiple-outline",
+                        title: "Report",
+                        link: "/inventory/report"
+                    },
+                    {
+                        icon: "all-inclusive",
+                        title: "Flow",
+                        link: "/inventory/flow"
+                    }
+                ],
+                products: [
+                    {
+                        icon: "format-line-style",
+                        title: "Raw",
+                        link: "/products/raw"
+                    },
+                    {
+                        icon: "format-line-weight",
+                        title: "Assembled",
+                        link: "/products/assembled"
+                    }
+                ]
+            },
+            admin: {
+                settings: [
+                    {
+                        icon: "format-line-style",
+                        title: "Units of Measurement",
+                        link: "/units"
+                    }
+                ]
+            }
         };
     },
     created() {},
@@ -115,12 +129,17 @@ export default {
         }
     },
     computed: {
-        fullName() {
-            return this.getUser.first_name + " " + this.getUser.last_name;
-        },
         ...mapGetters({
             getUser: "getUser"
-        })
+        }),
+        fullName() {
+            return this.getUser.first_name + " " + this.getUser.last_name;
+        }
+    },
+    watch: {
+        // getUser: function(value) {
+        //     this.getUser = value;
+        // }
     }
 };
 </script>
