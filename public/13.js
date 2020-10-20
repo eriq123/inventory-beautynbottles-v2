@@ -216,6 +216,10 @@ __webpack_require__.r(__webpack_exports__);
       showForm: false,
       dialogAction: null,
       qrcode: null,
+      formInput: {
+        quantity: null,
+        reorder_point: null
+      },
       formData: {
         category_id: 0,
         category_name: null,
@@ -320,8 +324,8 @@ __webpack_require__.r(__webpack_exports__);
     processrawsave: function processrawsave() {
       var _this4 = this;
 
-      this.formData.quantity = this.convert.quantity.value * this.formData.quantity;
-      this.formData.reorder_point = this.convert.reorder_point.value * this.formData.reorder_point;
+      this.formData.quantity = this.convert.quantity.value * this.formInput.quantity;
+      this.formData.reorder_point = this.convert.reorder_point.value * this.formInput.reorder_point;
       axios.post(this.dialogAction == "Add" ? "/products/raw/add" : "/products/raw/update", this.formData).then(function (response) {
         var raw = response.data.raw;
 
@@ -367,8 +371,8 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogAction = "Add";
       this.qrcode = null;
       this.formData.name = null;
-      this.formData.quantity = null;
-      this.formData.reorder_point = null;
+      this.formInput.quantity = null;
+      this.formInput.reorder_point = null;
       this.formData.base_id = this.base_collection[0].id;
       this.formData.base_name = this.base_collection[0].name;
       this.convertFilter();
@@ -380,8 +384,8 @@ __webpack_require__.r(__webpack_exports__);
       this.itemIndex = this.items.indexOf(item);
       this.formData.id = item.id;
       this.formData.name = item.name;
-      this.formData.quantity = item.quantity;
-      this.formData.reorder_point = item.reorder_point;
+      this.formInput.quantity = item.quantity;
+      this.formInput.reorder_point = item.reorder_point;
       this.formData.base_id = item.base.id;
       this.formData.base_name = item.base.name;
       this.convertFilter();
@@ -646,16 +650,16 @@ var render = function() {
                                                   839093261
                                                 ),
                                                 model: {
-                                                  value: _vm.formData.quantity,
+                                                  value: _vm.formInput.quantity,
                                                   callback: function($$v) {
                                                     _vm.$set(
-                                                      _vm.formData,
+                                                      _vm.formInput,
                                                       "quantity",
                                                       $$v
                                                     )
                                                   },
                                                   expression:
-                                                    "formData.quantity"
+                                                    "formInput.quantity"
                                                 }
                                               })
                                             ],
@@ -664,7 +668,7 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("app-raw-converted-units", {
                                             attrs: {
-                                              value: _vm.formData.quantity,
+                                              value: _vm.formInput.quantity,
                                               convertValue:
                                                 _vm.convert.quantity.value,
                                               formDataBaseName:
@@ -712,16 +716,16 @@ var render = function() {
                                                 ),
                                                 model: {
                                                   value:
-                                                    _vm.formData.reorder_point,
+                                                    _vm.formInput.reorder_point,
                                                   callback: function($$v) {
                                                     _vm.$set(
-                                                      _vm.formData,
+                                                      _vm.formInput,
                                                       "reorder_point",
                                                       $$v
                                                     )
                                                   },
                                                   expression:
-                                                    "formData.reorder_point"
+                                                    "formInput.reorder_point"
                                                 }
                                               })
                                             ],
@@ -730,7 +734,8 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("app-raw-converted-units", {
                                             attrs: {
-                                              value: _vm.formData.reorder_point,
+                                              value:
+                                                _vm.formInput.reorder_point,
                                               convertValue:
                                                 _vm.convert.reorder_point.value,
                                               formDataBaseName:
@@ -764,7 +769,7 @@ var render = function() {
                                   ],
                                   null,
                                   false,
-                                  3542759995
+                                  2931031803
                                 )
                               })
                             ],

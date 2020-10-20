@@ -66,7 +66,7 @@
                                         <v-text-field
                                             type="number"
                                             label="Quantity"
-                                            v-model="formData.quantity"
+                                            v-model="formInput.quantity"
                                         >
                                             <template #append-outer>
                                                 <app-raw-menu
@@ -82,7 +82,7 @@
                                         </v-text-field>
                                     </v-col>
                                     <app-raw-converted-units
-                                        :value="formData.quantity"
+                                        :value="formInput.quantity"
                                         :convertValue="convert.quantity.value"
                                         :formDataBaseName="formData.base_name"
                                     ></app-raw-converted-units>
@@ -91,7 +91,7 @@
                                         <v-text-field
                                             type="number"
                                             label="Reorder Point"
-                                            v-model="formData.reorder_point"
+                                            v-model="formInput.reorder_point"
                                         >
                                             <template #append-outer>
                                                 <app-raw-menu
@@ -108,7 +108,7 @@
                                         </v-text-field>
                                     </v-col>
                                     <app-raw-converted-units
-                                        :value="formData.reorder_point"
+                                        :value="formInput.reorder_point"
                                         :convertValue="
                                             convert.reorder_point.value
                                         "
@@ -197,6 +197,11 @@ export default {
             showForm: false,
             dialogAction: null,
             qrcode: null,
+
+            formInput: {
+                quantity: null,
+                reorder_point: null
+            },
 
             formData: {
                 category_id: 0,
@@ -305,9 +310,9 @@ export default {
         },
         processrawsave() {
             this.formData.quantity =
-                this.convert.quantity.value * this.formData.quantity;
+                this.convert.quantity.value * this.formInput.quantity;
             this.formData.reorder_point =
-                this.convert.reorder_point.value * this.formData.reorder_point;
+                this.convert.reorder_point.value * this.formInput.reorder_point;
             axios
                 .post(
                     this.dialogAction == "Add"
@@ -359,8 +364,8 @@ export default {
             this.qrcode = null;
 
             this.formData.name = null;
-            this.formData.quantity = null;
-            this.formData.reorder_point = null;
+            this.formInput.quantity = null;
+            this.formInput.reorder_point = null;
 
             this.formData.base_id = this.base_collection[0].id;
             this.formData.base_name = this.base_collection[0].name;
@@ -376,8 +381,8 @@ export default {
 
             this.formData.id = item.id;
             this.formData.name = item.name;
-            this.formData.quantity = item.quantity;
-            this.formData.reorder_point = item.reorder_point;
+            this.formInput.quantity = item.quantity;
+            this.formInput.reorder_point = item.reorder_point;
 
             this.formData.base_id = item.base.id;
             this.formData.base_name = item.base.name;
