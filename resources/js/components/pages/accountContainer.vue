@@ -5,22 +5,6 @@
                 <v-card outlined class="px-5">
                     <v-card-title>
                         My Account
-
-                        <v-tooltip right v-if="tab !== 2">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon
-                                    class="ml-3"
-                                    color="green darken-4"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    @click="setFormData"
-                                    >mdi-sync</v-icon
-                                >
-                            </template>
-                            <span>
-                                Click me if you don't see your account details.
-                            </span>
-                        </v-tooltip>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-4" text @click="updateAction">
                             Update
@@ -121,15 +105,23 @@ export default {
             }
         };
     },
-    created() {
-        this.setFormData();
+    created: async function() {
+        await axios
+            .get("/user")
+            .then(response => {
+                this.setFormData(response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    this.$store.commit("errorSnackbar");
+                }
+            });
     },
     methods: {
-        setFormData() {
-            console.log(this.getUser);
-            this.formUserData.first_name = this.getUser.first_name;
-            this.formUserData.last_name = this.getUser.last_name;
-            this.formUserData.username = this.getUser.username;
+        setFormData(user) {
+            this.formUserData.first_name = user.first_name;
+            this.formUserData.last_name = user.last_name;
+            this.formUserData.username = user.username;
         },
         processUpdateAccount() {
             if (this.tab == 0) {
@@ -140,19 +132,17 @@ export default {
             axios
                 .post("/account/update", this.formUserData)
                 .then(response => {
-                    const user = response.data.user;
                     if (this.tab == 0) {
-                        this.$store.commit("setUserFirstAndLastName", {
-                            first_name: user.first_name,
-                            last_name: user.last_name
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `Refresh the page to see the changes.`
                         });
                     } else if (this.tab == 1) {
-                        this.$store.commit("serUsername", user.username);
+                        this.$store.commit("showSnackbar", {
+                            color: true,
+                            text: `Successfully updated.`
+                        });
                     }
-                    this.$store.commit("showSnackbar", {
-                        color: true,
-                        text: `Record has been updated.`
-                    });
                 })
                 .catch(error => {
                     if (error.response) {
@@ -218,11 +208,7 @@ export default {
             }
         }
     },
-    computed: {
-        ...mapGetters({
-            getUser: "getUser"
-        })
-    },
+    computed: {},
     watch: {}
 };
 </script>

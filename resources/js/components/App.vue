@@ -13,7 +13,7 @@
 
             <v-btn href="/account" color="pink accent-1" text>
                 <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
-                <template v-if="getUser.is_admin">
+                <template v-if="getUserInfo.is_admin">
                     {{ fullName }} (ADMIN)
                 </template>
                 <template v-else>
@@ -30,7 +30,7 @@
         </v-app-bar>
 
         <v-navigation-drawer v-model="sidebar" app>
-            <template v-if="getUser.is_admin">
+            <template v-if="getUserInfo.is_admin">
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
                         <v-list-item-title>Settings (ADMIN)</v-list-item-title>
@@ -76,7 +76,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-    props: ["route"],
+    props: ["route", "user"],
     components: {
         "app-snackbar": () => import("./common/snackbar"),
         "app-sidebar": () => import("./common/sidebar.vue")
@@ -119,27 +119,27 @@ export default {
                         link: "/units"
                     }
                 ]
-            }
+            },
+            getUserInfo: []
         };
     },
-    created() {},
+    created() {
+        this.getUserInfo = this.user;
+    },
     methods: {
         logout() {
             window.location.href = "/logout";
         }
     },
     computed: {
-        ...mapGetters({
-            getUser: "getUser"
-        }),
+        // ...mapGetters({
+        //     getUser: "getUser"
+        // }),
         fullName() {
-            return this.getUser.first_name + " " + this.getUser.last_name;
+            return (
+                this.getUserInfo.first_name + " " + this.getUserInfo.last_name
+            );
         }
-    },
-    watch: {
-        // getUser: function(value) {
-        //     this.getUser = value;
-        // }
     }
 };
 </script>

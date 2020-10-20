@@ -2109,12 +2109,6 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -2192,7 +2186,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["route"],
+  props: ["route", "user"],
   components: {
     "app-snackbar": function appSnackbar() {
       return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./common/snackbar */ "./resources/js/components/common/snackbar.vue"));
@@ -2230,25 +2224,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           title: "Units of Measurement",
           link: "/units"
         }]
-      }
+      },
+      getUserInfo: []
     };
   },
-  created: function created() {},
+  created: function created() {
+    this.getUserInfo = this.user;
+  },
   methods: {
     logout: function logout() {
       window.location.href = "/logout";
     }
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    getUser: "getUser"
-  })), {}, {
+  computed: {
+    // ...mapGetters({
+    //     getUser: "getUser"
+    // }),
     fullName: function fullName() {
-      return this.getUser.first_name + " " + this.getUser.last_name;
+      return this.getUserInfo.first_name + " " + this.getUserInfo.last_name;
     }
-  }),
-  watch: {// getUser: function(value) {
-    //     this.getUser = value;
-    // }
   }
 });
 
@@ -14639,7 +14633,7 @@ var render = function() {
                 _vm._v("mdi-account-circle-outline")
               ]),
               _vm._v(" "),
-              _vm.getUser.is_admin
+              _vm.getUserInfo.is_admin
                 ? [
                     _vm._v(
                       "\n                " +
@@ -14690,7 +14684,7 @@ var render = function() {
           }
         },
         [
-          _vm.getUser.is_admin
+          _vm.getUserInfo.is_admin
             ? [
                 _c(
                   "v-list-group",
@@ -71981,13 +71975,13 @@ var app = new Vue({
       return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./components/pages/units/baseContainer.vue */ "./resources/js/components/pages/units/baseContainer.vue"));
     },
     "app-account": function appAccount() {
-      return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/pages/accountContainer.vue */ "./resources/js/components/pages/accountContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e(18)]).then(__webpack_require__.bind(null, /*! ./components/pages/accountContainer.vue */ "./resources/js/components/pages/accountContainer.vue"));
     },
     "app-product-raw": function appProductRaw() {
       return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
     },
     "app-product-assembled": function appProductAssembled() {
-      return Promise.all(/*! import() */[__webpack_require__.e(16), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
     },
     "app-product-flow": function appProductFlow() {
       return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/flowContainer.vue */ "./resources/js/components/pages/inventory/flowContainer.vue"));
@@ -71995,17 +71989,6 @@ var app = new Vue({
     "app-product-report": function appProductReport() {
       return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/reportContainer.vue */ "./resources/js/components/pages/inventory/reportContainer.vue"));
     }
-  },
-  beforeCreate: function beforeCreate() {
-    var _this = this;
-
-    axios.get("/user").then(function (response) {
-      _this.$store.commit("setUser", response.data);
-    })["catch"](function (error) {
-      if (error.response) {
-        _this.$store.commit("errorSnackbar");
-      }
-    });
   }
 }); // render: h => h(App),
 
@@ -72149,11 +72132,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       color: null,
       text: null,
       visible: false
-    },
-    user: {
-      first_name: "",
-      last_name: ""
-    }
+    } // user: {
+    //     first_name: "",
+    //     last_name: ""
+    // }
+
   },
   mutations: {
     showSnackbar: function showSnackbar(state, payload) {
@@ -72168,24 +72151,24 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     },
     closeSnackbar: function closeSnackbar(state) {
       state.snackbar.visible = false;
-    },
-    setUser: function setUser(state, payload) {
-      state.user = null;
-      state.user = payload;
-    },
-    setUserFirstAndLastName: function setUserFirstAndLastName(state, payload) {
-      state.user.first_name = payload.first_name;
-      state.user.last_name = payload.last_name;
-    },
-    serUsername: function serUsername(state, payload) {
-      state.user.username = payload;
-    }
-  },
-  getters: {
-    getUser: function getUser(state) {
-      return state.user;
-    }
-  }
+    } // setUser(state, payload) {
+    //     state.user = null;
+    //     state.user = payload;
+    // },
+    // setUserFirstAndLastName(state, payload) {
+    //     state.user.first_name = payload.first_name;
+    //     state.user.last_name = payload.last_name;
+    // },
+    // setUsername(state, payload) {
+    //     state.user.username = payload;
+    // }
+
+  } // getters: {
+  //     getUser: state => {
+  //         return state.user;
+  //     }
+  // }
+
 });
 /* harmony default export */ __webpack_exports__["default"] = (store);
 
