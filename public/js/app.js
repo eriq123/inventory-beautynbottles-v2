@@ -71978,7 +71978,7 @@ var app = new Vue({
   store: _vuex_index__WEBPACK_IMPORTED_MODULE_1__["default"],
   components: {
     "app-units": function appUnits() {
-      return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./components/pages/units/baseContainer.vue */ "./resources/js/components/pages/units/baseContainer.vue"));
+      return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./components/pages/units/baseContainer.vue */ "./resources/js/components/pages/units/baseContainer.vue"));
     },
     "app-account": function appAccount() {
       return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/pages/accountContainer.vue */ "./resources/js/components/pages/accountContainer.vue"));
@@ -71987,7 +71987,7 @@ var app = new Vue({
       return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
     },
     "app-product-assembled": function appProductAssembled() {
-      return Promise.all(/*! import() */[__webpack_require__.e(15), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(16), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
     },
     "app-product-flow": function appProductFlow() {
       return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/flowContainer.vue */ "./resources/js/components/pages/inventory/flowContainer.vue"));

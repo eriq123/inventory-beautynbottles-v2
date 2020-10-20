@@ -19,7 +19,7 @@
 
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <i class="material-icons prefix">account_circle</i>
+                                    {{-- <i class="material-icons prefix">account_circle</i> --}}
                                     <input id="username" type="text" name="username" class="validate" required>
                                     <label for="username" class="active">Username</label>
 
@@ -31,7 +31,7 @@
 
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <i class="material-icons prefix">lock</i>
+                                    {{-- <i class="material-icons prefix">lock</i> --}}
                                     <input id="password" type="password" name="password" class="validate" required>
                                     <label for="password" class="active">Password</label>
                                     <p class="red-text center-align">
@@ -43,7 +43,7 @@
                             <div class="row">
                                 <div class="col s12 center-align login-button">
                                     <button class="btn waves-effect waves-teal pink lighten-4" type="submit">
-                                        <i class="material-icons right">send</i>
+                                        {{-- <i class="material-icons right">send</i> --}}
                                         Sign in
                                     </button>
                                 </div>
