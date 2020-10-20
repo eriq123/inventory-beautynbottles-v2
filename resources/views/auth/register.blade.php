@@ -72,7 +72,7 @@
               <div class="row">
                 <div class="col s12 center-align register-button">
                   <button class="btn waves-effect waves-teal pink lighten-4" type="submit">
-                    <i class="material-icons right">send</i>
+                    {{-- <i class="material-icons right">send</i> --}}
                     Sign Up
                   </button>
                 </div>

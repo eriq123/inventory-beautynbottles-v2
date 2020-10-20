@@ -10,7 +10,7 @@
 
     <title>{{ config('app.name') ?: "App name not found." }}</title>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {{-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> --}}
     <link rel="stylesheet" href="{{ asset('assets/materialize.min.css')}}">
 
     <link rel="stylesheet" href="{{ mix('css/app.css')}}">
