@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
         Schema::create('bases', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -25,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('base_id');
             $table->string('name');
             $table->integer('value')->default(0);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('base_id')

@@ -2,10 +2,13 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Convert extends Model
 {
+    use SoftDeletes;
+
     public function base()
     {
         return $this->belongsTo(Base::class);

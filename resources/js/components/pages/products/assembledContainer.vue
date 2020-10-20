@@ -218,6 +218,8 @@ export default {
     methods: {
         showAddDialog() {
             if (this.autocomplete.selected) {
+                console.log(this.autocomplete);
+                console.log(this.dialog);
                 this.dialog.action = "Add";
                 this.dialog.category_name = this.autocomplete.selected.category.name;
                 this.dialog.raw_name = this.autocomplete.selected.name;

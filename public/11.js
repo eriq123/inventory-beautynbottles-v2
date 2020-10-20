@@ -238,6 +238,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   methods: {
     showAddDialog: function showAddDialog() {
       if (this.autocomplete.selected) {
+        console.log(this.autocomplete);
+        console.log(this.dialog);
         this.dialog.action = "Add";
         this.dialog.category_name = this.autocomplete.selected.category.name;
         this.dialog.raw_name = this.autocomplete.selected.name;
