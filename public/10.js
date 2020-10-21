@@ -49,6 +49,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     toggleState: {
@@ -73,19 +79,7 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Assembled",
         value: "purchase"
-      } // {
-      //     text: "RTS",
-      //     value: "rts"
-      // },
-      // {
-      //     text: "Sold",
-      //     value: "sold"
-      // },
-      // {
-      //     text: "Loss",
-      //     value: "loss"
-      // }
-      ],
+      }],
       rawHeader: [{
         text: "Code",
         align: "start",
@@ -220,90 +214,121 @@ var render = function() {
       },
       "click:row": _vm.openExpanded
     },
-    scopedSlots: _vm._u([
-      {
-        key: "expanded-item",
-        fn: function(ref) {
-          var headers = ref.headers
-          var item = ref.item
-          return [
-            _c(
-              "td",
-              { attrs: { colspan: headers.length } },
-              [
-                _c(
-                  "v-chip-group",
-                  { attrs: { column: "" } },
-                  _vm._l(item.raws, function(raw, index) {
-                    return _c("v-chip", { key: index }, [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(raw.pivot.quantity) +
-                          " x " +
-                          _vm._s(raw.name) +
-                          "\n                "
-                      )
-                    ])
-                  }),
-                  1
-                )
-              ],
-              1
-            )
-          ]
+    scopedSlots: _vm._u(
+      [
+        {
+          key: "expanded-item",
+          fn: function(ref) {
+            var headers = ref.headers
+            var item = ref.item
+            return [
+              _c(
+                "td",
+                { attrs: { colspan: headers.length } },
+                [
+                  _c(
+                    "v-chip-group",
+                    { attrs: { column: "" } },
+                    _vm._l(item.raws, function(raw, index) {
+                      return _c("v-chip", { key: index }, [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(raw.pivot.quantity) +
+                            " x " +
+                            _vm._s(raw.name) +
+                            "\n                "
+                        )
+                      ])
+                    }),
+                    1
+                  )
+                ],
+                1
+              )
+            ]
+          }
+        },
+        {
+          key: "item.remark",
+          fn: function(ref) {
+            var item = ref.item
+            return [
+              item.quantity <= item.reorder_point
+                ? _c(
+                    "v-btn",
+                    { attrs: { icon: "", color: "red darken-4", dark: "" } },
+                    [_c("v-icon", [_vm._v("mdi-exclamation-thick")])],
+                    1
+                  )
+                : _c(
+                    "v-btn",
+                    { attrs: { icon: "", color: "green darken-4", dark: "" } },
+                    [_c("v-icon", [_vm._v("mdi-check-bold")])],
+                    1
+                  )
+            ]
+          }
+        },
+        _vm.toggleState
+          ? {
+              key: "item.id",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _vm._v(
+                    "\n        AP - " +
+                      _vm._s(item.id.toString().padStart(4, "0")) +
+                      "\n    "
+                  )
+                ]
+              }
+            }
+          : {
+              key: "item.id",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _vm._v(
+                    "\n        RI - " +
+                      _vm._s(item.id.toString().padStart(4, "0")) +
+                      "\n    "
+                  )
+                ]
+              }
+            },
+        {
+          key: "item.sold",
+          fn: function(ref) {
+            var item = ref.item
+            return [_vm._v(" (" + _vm._s(item.sold) + ") ")]
+          }
+        },
+        {
+          key: "item.loss",
+          fn: function(ref) {
+            var item = ref.item
+            return [_vm._v(" (" + _vm._s(item.loss) + ") ")]
+          }
+        },
+        {
+          key: "item.quantity",
+          fn: function(ref) {
+            var item = ref.item
+            return [
+              _vm._v(
+                "\n        " +
+                  _vm._s(item.quantity) +
+                  " " +
+                  _vm._s(item.base.name) +
+                  "\n    "
+              )
+            ]
+          }
         }
-      },
-      {
-        key: "item.remark",
-        fn: function(ref) {
-          var item = ref.item
-          return [
-            item.quantity <= item.reorder_point
-              ? _c(
-                  "v-btn",
-                  { attrs: { icon: "", color: "red darken-4", dark: "" } },
-                  [_c("v-icon", [_vm._v("mdi-exclamation-thick")])],
-                  1
-                )
-              : _c(
-                  "v-btn",
-                  { attrs: { icon: "", color: "green darken-4", dark: "" } },
-                  [_c("v-icon", [_vm._v("mdi-check-bold")])],
-                  1
-                )
-          ]
-        }
-      },
-      {
-        key: "item.sold",
-        fn: function(ref) {
-          var item = ref.item
-          return [_vm._v(" (" + _vm._s(item.sold) + ") ")]
-        }
-      },
-      {
-        key: "item.loss",
-        fn: function(ref) {
-          var item = ref.item
-          return [_vm._v(" (" + _vm._s(item.loss) + ") ")]
-        }
-      },
-      {
-        key: "item.quantity",
-        fn: function(ref) {
-          var item = ref.item
-          return [
-            _vm._v(
-              "\n        " +
-                _vm._s(item.quantity) +
-                " " +
-                _vm._s(item.base.name) +
-                "\n    "
-            )
-          ]
-        }
-      }
-    ])
+      ],
+      null,
+      true
+    )
   })
 }
 var staticRenderFns = []

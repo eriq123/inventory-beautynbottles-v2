@@ -284,12 +284,6 @@ export default {
             this.$emit("showconverts", item);
         }
     },
-    computed: {
-        customID: function() {
-            return this.formData.id > 0
-                ? `UNIT - ${this.formData.id.toString().padStart(4, "0")}`
-                : "N/A";
-        }
-    }
+    computed: {}
 };
 </script>

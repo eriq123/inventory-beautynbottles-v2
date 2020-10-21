@@ -30,6 +30,12 @@
                 <v-icon>mdi-check-bold</v-icon>
             </v-btn>
         </template>
+        <template #item.id="{item}" v-if="toggleState">
+            AP - {{ item.id.toString().padStart(4, "0") }}
+        </template>
+        <template #item.id="{item}" v-else>
+            RI - {{ item.id.toString().padStart(4, "0") }}
+        </template>
         <template #item.sold="{item}"> ({{ item.sold }}) </template>
         <template #item.loss="{item}"> ({{ item.loss }}) </template>
         <template #item.quantity="{item}">
@@ -67,18 +73,6 @@ export default {
                     text: "Assembled",
                     value: "purchase"
                 }
-                // {
-                //     text: "RTS",
-                //     value: "rts"
-                // },
-                // {
-                //     text: "Sold",
-                //     value: "sold"
-                // },
-                // {
-                //     text: "Loss",
-                //     value: "loss"
-                // }
             ],
             rawHeader: [
                 {
