@@ -22,14 +22,13 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::post('all', 'UnitsController@all');
         Route::post('convertsByBase', 'UnitsController@getConvertByBase');
 
-        // base
         Route::prefix('base')->group(function () {
             Route::post('view', 'Units\BaseController@view');
             Route::post('add', 'Units\BaseController@store');
             Route::post('update', 'Units\BaseController@update');
             Route::post('delete', 'Units\BaseController@destroy');
         });
-        // convert
+
         Route::prefix('convert')->group(function () {
             Route::post('view', 'Units\ConvertController@view');
             Route::post('add', 'Units\ConvertController@store');

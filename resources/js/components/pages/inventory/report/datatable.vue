@@ -162,6 +162,7 @@ export default {
                                 item.category_name = item.category.name;
                                 return item;
                             });
+                            this.$emit("getExcelData", this.items);
                         }
                     } else {
                         this.items = [];
@@ -171,6 +172,7 @@ export default {
                 })
                 .catch(error => {
                     console.log(error.response);
+                    this.$store.commit("errorSnackbar");
                     this.loading = false;
                     this.$emit("toggleChange", false);
                 });

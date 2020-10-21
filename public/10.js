@@ -160,6 +160,8 @@ __webpack_require__.r(__webpack_exports__);
               item.category_name = item.category.name;
               return item;
             });
+
+            _this.$emit("getExcelData", _this.items);
           }
         } else {
           _this.items = [];
@@ -170,6 +172,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.$emit("toggleChange", false);
       })["catch"](function (error) {
         console.log(error.response);
+
+        _this.$store.commit("errorSnackbar");
+
         _this.loading = false;
 
         _this.$emit("toggleChange", false);

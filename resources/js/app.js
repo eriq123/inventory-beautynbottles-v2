@@ -1,8 +1,11 @@
 require("./bootstrap");
 
+import VueExcelXlsx from "vue-excel-xlsx";
+
 window.Vue = require("vue");
 import vuetify from "./vuetify/index";
 import store from "./vuex/index";
+Vue.use(VueExcelXlsx);
 
 Vue.component("app-header-sidebar", require("./components/App.vue").default);
 

@@ -31,6 +31,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-report-datatable": function appReportDatatable() {
@@ -43,12 +55,47 @@ __webpack_require__.r(__webpack_exports__);
         state: false,
         loading: false,
         disabled: false
-      }
+      },
+      filename: "Eshop Beauty N Bottles",
+      columns: [{
+        label: "Code",
+        field: "code"
+      }, {
+        label: "Raw Item",
+        field: "name"
+      }, {
+        label: "Purchase",
+        field: "purchase"
+      }, {
+        label: "RTS",
+        field: "rts"
+      }, {
+        label: "Sold",
+        field: "custom_sold"
+      }, {
+        label: "Loss",
+        field: "custom_loss"
+      }, {
+        label: "Available Units",
+        field: "units"
+      }],
+      data: [],
+      excelData: []
     };
   },
   methods: {
     toggleChange: function toggleChange(value) {
       this.toggle.disabled = this.toggle.loading = value;
+    },
+    getExcelData: function getExcelData(value) {
+      this.data = value;
+      this.excelData = this.data.map(function (item) {
+        item.code = "RI - ".concat(item.id.toString().padStart(4, "0"));
+        item.units = "".concat(item.quantity, " ").concat(item.base.name);
+        item.custom_sold = "(".concat(item.sold, ")");
+        item.custom_loss = "(".concat(item.loss, ")");
+        return item;
+      });
     }
   },
   computed: {
@@ -83,6 +130,7 @@ var render = function() {
         [
           _c(
             "v-col",
+            { attrs: { sm: "12", md: "12" } },
             [
               _c("v-switch", {
                 staticClass: "ml-3",
@@ -100,7 +148,25 @@ var render = function() {
                   },
                   expression: "toggle.state"
                 }
-              })
+              }),
+              _vm._v(" "),
+              !_vm.toggle.state
+                ? _c(
+                    "vue-excel-xlsx",
+                    {
+                      staticClass:
+                        "pink--text text--accent-2 v-btn v-btn--flat v-btn--text theme--light v-size--default",
+                      attrs: {
+                        type: "button",
+                        data: _vm.excelData,
+                        columns: _vm.columns,
+                        filename: _vm.filename,
+                        sheetname: _vm.filename
+                      }
+                    },
+                    [_vm._v("\n                Download report\n            ")]
+                  )
+                : _vm._e()
             ],
             1
           )
@@ -110,7 +176,7 @@ var render = function() {
       _vm._v(" "),
       _c("app-report-datatable", {
         attrs: { toggleState: _vm.toggle.state },
-        on: { toggleChange: _vm.toggleChange }
+        on: { toggleChange: _vm.toggleChange, getExcelData: _vm.getExcelData }
       })
     ],
     1

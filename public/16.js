@@ -204,6 +204,7 @@ __webpack_require__.r(__webpack_exports__);
             _this2.items.splice(_this2.itemIndex, 1);
 
             _this2.loading = false;
+            _this2.showForm = false;
 
             if (_this2.menu.id == response.data.base.id) {
               _this2.resetMenu();
@@ -302,7 +303,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     customID: function customID() {
-      return this.formData.id > 0 ? "CI - ".concat(this.formData.id.toString().padStart(4, "0")) : "N/A";
+      return this.formData.id > 0 ? "UNIT - ".concat(this.formData.id.toString().padStart(4, "0")) : "N/A";
     }
   }
 });
@@ -332,6 +333,7 @@ var render = function() {
         [
           _c(
             "v-col",
+            { attrs: { sm: "10", "offset-sm": "1" } },
             [
               _c(
                 "v-card",
