@@ -89,9 +89,9 @@ class CreateUsersTable extends Migration
             $table->string('qr_code')->nullable();
 
             $table->integer('purchase')->default(0);
-            $table->integer('rts')->default(0);
-            $table->integer('sold')->default(0);
-            $table->integer('loss')->default(0);
+            // $table->integer('rts')->default(0);
+            // $table->integer('sold')->default(0);
+            // $table->integer('loss')->default(0);
 
             $table->softDeletes();
             $table->timestamps();

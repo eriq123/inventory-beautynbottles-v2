@@ -41,18 +41,6 @@ class FlowController extends Controller
                 }
             }
 
-            $product = Product::find($request->id);
-            if ($request->status == "Purchase") {
-                $product->purchase += $request->quantity;
-            } elseif ($request->status == "RTS") {
-                $product->rts += $request->quantity;
-            } elseif ($request->status == "Sold") {
-                $product->sold += $request->quantity;
-            } elseif ($request->status == "Loss") {
-                $product->loss += $request->quantity;
-            }
-            $product->save();
-
             foreach ($raws as $raw) {
                 $singleRaw = Raw::findorFail($raw->id);
 
@@ -61,7 +49,24 @@ class FlowController extends Controller
                 } else {
                     $singleRaw->quantity -= $raw->pivot->quantity * $request->quantity;
                 }
+
+                if ($request->status == "Purchase") {
+                    $singleRaw->purchase += $raw->pivot->quantity * $request->quantity;
+                } elseif ($request->status == "RTS") {
+                    $singleRaw->rts += $raw->pivot->quantity * $request->quantity;
+                } elseif ($request->status == "Sold") {
+                    $singleRaw->sold += $raw->pivot->quantity * $request->quantity;
+                } elseif ($request->status == "Loss") {
+                    $singleRaw->loss += $raw->pivot->quantity * $request->quantity;
+                }
+
                 $singleRaw->save();
+            }
+
+            if ($request->action !== 'add') {
+                $product = Product::find($request->id);
+                $product->purchase += $request->quantity;
+                $product->save();
             }
 
             $this->saveReport($request);
@@ -92,7 +97,7 @@ class FlowController extends Controller
                 }
             }
             $this->data['raw']->save();
-            $this->saveReport($request);
+            // $this->saveReport($request);
 
             return response()->json($this->data);
         }

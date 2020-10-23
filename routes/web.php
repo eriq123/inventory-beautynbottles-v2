@@ -92,9 +92,9 @@ Route::middleware(['auth', 'web'])->group(function () {
         });
     });
 
-    Route::middleware(['admin'])->group(function () {
-        Route::get('/admin/sample', function () {
-            return "this is an admin sample route";
-        });
-    });
+    // Route::middleware(['admin'])->group(function () {
+    //     Route::get('/admin/sample', function () {
+    //         return "this is an admin sample route";
+    //     });
+    // });
 });
