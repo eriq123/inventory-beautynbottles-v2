@@ -192,6 +192,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-raw-category": function appRawCategory() {
@@ -666,15 +676,22 @@ var render = function() {
                                             1
                                           ),
                                           _vm._v(" "),
-                                          _c("app-raw-converted-units", {
-                                            attrs: {
-                                              value: _vm.formInput.quantity,
-                                              convertValue:
-                                                _vm.convert.quantity.value,
-                                              formDataBaseName:
-                                                _vm.formData.base_name
-                                            }
-                                          }),
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "6" } },
+                                            [
+                                              _c("app-raw-converted-units", {
+                                                attrs: {
+                                                  value: _vm.formInput.quantity,
+                                                  convertValue:
+                                                    _vm.convert.quantity.value,
+                                                  formDataBaseName:
+                                                    _vm.formData.base_name
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
                                           _vm._v(" "),
                                           _c(
                                             "v-col",
@@ -732,16 +749,24 @@ var render = function() {
                                             1
                                           ),
                                           _vm._v(" "),
-                                          _c("app-raw-converted-units", {
-                                            attrs: {
-                                              value:
-                                                _vm.formInput.reorder_point,
-                                              convertValue:
-                                                _vm.convert.reorder_point.value,
-                                              formDataBaseName:
-                                                _vm.formData.base_name
-                                            }
-                                          }),
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "6" } },
+                                            [
+                                              _c("app-raw-converted-units", {
+                                                attrs: {
+                                                  value:
+                                                    _vm.formInput.reorder_point,
+                                                  convertValue:
+                                                    _vm.convert.reorder_point
+                                                      .value,
+                                                  formDataBaseName:
+                                                    _vm.formData.base_name
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
                                           _vm._v(" "),
                                           _vm.qrcode
                                             ? _c(
@@ -769,7 +794,7 @@ var render = function() {
                                   ],
                                   null,
                                   false,
-                                  2931031803
+                                  612924443
                                 )
                               })
                             ],

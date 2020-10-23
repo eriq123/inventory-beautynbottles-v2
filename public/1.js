@@ -64,34 +64,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-col",
-    { attrs: { cols: "6" } },
-    [
-      _c("v-text-field", {
-        attrs: {
-          disabled: "",
-          type: "number",
-          label: "Converted units",
-          value: _vm.convertedUnits
+  return _c("v-text-field", {
+    attrs: {
+      disabled: "",
+      type: "number",
+      label: "Converted units",
+      value: _vm.convertedUnits
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "append-outer",
+        fn: function() {
+          return [_vm._v("\n        " + _vm._s(_vm.selectedBase) + "\n    ")]
         },
-        scopedSlots: _vm._u([
-          {
-            key: "append-outer",
-            fn: function() {
-              return [
-                _vm._v(
-                  "\n            " + _vm._s(_vm.selectedBase) + "\n        "
-                )
-              ]
-            },
-            proxy: true
-          }
-        ])
-      })
-    ],
-    1
-  )
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true

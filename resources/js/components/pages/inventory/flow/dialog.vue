@@ -16,9 +16,7 @@
                         >
                         </v-switch>
                     </v-col>
-                    <v-col sm="8">
-                        <slot name="quantity"></slot>
-                    </v-col>
+                    <slot name="quantity"></slot>
                 </v-row>
             </v-card-text>
             <v-card-actions>

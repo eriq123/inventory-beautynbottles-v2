@@ -81,11 +81,17 @@
                                             </template>
                                         </v-text-field>
                                     </v-col>
-                                    <app-raw-converted-units
-                                        :value="formInput.quantity"
-                                        :convertValue="convert.quantity.value"
-                                        :formDataBaseName="formData.base_name"
-                                    ></app-raw-converted-units>
+                                    <v-col cols="6">
+                                        <app-raw-converted-units
+                                            :value="formInput.quantity"
+                                            :convertValue="
+                                                convert.quantity.value
+                                            "
+                                            :formDataBaseName="
+                                                formData.base_name
+                                            "
+                                        ></app-raw-converted-units>
+                                    </v-col>
 
                                     <v-col cols="6">
                                         <v-text-field
@@ -107,13 +113,17 @@
                                             </template>
                                         </v-text-field>
                                     </v-col>
-                                    <app-raw-converted-units
-                                        :value="formInput.reorder_point"
-                                        :convertValue="
-                                            convert.reorder_point.value
-                                        "
-                                        :formDataBaseName="formData.base_name"
-                                    ></app-raw-converted-units>
+                                    <v-col cols="6">
+                                        <app-raw-converted-units
+                                            :value="formInput.reorder_point"
+                                            :convertValue="
+                                                convert.reorder_point.value
+                                            "
+                                            :formDataBaseName="
+                                                formData.base_name
+                                            "
+                                        ></app-raw-converted-units>
+                                    </v-col>
 
                                     <v-col
                                         align="center"

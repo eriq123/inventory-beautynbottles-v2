@@ -176,6 +176,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-assembled-products": function appAssembledProducts() {
@@ -807,15 +813,22 @@ var render = function() {
                                             1
                                           ),
                                           _vm._v(" "),
-                                          _c("app-raw-converted-units", {
-                                            attrs: {
-                                              value: _vm.dialog.quantity,
-                                              convertValue:
-                                                _vm.dialog.convert_value,
-                                              formDataBaseName:
-                                                _vm.dialog.base_name
-                                            }
-                                          })
+                                          _c(
+                                            "v-col",
+                                            { attrs: { cols: "6" } },
+                                            [
+                                              _c("app-raw-converted-units", {
+                                                attrs: {
+                                                  value: _vm.dialog.quantity,
+                                                  convertValue:
+                                                    _vm.dialog.convert_value,
+                                                  formDataBaseName:
+                                                    _vm.dialog.base_name
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
                                         ],
                                         1
                                       )

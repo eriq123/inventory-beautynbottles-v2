@@ -1,16 +1,16 @@
 <template>
-    <v-col cols="6">
-        <v-text-field
-            disabled
-            type="number"
-            label="Converted units"
-            :value="convertedUnits"
-        >
-            <template #append-outer>
-                {{ selectedBase }}
-            </template>
-        </v-text-field>
-    </v-col>
+    <!-- <v-col cols="6"> -->
+    <v-text-field
+        disabled
+        type="number"
+        label="Converted units"
+        :value="convertedUnits"
+    >
+        <template #append-outer>
+            {{ selectedBase }}
+        </template>
+    </v-text-field>
+    <!-- </v-col> -->
 </template>
 <script>
 export default {

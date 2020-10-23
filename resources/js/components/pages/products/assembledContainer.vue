@@ -69,11 +69,17 @@
                                                 </template>
                                             </v-text-field>
                                         </v-col>
-                                        <app-raw-converted-units
-                                            :value="dialog.quantity"
-                                            :convertValue="dialog.convert_value"
-                                            :formDataBaseName="dialog.base_name"
-                                        ></app-raw-converted-units>
+                                        <v-col cols="6">
+                                            <app-raw-converted-units
+                                                :value="dialog.quantity"
+                                                :convertValue="
+                                                    dialog.convert_value
+                                                "
+                                                :formDataBaseName="
+                                                    dialog.base_name
+                                                "
+                                            ></app-raw-converted-units>
+                                        </v-col>
                                     </v-row>
                                 </v-card-text>
                                 <v-card-actions>

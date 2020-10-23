@@ -53,6 +53,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-flow-datatable": function appFlowDatatable() {
@@ -60,6 +88,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     "app-flow-dialog": function appFlowDialog() {
       return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./flow/dialog.vue */ "./resources/js/components/pages/inventory/flow/dialog.vue"));
+    },
+    "app-raw-menu": function appRawMenu() {
+      return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ../products/raw/rawMenu */ "./resources/js/components/pages/products/raw/rawMenu.vue"));
+    },
+    "app-raw-converted-units": function appRawConvertedUnits() {
+      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ../products/raw/rawConvertedUnits */ "./resources/js/components/pages/products/raw/rawConvertedUnits.vue"));
     }
   },
   data: function data() {
@@ -75,17 +109,27 @@ __webpack_require__.r(__webpack_exports__);
         title: null,
         quantity: null,
         id: 0,
-        action: null
+        action: null,
+        loading: false,
+        base_name: null
       },
       stocks: 0,
-      updatedItem: {}
+      updatedItem: {},
+      convert: {
+        collection: [],
+        name: null,
+        value: null
+      }
     };
   },
   methods: {
     datatableclick: function datatableclick(data) {
+      var _this = this;
+
       if (this.toggle.state) {
         this.dialog.title = data.item.name;
       } else {
+        this.dialog.base_name = data.item.base.name;
         this.dialog.title = "".concat(data.item.category.name, " - ").concat(data.item.name);
       }
 
@@ -94,27 +138,62 @@ __webpack_require__.r(__webpack_exports__);
       this.stocks = data.item.quantity;
       this.dialog.id = data.item.id;
       this.dialog.toggle = this.dialog.show = true;
+      this.dialog.loading = true;
+
+      if (!this.toggle.state) {
+        axios.post("/units/convert/view", {
+          id: data.item.base_id
+        }).then(function (response) {
+          _this.convert.collection = response.data.convert;
+          _this.convert.name = response.data.convert[0].name;
+          _this.convert.value = response.data.convert[0].value;
+          _this.dialog.loading = false;
+        })["catch"](function (error) {
+          if (error.response) {
+            console.log(error.response);
+
+            if (error.response.data.error_message) {
+              _this.$store.commit("showSnackbar", {
+                color: false,
+                text: error.response.data.error_message
+              });
+            } else {
+              _this.$store.commit("errorSnackbar");
+            }
+          }
+        });
+      }
+    },
+    selectedmenu: function selectedmenu(item) {
+      this.convert.name = item.name;
+      this.convert.value = item.value;
     },
     saveproductraw: function saveproductraw(form) {
-      var _this = this;
+      var _this2 = this;
 
       var formData = {
         id: form.id,
-        quantity: this.dialog.quantity,
         status: form.status,
         action: form.action,
         type: this.switchLabel
       };
+
+      if (this.toggle.state) {
+        formData.quantity = this.dialog.quantity;
+      } else {
+        formData.quantity = this.dialog.quantity * this.convert.value;
+      }
+
       axios.post("/inventory/flow/store", formData).then(function (response) {
         console.log(response.data);
 
-        if (!_this.toggle.state) {
-          _this.updatedItem = response.data.raw;
+        if (!_this2.toggle.state) {
+          _this2.updatedItem = response.data.raw;
         }
 
-        _this.dialog.show = false;
+        _this2.dialog.show = false;
 
-        _this.$store.commit("showSnackbar", {
+        _this2.$store.commit("showSnackbar", {
           color: true,
           text: "Record has been updated!"
         });
@@ -123,12 +202,12 @@ __webpack_require__.r(__webpack_exports__);
           console.log(error.response);
 
           if (error.response.data.error_message) {
-            _this.$store.commit("showSnackbar", {
+            _this2.$store.commit("showSnackbar", {
               color: false,
               text: error.response.data.error_message
             });
           } else {
-            _this.$store.commit("errorSnackbar");
+            _this2.$store.commit("errorSnackbar");
           }
         }
       });
@@ -221,20 +300,100 @@ var render = function() {
                     key: "quantity",
                     fn: function() {
                       return [
-                        _c("v-text-field", {
-                          attrs: {
-                            autofocus: "",
-                            type: "number",
-                            label: "Quantity"
-                          },
-                          model: {
-                            value: _vm.dialog.quantity,
-                            callback: function($$v) {
-                              _vm.$set(_vm.dialog, "quantity", $$v)
-                            },
-                            expression: "dialog.quantity"
-                          }
-                        })
+                        _vm.toggle.state
+                          ? _c(
+                              "v-col",
+                              { attrs: { sm: "8" } },
+                              [
+                                _c("v-text-field", {
+                                  attrs: {
+                                    autofocus: "",
+                                    type: "number",
+                                    label: "Quantity"
+                                  },
+                                  model: {
+                                    value: _vm.dialog.quantity,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.dialog, "quantity", $$v)
+                                    },
+                                    expression: "dialog.quantity"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        !_vm.toggle.state
+                          ? _c(
+                              "v-row",
+                              [
+                                _c(
+                                  "v-col",
+                                  { attrs: { cols: "6" } },
+                                  [
+                                    _c("v-text-field", {
+                                      attrs: {
+                                        type: "number",
+                                        label: "Quantity",
+                                        loading: _vm.dialog.loading
+                                      },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "append-outer",
+                                            fn: function() {
+                                              return [
+                                                _c("app-raw-menu", {
+                                                  attrs: {
+                                                    menu:
+                                                      _vm.convert.collection,
+                                                    selected: _vm.convert.name
+                                                  },
+                                                  on: {
+                                                    selectedmenu:
+                                                      _vm.selectedmenu
+                                                  }
+                                                })
+                                              ]
+                                            },
+                                            proxy: true
+                                          }
+                                        ],
+                                        null,
+                                        false,
+                                        726169854
+                                      ),
+                                      model: {
+                                        value: _vm.dialog.quantity,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.dialog, "quantity", $$v)
+                                        },
+                                        expression: "dialog.quantity"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-col",
+                                  { attrs: { cols: "6" } },
+                                  [
+                                    _c("app-raw-converted-units", {
+                                      attrs: {
+                                        value: _vm.dialog.quantity,
+                                        convertValue: _vm.convert.value,
+                                        formDataBaseName: _vm.dialog.base_name
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e()
                       ]
                     },
                     proxy: true

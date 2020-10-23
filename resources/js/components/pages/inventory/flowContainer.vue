@@ -30,12 +30,40 @@
                     :id="dialog.id"
                 >
                     <template #quantity>
-                        <v-text-field
-                            autofocus
-                            type="number"
-                            label="Quantity"
-                            v-model="dialog.quantity"
-                        ></v-text-field>
+                        <v-col sm="8" v-if="toggle.state">
+                            <v-text-field
+                                autofocus
+                                type="number"
+                                label="Quantity"
+                                v-model="dialog.quantity"
+                            ></v-text-field>
+                        </v-col>
+                        <v-row v-if="!toggle.state">
+                            <v-col cols="6">
+                                <v-text-field
+                                    type="number"
+                                    label="Quantity"
+                                    v-model="dialog.quantity"
+                                    :loading="dialog.loading"
+                                >
+                                    <template #append-outer>
+                                        <app-raw-menu
+                                            :menu="convert.collection"
+                                            :selected="convert.name"
+                                            @selectedmenu="selectedmenu"
+                                        ></app-raw-menu>
+                                    </template>
+                                </v-text-field>
+                            </v-col>
+
+                            <v-col cols="6">
+                                <app-raw-converted-units
+                                    :value="dialog.quantity"
+                                    :convertValue="convert.value"
+                                    :formDataBaseName="dialog.base_name"
+                                ></app-raw-converted-units>
+                            </v-col>
+                        </v-row>
                     </template>
                 </app-flow-dialog>
             </v-col>
@@ -46,7 +74,10 @@
 export default {
     components: {
         "app-flow-datatable": () => import("./flow/datatable.vue"),
-        "app-flow-dialog": () => import("./flow/dialog.vue")
+        "app-flow-dialog": () => import("./flow/dialog.vue"),
+        "app-raw-menu": () => import("../products/raw/rawMenu"),
+        "app-raw-converted-units": () =>
+            import("../products/raw/rawConvertedUnits")
     },
     data() {
         return {
@@ -63,10 +94,17 @@ export default {
                 title: null,
                 quantity: null,
                 id: 0,
-                action: null
+                action: null,
+                loading: false,
+                base_name: null
             },
             stocks: 0,
-            updatedItem: {}
+            updatedItem: {},
+            convert: {
+                collection: [],
+                name: null,
+                value: null
+            }
         };
     },
     methods: {
@@ -74,6 +112,7 @@ export default {
             if (this.toggle.state) {
                 this.dialog.title = data.item.name;
             } else {
+                this.dialog.base_name = data.item.base.name;
                 this.dialog.title = `${data.item.category.name} - ${data.item.name}`;
             }
             this.dialog.action = data.action;
@@ -83,15 +122,53 @@ export default {
             this.dialog.id = data.item.id;
 
             this.dialog.toggle = this.dialog.show = true;
+
+            this.dialog.loading = true;
+
+            if (!this.toggle.state) {
+                axios
+                    .post("/units/convert/view", {
+                        id: data.item.base_id
+                    })
+                    .then(response => {
+                        this.convert.collection = response.data.convert;
+                        this.convert.name = response.data.convert[0].name;
+                        this.convert.value = response.data.convert[0].value;
+
+                        this.dialog.loading = false;
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            console.log(error.response);
+                            if (error.response.data.error_message) {
+                                this.$store.commit("showSnackbar", {
+                                    color: false,
+                                    text: error.response.data.error_message
+                                });
+                            } else {
+                                this.$store.commit("errorSnackbar");
+                            }
+                        }
+                    });
+            }
+        },
+        selectedmenu(item) {
+            this.convert.name = item.name;
+            this.convert.value = item.value;
         },
         saveproductraw(form) {
             const formData = {
                 id: form.id,
-                quantity: this.dialog.quantity,
                 status: form.status,
                 action: form.action,
                 type: this.switchLabel
             };
+
+            if (this.toggle.state) {
+                formData.quantity = this.dialog.quantity;
+            } else {
+                formData.quantity = this.dialog.quantity * this.convert.value;
+            }
 
             axios
                 .post("/inventory/flow/store", formData)
