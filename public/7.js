@@ -54,6 +54,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     toggleState: {
@@ -252,29 +253,31 @@ var render = function() {
         fn: function(ref) {
           var item = ref.item
           return [
-            _c(
-              "v-btn",
-              {
-                attrs: {
-                  fab: "",
-                  "x-small": "",
-                  outlined: "",
-                  color: "green darken-4"
-                },
-                on: {
-                  click: function($event) {
-                    $event.stopPropagation()
-                    return _vm.datatableclick("add", item)
-                  }
-                }
-              },
-              [
-                _c("v-icon", [
-                  _vm._v("\n                mdi-plus\n            ")
-                ])
-              ],
-              1
-            ),
+            !_vm.toggleState
+              ? _c(
+                  "v-btn",
+                  {
+                    attrs: {
+                      fab: "",
+                      "x-small": "",
+                      outlined: "",
+                      color: "green darken-4"
+                    },
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        return _vm.datatableclick("add", item)
+                      }
+                    }
+                  },
+                  [
+                    _c("v-icon", [
+                      _vm._v("\n                mdi-plus\n            ")
+                    ])
+                  ],
+                  1
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c(
               "v-btn",

@@ -23,6 +23,7 @@
                 outlined
                 color="green darken-4"
                 @click.stop="datatableclick('add', item)"
+                v-if="!toggleState"
             >
                 <v-icon>
                     mdi-plus
