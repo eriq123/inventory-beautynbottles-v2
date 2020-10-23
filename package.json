@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "qrcode.vue": "^1.7.0",
-        "vue-excel-xlsx": "^1.0.11",
+        "vue-json-excel": "^0.3.0",
         "vuex": "^3.5.1"
     }
 }
