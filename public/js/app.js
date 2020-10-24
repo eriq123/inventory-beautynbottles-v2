@@ -71984,7 +71984,7 @@ var app = new Vue({
       return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/flowContainer.vue */ "./resources/js/components/pages/inventory/flowContainer.vue"));
     },
     "app-product-report": function appProductReport() {
-      return Promise.all(/*! import() */[__webpack_require__.e(9), __webpack_require__.e(19)]).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/reportContainer.vue */ "./resources/js/components/pages/inventory/reportContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(19), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/reportContainer.vue */ "./resources/js/components/pages/inventory/reportContainer.vue"));
     }
   }
 }); // render: h => h(App),
