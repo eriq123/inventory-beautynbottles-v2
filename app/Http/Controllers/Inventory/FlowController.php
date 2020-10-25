@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
+use App\Log;
 use App\Product;
 use App\Raw;
 use Illuminate\Http\Request;
@@ -105,11 +106,11 @@ class FlowController extends Controller
 
     private function saveReport($request)
     {
-        // $report = new Report();
-        // $report->type = $request->type;
-        // $report->item_id = $request->id;
-        // $report->quantity = $request->quantity;
-        // $report->status = $request->status;
-        // $report->save();
+        $report = new Log();
+        $report->type = $request->type;
+        $report->item_id = $request->id;
+        $report->quantity = $request->quantity;
+        $report->status = $request->status;
+        $report->save();
     }
 }

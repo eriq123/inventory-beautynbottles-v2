@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <v-col sm="12" md="12">
+            <v-col>
                 <v-switch
                     class="ml-3"
                     v-model="toggle.state"
@@ -12,15 +12,53 @@
                     :label="`Filtered by: ${switchLabel}`"
                 >
                 </v-switch>
-                <app-download-excel
-                    class="pink--text text--accent-2 v-btn v-btn--flat v-btn--text theme--light v-size--default"
-                    :name="header"
-                    :header="header"
-                    :data="data"
-                    :fields="fields"
+                <v-btn
+                    text
+                    color="pink accent-2"
+                    @click="dialog.show = !dialog.show"
                 >
-                    Download report
-                </app-download-excel>
+                    <v-icon left>mdi-download</v-icon>
+                    Download Report
+                </v-btn>
+
+                <v-dialog v-model="dialog.show" max-width="350px">
+                    <v-card>
+                        <v-card-title>
+                            Inventory report
+                        </v-card-title>
+                        <v-card-text>
+                            <app-datepicker
+                                :date="date.from"
+                                @savedate="savefromdate"
+                                :label="`Start Date`"
+                            ></app-datepicker>
+
+                            <app-datepicker
+                                :date="date.to"
+                                @savedate="savetodate"
+                                :label="`End Date`"
+                            ></app-datepicker>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn text @click="dialog.show = false"
+                                >Cancel</v-btn
+                            >
+                            <v-btn text color="green darken-3">
+                                Save
+                            </v-btn>
+                            <!-- <app-download-excel
+                                class="green--text text--darken-3 v-btn v-btn--flat v-btn--text theme--light v-size--default"
+                                :name="header"
+                                :header="header"
+                                :data="data"
+                                :fields="fields"
+                            >
+                                Save
+                            </app-download-excel> -->
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
             </v-col>
         </v-row>
         <app-report-datatable
@@ -36,7 +74,8 @@ import JsonExcel from "vue-json-excel";
 export default {
     components: {
         "app-report-datatable": () => import("./report/datatable.vue"),
-        "app-download-excel": JsonExcel
+        "app-download-excel": JsonExcel,
+        "app-datepicker": () => import("./report/datepicker.vue")
     },
     data() {
         return {
@@ -55,7 +94,15 @@ export default {
                 "Available units": "units"
             },
             data: [],
-            header: null
+            header: null,
+            dialog: {
+                show: false
+            },
+
+            date: {
+                from: new Date().toISOString(),
+                to: new Date().toISOString()
+            }
         };
     },
     created() {
@@ -69,6 +116,12 @@ export default {
         this.header = `Inventory Report ${today}`;
     },
     methods: {
+        savefromdate(date) {
+            this.date.from = date;
+        },
+        savetodate(date) {
+            this.date.to = date;
+        },
         toggleChange(value) {
             this.toggle.disabled = this.toggle.loading = value;
         },

@@ -42,13 +42,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-report-datatable": function appReportDatatable() {
       return __webpack_require__.e(/*! import() */ 10).then(__webpack_require__.bind(null, /*! ./report/datatable.vue */ "./resources/js/components/pages/inventory/report/datatable.vue"));
     },
-    "app-download-excel": vue_json_excel__WEBPACK_IMPORTED_MODULE_0__["default"]
+    "app-download-excel": vue_json_excel__WEBPACK_IMPORTED_MODULE_0__["default"],
+    "app-datepicker": function appDatepicker() {
+      return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./report/datepicker.vue */ "./resources/js/components/pages/inventory/report/datepicker.vue"));
+    }
   },
   data: function data() {
     return {
@@ -67,7 +108,14 @@ __webpack_require__.r(__webpack_exports__);
         "Available units": "units"
       },
       data: [],
-      header: null
+      header: null,
+      dialog: {
+        show: false
+      },
+      date: {
+        from: new Date().toISOString(),
+        to: new Date().toISOString()
+      }
     };
   },
   created: function created() {
@@ -80,6 +128,12 @@ __webpack_require__.r(__webpack_exports__);
     this.header = "Inventory Report ".concat(today);
   },
   methods: {
+    savefromdate: function savefromdate(date) {
+      this.date.from = date;
+    },
+    savetodate: function savetodate(date) {
+      this.date.to = date;
+    },
     toggleChange: function toggleChange(value) {
       this.toggle.disabled = this.toggle.loading = value;
     },
@@ -125,7 +179,6 @@ var render = function() {
         [
           _c(
             "v-col",
-            { attrs: { sm: "12", md: "12" } },
             [
               _c("v-switch", {
                 staticClass: "ml-3",
@@ -146,18 +199,97 @@ var render = function() {
               }),
               _vm._v(" "),
               _c(
-                "app-download-excel",
+                "v-btn",
                 {
-                  staticClass:
-                    "pink--text text--accent-2 v-btn v-btn--flat v-btn--text theme--light v-size--default",
-                  attrs: {
-                    name: _vm.header,
-                    header: _vm.header,
-                    data: _vm.data,
-                    fields: _vm.fields
+                  attrs: { text: "", color: "pink accent-2" },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog.show = !_vm.dialog.show
+                    }
                   }
                 },
-                [_vm._v("\n                Download report\n            ")]
+                [
+                  _c("v-icon", { attrs: { left: "" } }, [
+                    _vm._v("mdi-download")
+                  ]),
+                  _vm._v("\n                Download Report\n            ")
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-dialog",
+                {
+                  attrs: { "max-width": "350px" },
+                  model: {
+                    value: _vm.dialog.show,
+                    callback: function($$v) {
+                      _vm.$set(_vm.dialog, "show", $$v)
+                    },
+                    expression: "dialog.show"
+                  }
+                },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c("v-card-title", [
+                        _vm._v(
+                          "\n                        Inventory report\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c("app-datepicker", {
+                            attrs: { date: _vm.date.from, label: "Start Date" },
+                            on: { savedate: _vm.savefromdate }
+                          }),
+                          _vm._v(" "),
+                          _c("app-datepicker", {
+                            attrs: { date: _vm.date.to, label: "End Date" },
+                            on: { savedate: _vm.savetodate }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { text: "" },
+                              on: {
+                                click: function($event) {
+                                  _vm.dialog.show = false
+                                }
+                              }
+                            },
+                            [_vm._v("Cancel")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            { attrs: { text: "", color: "green darken-3" } },
+                            [
+                              _vm._v(
+                                "\n                            Save\n                        "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
               )
             ],
             1

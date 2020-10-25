@@ -165,7 +165,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$emit("toggleChange", false);
       })["catch"](function (error) {
-        console.log(error.response);
+        console.log(error);
 
         _this.$store.commit("errorSnackbar");
 

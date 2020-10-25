@@ -165,7 +165,7 @@ export default {
                     this.$emit("toggleChange", false);
                 })
                 .catch(error => {
-                    console.log(error.response);
+                    console.log(error);
                     this.$store.commit("errorSnackbar");
                     this.loading = false;
                     this.$emit("toggleChange", false);
