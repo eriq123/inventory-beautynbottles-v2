@@ -148,6 +148,8 @@ export default {
                             } else {
                                 this.$store.commit("errorSnackbar");
                             }
+                        } else {
+                            console.log(error);
                         }
                     });
             }

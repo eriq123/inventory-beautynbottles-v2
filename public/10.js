@@ -154,8 +154,6 @@ __webpack_require__.r(__webpack_exports__);
               item.category_name = item.category.name;
               return item;
             });
-
-            _this.$emit("getExcelData", _this.items);
           }
         } else {
           _this.items = [];

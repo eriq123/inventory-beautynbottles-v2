@@ -156,7 +156,6 @@ export default {
                                 item.category_name = item.category.name;
                                 return item;
                             });
-                            this.$emit("getExcelData", this.items);
                         }
                     } else {
                         this.items = [];

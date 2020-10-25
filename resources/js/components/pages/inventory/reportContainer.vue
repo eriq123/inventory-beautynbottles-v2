@@ -12,16 +12,12 @@
                     :label="`Filtered by: ${switchLabel}`"
                 >
                 </v-switch>
-                <v-btn
-                    text
-                    color="pink accent-2"
-                    @click="dialog.show = !dialog.show"
-                >
+                <v-btn text color="pink accent-2" @click="dialog = !dialog">
                     <v-icon left>mdi-download</v-icon>
                     Download Report
                 </v-btn>
 
-                <v-dialog v-model="dialog.show" max-width="350px">
+                <v-dialog v-model="dialog" max-width="350px">
                     <v-card>
                         <v-card-title>
                             Inventory report
@@ -41,21 +37,18 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn text @click="dialog.show = false"
-                                >Cancel</v-btn
-                            >
-                            <v-btn text color="green darken-3">
-                                Save
-                            </v-btn>
-                            <!-- <app-download-excel
+                            <v-btn text @click="dialog = false">Cancel</v-btn>
+                            <app-download-excel
                                 class="green--text text--darken-3 v-btn v-btn--flat v-btn--text theme--light v-size--default"
                                 :name="header"
                                 :header="header"
                                 :data="data"
                                 :fields="fields"
+                                :before-generate="getExcelData"
+                                :before-finish="downloadFinished"
                             >
                                 Save
-                            </app-download-excel> -->
+                            </app-download-excel>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -64,7 +57,6 @@
         <app-report-datatable
             :toggleState="toggle.state"
             @toggleChange="toggleChange"
-            @getExcelData="getExcelData"
         ></app-report-datatable>
     </v-container>
 </template>
@@ -95,9 +87,7 @@ export default {
             },
             data: [],
             header: null,
-            dialog: {
-                show: false
-            },
+            dialog: false,
 
             date: {
                 from: new Date().toISOString(),
@@ -105,16 +95,7 @@ export default {
             }
         };
     },
-    created() {
-        const options = {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        };
-        const today = new Date().toLocaleDateString("en-US", options);
-
-        this.header = `Inventory Report ${today}`;
-    },
+    created() {},
     methods: {
         savefromdate(date) {
             this.date.from = date;
@@ -125,13 +106,72 @@ export default {
         toggleChange(value) {
             this.toggle.disabled = this.toggle.loading = value;
         },
-        getExcelData(value) {
-            this.data = value.map(item => {
-                item.code = `RI - ${item.id.toString().padStart(4, "0")}`;
-                item.units = `${item.quantity} ${item.base.name}`;
-                item.custom_sold = `(${item.sold})`;
-                item.custom_loss = `(${item.loss})`;
-                return item;
+        async getExcelData(value) {
+            this.prepareHeader();
+
+            await axios
+                .post("/inventory/report/download", this.date)
+                .then(response => {
+                    const raw_collection = response.data.raw;
+                    this.data = raw_collection.map(item => {
+                        item.code = `RI - ${item.id
+                            .toString()
+                            .padStart(4, "0")}`;
+                        item.units = `${item.quantity} ${item.base.name}`;
+                        item.custom_sold = `(${item.sold})`;
+                        item.custom_loss = `(${item.loss})`;
+                        return item;
+                    });
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log(error.response);
+                        if (error.response.data.error_message) {
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text: error.response.data.error_message
+                            });
+                        } else {
+                            this.$store.commit("errorSnackbar");
+                        }
+                    } else {
+                        console.log(error);
+                    }
+                });
+            this.$store.commit("showSnackbar", {
+                color: true,
+                text: "Downloading..."
+            });
+        },
+        prepareHeader() {
+            this.$store.commit("showSnackbar", {
+                color: true,
+                text: "Please wait while preparing data."
+            });
+            const options = {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            };
+
+            const from_date = new Date(this.date.from).toLocaleDateString(
+                "en-US",
+                options
+            );
+            const to_date = new Date(this.date.to).toLocaleDateString(
+                "en-US",
+                options
+            );
+
+            this.header = `Inventory Report ${from_date} - ${to_date}`;
+        },
+        downloadFinished() {
+            this.dialog = false;
+            this.date.from = new Date().toISOString();
+            this.date.to = new Date().toISOString();
+            this.$store.commit("showSnackbar", {
+                color: true,
+                text: "Inventory report download finished."
             });
         }
     },

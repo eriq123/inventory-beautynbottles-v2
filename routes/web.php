@@ -88,6 +88,7 @@ Route::middleware(['auth', 'web'])->group(function () {
             });
             Route::prefix('report')->group(function () {
                 Route::get('/', 'MainController@report');
+                Route::post('download', 'Inventory\ReportController@download');
             });
         });
     });

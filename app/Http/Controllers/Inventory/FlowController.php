@@ -7,6 +7,7 @@ use App\Log;
 use App\Product;
 use App\Raw;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FlowController extends Controller
 {
@@ -98,7 +99,7 @@ class FlowController extends Controller
                 }
             }
             $this->data['raw']->save();
-            // $this->saveReport($request);
+            $this->saveReport($request);
 
             return response()->json($this->data);
         }
@@ -107,8 +108,8 @@ class FlowController extends Controller
     private function saveReport($request)
     {
         $report = new Log();
-        $report->type = $request->type;
-        $report->item_id = $request->id;
+        $report->user_id = Auth::id();
+        $report->raw_id = $request->id;
         $report->quantity = $request->quantity;
         $report->status = $request->status;
         $report->save();
