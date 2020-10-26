@@ -16,9 +16,7 @@
                 <template v-if="getUserInfo.is_admin">
                     {{ fullName }} (ADMIN)
                 </template>
-                <template v-else>
-                    {{ fullName }}
-                </template>
+                <template v-else> {{ fullName }} (MODERATOR) </template>
             </v-btn>
 
             <v-divider vertical></v-divider>
@@ -31,12 +29,23 @@
 
         <v-navigation-drawer v-model="sidebar" app>
             <template v-if="getUserInfo.is_admin">
+                <app-sidebar :items="admin.home" :route="route"></app-sidebar>
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
-                        <v-list-item-title>Settings (ADMIN)</v-list-item-title>
+                        <v-list-item-title>Inventory</v-list-item-title>
                     </template>
                     <app-sidebar
-                        :items="admin.settings"
+                        :items="admin.inventories"
+                        :route="route"
+                    ></app-sidebar>
+                </v-list-group>
+
+                <v-list-group value="true" color="pink accent-1">
+                    <template v-slot:activator>
+                        <v-list-item-title>Products</v-list-item-title>
+                    </template>
+                    <app-sidebar
+                        :items="admin.products"
                         :route="route"
                     ></app-sidebar>
                 </v-list-group>
@@ -96,6 +105,34 @@ export default {
                 ],
                 inventories: [
                     {
+                        icon: "all-inclusive",
+                        title: "Flow",
+                        link: "/inventory/flow"
+                    }
+                ],
+                products: [
+                    {
+                        icon: "format-line-style",
+                        title: "Raw",
+                        link: "/products/raw"
+                    },
+                    {
+                        icon: "format-line-weight",
+                        title: "Assembled",
+                        link: "/products/assembled"
+                    }
+                ]
+            },
+            admin: {
+                home: [
+                    {
+                        icon: "home",
+                        title: "Home",
+                        link: "/"
+                    }
+                ],
+                inventories: [
+                    {
                         icon: "file-document-multiple-outline",
                         title: "Report",
                         link: "/inventory/report"
@@ -116,15 +153,6 @@ export default {
                         icon: "format-line-weight",
                         title: "Assembled",
                         link: "/products/assembled"
-                    }
-                ]
-            },
-            admin: {
-                settings: [
-                    {
-                        icon: "format-line-style",
-                        title: "Units of Measurement",
-                        link: "/units"
                     }
                 ]
             },

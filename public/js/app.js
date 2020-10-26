@@ -2185,6 +2185,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route", "user"],
@@ -2200,6 +2209,27 @@ __webpack_require__.r(__webpack_exports__);
     return {
       sidebar: true,
       users: {
+        home: [{
+          icon: "home",
+          title: "Home",
+          link: "/"
+        }],
+        inventories: [{
+          icon: "all-inclusive",
+          title: "Flow",
+          link: "/inventory/flow"
+        }],
+        products: [{
+          icon: "format-line-style",
+          title: "Raw",
+          link: "/products/raw"
+        }, {
+          icon: "format-line-weight",
+          title: "Assembled",
+          link: "/products/assembled"
+        }]
+      },
+      admin: {
         home: [{
           icon: "home",
           title: "Home",
@@ -2222,13 +2252,6 @@ __webpack_require__.r(__webpack_exports__);
           icon: "format-line-weight",
           title: "Assembled",
           link: "/products/assembled"
-        }]
-      },
-      admin: {
-        settings: [{
-          icon: "format-line-style",
-          title: "Units of Measurement",
-          link: "/units"
         }]
       },
       getUserInfo: []
@@ -14644,13 +14667,7 @@ var render = function() {
                         " (ADMIN)\n            "
                     )
                   ]
-                : [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.fullName) +
-                        "\n            "
-                    )
-                  ]
+                : [_vm._v(" " + _vm._s(_vm.fullName) + " (MODERATOR) ")]
             ],
             2
           ),
@@ -14689,6 +14706,10 @@ var render = function() {
         [
           _vm.getUserInfo.is_admin
             ? [
+                _c("app-sidebar", {
+                  attrs: { items: _vm.admin.home, route: _vm.route }
+                }),
+                _vm._v(" "),
                 _c(
                   "v-list-group",
                   {
@@ -14699,9 +14720,7 @@ var render = function() {
                           key: "activator",
                           fn: function() {
                             return [
-                              _c("v-list-item-title", [
-                                _vm._v("Settings (ADMIN)")
-                              ])
+                              _c("v-list-item-title", [_vm._v("Inventory")])
                             ]
                           },
                           proxy: true
@@ -14709,13 +14728,43 @@ var render = function() {
                       ],
                       null,
                       false,
-                      1123045964
+                      3125945453
                     )
                   },
                   [
                     _vm._v(" "),
                     _c("app-sidebar", {
-                      attrs: { items: _vm.admin.settings, route: _vm.route }
+                      attrs: { items: _vm.admin.inventories, route: _vm.route }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-list-group",
+                  {
+                    attrs: { value: "true", color: "pink accent-1" },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "activator",
+                          fn: function() {
+                            return [
+                              _c("v-list-item-title", [_vm._v("Products")])
+                            ]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      3582313503
+                    )
+                  },
+                  [
+                    _vm._v(" "),
+                    _c("app-sidebar", {
+                      attrs: { items: _vm.admin.products, route: _vm.route }
                     })
                   ],
                   1
