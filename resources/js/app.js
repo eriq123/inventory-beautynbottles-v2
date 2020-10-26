@@ -11,6 +11,7 @@ const app = new Vue({
     vuetify,
     store,
     components: {
+        "app-home": () => import("./components/pages/homeContainer.vue"),
         "app-units": () => import("./components/pages/units/convertContainer.vue"),
         "app-account": () => import("./components/pages/accountContainer.vue"),
         "app-product-raw": () =>

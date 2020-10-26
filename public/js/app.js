@@ -2184,6 +2184,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route", "user"],
@@ -2199,6 +2200,11 @@ __webpack_require__.r(__webpack_exports__);
     return {
       sidebar: true,
       users: {
+        home: [{
+          icon: "home",
+          title: "Home",
+          link: "/"
+        }],
         inventories: [{
           icon: "file-document-multiple-outline",
           title: "Report",
@@ -14716,6 +14722,10 @@ var render = function() {
                 )
               ]
             : [
+                _c("app-sidebar", {
+                  attrs: { items: _vm.users.home, route: _vm.route }
+                }),
+                _vm._v(" "),
                 _c(
                   "v-list-group",
                   {
@@ -71968,23 +71978,26 @@ var app = new Vue({
   vuetify: _vuetify_index__WEBPACK_IMPORTED_MODULE_0__["default"],
   store: _vuex_index__WEBPACK_IMPORTED_MODULE_1__["default"],
   components: {
+    "app-home": function appHome() {
+      return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./components/pages/homeContainer.vue */ "./resources/js/components/pages/homeContainer.vue"));
+    },
     "app-units": function appUnits() {
-      return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./components/pages/units/convertContainer.vue */ "./resources/js/components/pages/units/convertContainer.vue"));
+      return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! ./components/pages/units/convertContainer.vue */ "./resources/js/components/pages/units/convertContainer.vue"));
     },
     "app-account": function appAccount() {
       return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! ./components/pages/accountContainer.vue */ "./resources/js/components/pages/accountContainer.vue"));
     },
     "app-product-raw": function appProductRaw() {
-      return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
+      return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! ./components/pages/products/rawContainer.vue */ "./resources/js/components/pages/products/rawContainer.vue"));
     },
     "app-product-assembled": function appProductAssembled() {
-      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, /*! ./components/pages/products/assembledContainer.vue */ "./resources/js/components/pages/products/assembledContainer.vue"));
     },
     "app-product-flow": function appProductFlow() {
-      return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/flowContainer.vue */ "./resources/js/components/pages/inventory/flowContainer.vue"));
+      return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/flowContainer.vue */ "./resources/js/components/pages/inventory/flowContainer.vue"));
     },
     "app-product-report": function appProductReport() {
-      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(9), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/reportContainer.vue */ "./resources/js/components/pages/inventory/reportContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(21), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! ./components/pages/inventory/reportContainer.vue */ "./resources/js/components/pages/inventory/reportContainer.vue"));
     }
   }
 }); // render: h => h(App),

@@ -43,6 +43,7 @@
             </template>
 
             <template v-else>
+                <app-sidebar :items="users.home" :route="route"></app-sidebar>
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
                         <v-list-item-title>Inventory</v-list-item-title>
@@ -86,6 +87,13 @@ export default {
             sidebar: true,
 
             users: {
+                home: [
+                    {
+                        icon: "home",
+                        title: "Home",
+                        link: "/"
+                    }
+                ],
                 inventories: [
                     {
                         icon: "file-document-multiple-outline",

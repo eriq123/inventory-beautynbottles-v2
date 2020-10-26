@@ -33,7 +33,9 @@ class MainController extends Controller
 
     public function index()
     {
-        return redirect('/inventory/report');
+        $this->getUser();
+        $this->data['route'] = json_encode("/");
+        return view('pages.home', $this->data);
     }
 
 
