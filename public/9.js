@@ -40,6 +40,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     dialogShow: {
@@ -57,6 +58,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     id: {
       type: Number,
+      required: true
+    },
+    toggleState: {
+      type: Boolean,
       required: true
     }
   },
@@ -164,7 +169,8 @@ var render = function() {
                           inset: "",
                           ripple: "",
                           color: _vm.action == "add" ? "success" : "error",
-                          label: _vm.toggleLabel
+                          label: _vm.toggleLabel,
+                          disabled: _vm.toggleState
                         },
                         model: {
                           value: _vm.toggleDialog,

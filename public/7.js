@@ -81,6 +81,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-flow-datatable": function appFlowDatatable() {
@@ -286,7 +287,8 @@ var render = function() {
                   action: _vm.dialog.action,
                   dialogShow: _vm.dialog.show,
                   switchState: _vm.dialog.toggle,
-                  id: _vm.dialog.id
+                  id: _vm.dialog.id,
+                  toggleState: _vm.toggle.state
                 },
                 on: {
                   dialogshowchange: function($event) {

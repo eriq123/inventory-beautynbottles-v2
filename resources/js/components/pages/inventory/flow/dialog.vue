@@ -13,6 +13,7 @@
                             ripple
                             :color="action == 'add' ? 'success' : 'error'"
                             :label="toggleLabel"
+                            :disabled="toggleState"
                         >
                         </v-switch>
                     </v-col>
@@ -47,6 +48,10 @@ export default {
         },
         id: {
             type: Number,
+            required: true
+        },
+        toggleState: {
+            type: Boolean,
             required: true
         }
     },

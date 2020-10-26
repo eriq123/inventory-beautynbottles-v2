@@ -28,6 +28,7 @@
                     @togglechangestate="dialog.toggle = !dialog.toggle"
                     @saveproductraw="saveproductraw"
                     :id="dialog.id"
+                    :toggleState="toggle.state"
                 >
                     <template #quantity>
                         <v-col sm="8" v-if="toggle.state">
