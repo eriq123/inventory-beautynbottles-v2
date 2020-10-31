@@ -35,6 +35,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -42,16 +46,16 @@ __webpack_require__.r(__webpack_exports__);
       backCamera: true,
       drawOnFound: true,
       stopOnScan: true,
-      eventFound: null
+      eventFound: null,
+      eventDetail: null
     };
   },
   methods: {
     qrScanned: function qrScanned(event) {
       // console.log(event.detail[0]);
       console.log(event);
-      this.eventFound = null;
       this.eventFound = event;
-      alert("i found ".concat(event.detail[0]));
+      this.eventDetail = event.detail[0];
     },
     errorCaptured: function errorCaptured(error) {
       switch (error.name) {
@@ -133,7 +137,8 @@ var render = function() {
                   responsive: "true",
                   "code-scanned": _vm.qrScanned,
                   "use-back-camera": _vm.backCamera,
-                  "draw-on-found": _vm.drawOnFound
+                  "draw-on-found": _vm.drawOnFound,
+                  "stop-on-scan": _vm.stopOnScan
                 }
               }),
               _vm._v(" "),
@@ -149,7 +154,11 @@ var render = function() {
                 },
                 [_vm._v("\n                use back camera\n            ")]
               ),
-              _vm._v(" "),
+              _vm._v(
+                "\n            use back camera: " +
+                  _vm._s(this.backCamera) +
+                  "\n            "
+              ),
               _c(
                 "v-btn",
                 {
@@ -162,7 +171,11 @@ var render = function() {
                 },
                 [_vm._v("\n                draw on found\n            ")]
               ),
-              _vm._v(" "),
+              _vm._v(
+                "\n            draw on found: " +
+                  _vm._s(this.drawOnFound) +
+                  "\n            "
+              ),
               _c(
                 "v-btn",
                 {
@@ -174,6 +187,11 @@ var render = function() {
                   }
                 },
                 [_vm._v("\n                stop on scan\n            ")]
+              ),
+              _vm._v(
+                "\n            stop on scan: " +
+                  _vm._s(this.stopOnScan) +
+                  "\n        "
               )
             ],
             1
@@ -181,7 +199,13 @@ var render = function() {
         ],
         1
       ),
-      _vm._v("\n    Event: " + _vm._s(_vm.eventFound) + "\n")
+      _vm._v(
+        "\n    Event: " +
+          _vm._s(this.eventFound) +
+          " ////// " +
+          _vm._s(this.eventDetail) +
+          "\n"
+      )
     ],
     1
   )
