@@ -36,9 +36,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -46,15 +43,11 @@ __webpack_require__.r(__webpack_exports__);
       backCamera: true,
       drawOnFound: true,
       stopOnScan: true,
-      eventFound: null,
       eventDetail: null
     };
   },
   methods: {
     qrScanned: function qrScanned(event) {
-      // console.log(event.detail[0]);
-      console.log(event);
-      this.eventFound = event;
       this.eventDetail = event.detail[0];
     },
     errorCaptured: function errorCaptured(error) {
@@ -154,11 +147,7 @@ var render = function() {
                 },
                 [_vm._v("\n                use back camera\n            ")]
               ),
-              _vm._v(
-                "\n            use back camera: " +
-                  _vm._s(this.backCamera) +
-                  "\n            "
-              ),
+              _vm._v(" "),
               _c(
                 "v-btn",
                 {
@@ -171,11 +160,7 @@ var render = function() {
                 },
                 [_vm._v("\n                draw on found\n            ")]
               ),
-              _vm._v(
-                "\n            draw on found: " +
-                  _vm._s(this.drawOnFound) +
-                  "\n            "
-              ),
+              _vm._v(" "),
               _c(
                 "v-btn",
                 {
@@ -187,11 +172,6 @@ var render = function() {
                   }
                 },
                 [_vm._v("\n                stop on scan\n            ")]
-              ),
-              _vm._v(
-                "\n            stop on scan: " +
-                  _vm._s(this.stopOnScan) +
-                  "\n        "
               )
             ],
             1
@@ -199,13 +179,7 @@ var render = function() {
         ],
         1
       ),
-      _vm._v(
-        "\n    Event: " +
-          _vm._s(this.eventFound) +
-          " ////// " +
-          _vm._s(this.eventDetail) +
-          "\n"
-      )
+      _vm._v("\n    Event: " + _vm._s(this.eventDetail) + "\n")
     ],
     1
   )
