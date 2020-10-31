@@ -14,6 +14,9 @@
                 <v-btn text @click="drawOnFound = !drawOnFound">
                     draw on found
                 </v-btn>
+                <v-btn text @click="stopOnScan = !stopOnScan">
+                    stop on scan
+                </v-btn>
             </v-col>
         </v-row>
         Event: {{ eventFound }}
@@ -26,6 +29,7 @@ export default {
         return {
             backCamera: true,
             drawOnFound: true,
+            stopOnScan: true,
             eventFound: null
         };
     },
@@ -33,9 +37,9 @@ export default {
         qrScanned(event) {
             // console.log(event.detail[0]);
             console.log(event);
-            alert(event);
             this.eventFound = null;
-            this.eventFound = event.detail[0];
+            this.eventFound = event;
+            alert(`i found ${event.detail[0]}`);
         },
         errorCaptured(error) {
             switch (error.name) {

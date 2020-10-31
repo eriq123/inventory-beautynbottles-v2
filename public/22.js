@@ -32,12 +32,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       backCamera: true,
       drawOnFound: true,
+      stopOnScan: true,
       eventFound: null
     };
   },
@@ -45,9 +49,9 @@ __webpack_require__.r(__webpack_exports__);
     qrScanned: function qrScanned(event) {
       // console.log(event.detail[0]);
       console.log(event);
-      alert(event);
       this.eventFound = null;
-      this.eventFound = event.detail[0];
+      this.eventFound = event;
+      alert("i found ".concat(event.detail[0]));
     },
     errorCaptured: function errorCaptured(error) {
       switch (error.name) {
@@ -157,6 +161,19 @@ var render = function() {
                   }
                 },
                 [_vm._v("\n                draw on found\n            ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { text: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.stopOnScan = !_vm.stopOnScan
+                    }
+                  }
+                },
+                [_vm._v("\n                stop on scan\n            ")]
               )
             ],
             1
