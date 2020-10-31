@@ -8,10 +8,8 @@
     </v-container>
 </template>
 <script>
+import "vue-qr-reader";
 export default {
-    components: {
-        "vue-qr-reader": () => import("vue-qr-reader")
-    },
     data() {
         return {};
     },

@@ -72028,7 +72028,7 @@ var app = new Vue({
   store: _vuex_index__WEBPACK_IMPORTED_MODULE_1__["default"],
   components: {
     "app-home": function appHome() {
-      return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./components/pages/homeContainer.vue */ "./resources/js/components/pages/homeContainer.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(6), __webpack_require__.e(22)]).then(__webpack_require__.bind(null, /*! ./components/pages/homeContainer.vue */ "./resources/js/components/pages/homeContainer.vue"));
     },
     "app-units": function appUnits() {
       return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! ./components/pages/units/convertContainer.vue */ "./resources/js/components/pages/units/convertContainer.vue"));
