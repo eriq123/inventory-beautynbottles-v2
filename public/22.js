@@ -135,11 +135,11 @@ var render = function() {
               _c("vue-qr-reader", {
                 attrs: {
                   responsive: "true",
-                  "code-scanned": _vm.qrScanned,
                   "use-back-camera": _vm.backCamera,
                   "draw-on-found": _vm.drawOnFound,
                   "stop-on-scan": _vm.stopOnScan
-                }
+                },
+                on: { "code-scanned": _vm.qrScanned }
               }),
               _vm._v(" "),
               _c(

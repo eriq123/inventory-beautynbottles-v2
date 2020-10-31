@@ -4,7 +4,7 @@
             <v-col sm="12" md="8" offset-md="2">
                 <vue-qr-reader
                     responsive="true"
-                    :code-scanned="qrScanned"
+                    @code-scanned="qrScanned"
                     :use-back-camera="backCamera"
                     :draw-on-found="drawOnFound"
                     :stop-on-scan="stopOnScan"
