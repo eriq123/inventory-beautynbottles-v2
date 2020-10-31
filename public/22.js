@@ -20,16 +20,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      backCamera: true,
+      drawOnFound: true,
+      eventFound: null
+    };
   },
   methods: {
     qrScanned: function qrScanned(event) {
       // console.log(event.detail[0]);
       console.log(event);
-      console.log("i scanned");
+      alert(event);
+      this.eventFound = null;
+      this.eventFound = event.detail[0];
     },
     errorCaptured: function errorCaptured(error) {
       switch (error.name) {
@@ -107,14 +125,46 @@ var render = function() {
             { attrs: { sm: "12", md: "8", "offset-md": "2" } },
             [
               _c("vue-qr-reader", {
-                attrs: { responsive: "true", "code-scanned": _vm.qrScanned }
-              })
+                attrs: {
+                  responsive: "true",
+                  "code-scanned": _vm.qrScanned,
+                  "use-back-camera": _vm.backCamera,
+                  "draw-on-found": _vm.drawOnFound
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { text: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.backCamera = !_vm.backCamera
+                    }
+                  }
+                },
+                [_vm._v("\n                use back camera\n            ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { text: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.drawOnFound = !_vm.drawOnFound
+                    }
+                  }
+                },
+                [_vm._v("\n                draw on found\n            ")]
+              )
             ],
             1
           )
         ],
         1
-      )
+      ),
+      _vm._v("\n    Event: " + _vm._s(_vm.eventFound) + "\n")
     ],
     1
   )

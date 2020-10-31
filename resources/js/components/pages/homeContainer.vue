@@ -2,22 +2,40 @@
     <v-container>
         <v-row>
             <v-col sm="12" md="8" offset-md="2">
-                <vue-qr-reader responsive="true" :code-scanned="qrScanned" />
+                <vue-qr-reader
+                    responsive="true"
+                    :code-scanned="qrScanned"
+                    :use-back-camera="backCamera"
+                    :draw-on-found="drawOnFound"
+                />
+                <v-btn text @click="backCamera = !backCamera">
+                    use back camera
+                </v-btn>
+                <v-btn text @click="drawOnFound = !drawOnFound">
+                    draw on found
+                </v-btn>
             </v-col>
         </v-row>
+        Event: {{ eventFound }}
     </v-container>
 </template>
 <script>
 import "vue-qr-reader";
 export default {
     data() {
-        return {};
+        return {
+            backCamera: true,
+            drawOnFound: true,
+            eventFound: null
+        };
     },
     methods: {
         qrScanned(event) {
             // console.log(event.detail[0]);
             console.log(event);
-            console.log("i scanned");
+            alert(event);
+            this.eventFound = null;
+            this.eventFound = event.detail[0];
         },
         errorCaptured(error) {
             switch (error.name) {
