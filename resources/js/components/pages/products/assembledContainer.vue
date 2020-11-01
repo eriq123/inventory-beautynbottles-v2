@@ -115,7 +115,15 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                            <v-col sm="6" offset-sm="3">
+                            <v-col sm="3">
+                                <app-assembled-qrcode
+                                    :value="qr_code"
+                                    level="H"
+                                    class="right-align"
+                                >
+                                </app-assembled-qrcode>
+                            </v-col>
+                            <v-col sm="9">
                                 <v-autocomplete
                                     v-model="autocomplete.selected"
                                     :search-input.sync="autocomplete.name"
@@ -168,7 +176,8 @@ export default {
     components: {
         "app-assembled-products": () => import("./assembled/products"),
         "app-raw-menu": () => import("./raw/rawMenu"),
-        "app-raw-converted-units": () => import("./raw/rawConvertedUnits")
+        "app-raw-converted-units": () => import("./raw/rawConvertedUnits"),
+        "app-assembled-qrcode": () => import("qrcode.vue")
     },
     data() {
         return {
@@ -215,7 +224,8 @@ export default {
                 loading: false
             },
             rawItemsReady: false,
-            duplicateAttach: false
+            duplicateAttach: false,
+            qr_code: null
         };
     },
     mounted() {
@@ -366,6 +376,7 @@ export default {
             this.selected = true;
             this.dialog.product_id = item.id;
             this.product_name = item.name;
+            this.qr_code = item.qr_code;
 
             this.autocomplete.selected = null;
             this.assembled.items = [];

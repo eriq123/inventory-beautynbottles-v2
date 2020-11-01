@@ -182,6 +182,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-assembled-products": function appAssembledProducts() {
@@ -192,6 +200,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     "app-raw-converted-units": function appRawConvertedUnits() {
       return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./raw/rawConvertedUnits */ "./resources/js/components/pages/products/raw/rawConvertedUnits.vue"));
+    },
+    "app-assembled-qrcode": function appAssembledQrcode() {
+      return __webpack_require__.e(/*! import() */ 20).then(__webpack_require__.bind(null, /*! qrcode.vue */ "./node_modules/qrcode.vue/dist/qrcode.vue.esm.js"));
     }
   },
   data: function data() {
@@ -235,7 +246,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         loading: false
       },
       rawItemsReady: false,
-      duplicateAttach: false
+      duplicateAttach: false,
+      qr_code: null
     };
   },
   mounted: function mounted() {
@@ -509,10 +521,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this7.selected = true;
                 _this7.dialog.product_id = item.id;
                 _this7.product_name = item.name;
+                _this7.qr_code = item.qr_code;
                 _this7.autocomplete.selected = null;
                 _this7.assembled.items = [];
                 _this7.assembled.loading = true;
-                _context7.next = 8;
+                _context7.next = 9;
                 return axios.post("/products/assembled/view", {
                   id: item.id
                 }).then(function (response) {
@@ -528,10 +541,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
                 });
 
-              case 8:
+              case 9:
                 _this7.assembled.loading = false;
 
-              case 9:
+              case 10:
               case "end":
                 return _context7.stop();
             }
@@ -931,7 +944,19 @@ var render = function() {
                             [
                               _c(
                                 "v-col",
-                                { attrs: { sm: "6", "offset-sm": "3" } },
+                                { attrs: { sm: "3" } },
+                                [
+                                  _c("app-assembled-qrcode", {
+                                    staticClass: "right-align",
+                                    attrs: { value: _vm.qr_code, level: "H" }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { sm: "9" } },
                                 [
                                   _c("v-autocomplete", {
                                     attrs: {
