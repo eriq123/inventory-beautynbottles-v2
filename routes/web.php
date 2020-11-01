@@ -16,6 +16,11 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/', 'MainController@index');
 
+    Route::prefix('home')->group(function () {
+        Route::post('/raw', 'HomeController@raw');
+        Route::post('/product', 'HomeController@product');
+    });
+
     Route::prefix('units')->group(function () {
         Route::get('/', 'MainController@units');
 
@@ -49,7 +54,6 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::prefix('products')->group(function () {
 
         Route::prefix('category')->group(function () {
-            // Route::post('search', 'Products\CategoryController@search');
             Route::post('view', 'Products\CategoryController@view');
             Route::post('add', 'Products\CategoryController@store');
             Route::post('update', 'Products\CategoryController@update');
@@ -58,7 +62,6 @@ Route::middleware(['auth', 'web'])->group(function () {
 
         Route::prefix('raw')->group(function () {
             Route::get('/', 'MainController@raw');
-            // Route::post('search', 'Products\RawController@search');
             Route::post('view', 'Products\RawController@view');
             Route::post('add', 'Products\RawController@store');
             Route::post('update', 'Products\RawController@update');
@@ -72,7 +75,6 @@ Route::middleware(['auth', 'web'])->group(function () {
             Route::post('detach', 'Products\AssembledController@detach');
             Route::post('view', 'Products\AssembledController@view');
         });
-        // Route::post('search', 'Products\ProductsController@search');
         Route::post('view', 'Products\ProductsController@view');
         Route::post('add', 'Products\ProductsController@store');
         Route::post('update', 'Products\ProductsController@update');

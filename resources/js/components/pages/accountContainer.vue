@@ -114,6 +114,8 @@ export default {
             .catch(error => {
                 if (error.response) {
                     this.$store.commit("errorSnackbar");
+                } else {
+                    console.log(error);
                 }
             });
     },
@@ -168,6 +170,8 @@ export default {
                                     text: error.response.data.errors.username[0]
                                 });
                             }
+                        } else {
+                            console.log(error);
                         }
                         if (!customError) {
                             this.$store.commit("errorSnackbar");
@@ -197,6 +201,8 @@ export default {
                         } else {
                             this.$store.commit("errorSnackbar");
                         }
+                    } else {
+                        console.log(error);
                     }
                 });
         },

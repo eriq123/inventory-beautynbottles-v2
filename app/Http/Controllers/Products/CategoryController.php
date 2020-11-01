@@ -32,16 +32,6 @@ class CategoryController extends Controller
         return response()->json($this->data);
     }
 
-    // public function search(Request $request)
-    // {
-    //     $this->data['category'] = Category::where('name', 'LIKE', $request->name . '%')
-    //         ->orderBy('name')
-    //         ->limit(5)
-    //         ->get();
-
-    //     return response()->json($this->data);
-    // }
-
     public function update(Request $request)
     {
         $this->validation($request);

@@ -133,8 +133,16 @@ export default {
                     })
                     .then(response => {
                         this.convert.collection = response.data.convert;
-                        this.convert.name = response.data.convert[0].name;
-                        this.convert.value = response.data.convert[0].value;
+                        if (response.data.convert.length > 0) {
+                            this.convert.name = response.data.convert[0].name;
+                            this.convert.value = response.data.convert[0].value;
+                        } else {
+                            this.$store.commit("showSnackbar", {
+                                color: false,
+                                text:
+                                    "Sub-unit is required. Please add one then try again."
+                            });
+                        }
 
                         this.dialog.loading = false;
                     })

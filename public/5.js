@@ -1,23 +1,14 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[5],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/accountContainer.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/accountContainer.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/snackbar.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/common/snackbar.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 //
 //
 //
@@ -43,220 +34,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      tab: null,
-      formUserData: {
-        first_name: null,
-        last_name: null,
-        username: null
-      },
-      formPasswordData: {
-        old_password: null,
-        new_password: null,
-        new_password_confirmation: null
-      }
-    };
+  props: {
+    color: {
+      type: String
+    },
+    text: {
+      required: true
+    },
+    visible: {
+      required: true
+    }
   },
-  created: function () {
-    var _created = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var _this = this;
-
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return axios.get("/user").then(function (response) {
-                _this.setFormData(response.data);
-              })["catch"](function (error) {
-                if (error.response) {
-                  _this.$store.commit("errorSnackbar");
-                }
-              });
-
-            case 2:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
-
-    function created() {
-      return _created.apply(this, arguments);
-    }
-
-    return created;
-  }(),
-  methods: {
-    setFormData: function setFormData(user) {
-      this.formUserData.first_name = user.first_name;
-      this.formUserData.last_name = user.last_name;
-      this.formUserData.username = user.username;
-    },
-    processUpdateAccount: function processUpdateAccount() {
-      var _this2 = this;
-
-      if (this.tab == 0) {
-        this.formUserData.isUsername = false;
-      } else if (this.tab == 1) {
-        this.formUserData.isUsername = true;
-      }
-
-      axios.post("/account/update", this.formUserData).then(function (response) {
-        if (_this2.tab == 0) {
-          _this2.$store.commit("showSnackbar", {
-            color: true,
-            text: "Refresh the page to see the changes."
-          });
-        } else if (_this2.tab == 1) {
-          _this2.$store.commit("showSnackbar", {
-            color: true,
-            text: "Successfully updated."
-          });
-        }
-      })["catch"](function (error) {
-        if (error.response) {
-          console.log(error.response);
-          var customError = false;
-
-          if (error.response.data.errors) {
-            customError = true;
-
-            if (error.response.data.errors.first_name) {
-              _this2.$store.commit("showSnackbar", {
-                color: false,
-                text: error.response.data.errors.first_name[0]
-              });
-            } else if (error.response.data.errors.last_name) {
-              _this2.$store.commit("showSnackbar", {
-                color: false,
-                text: error.response.data.errors.last_name[0]
-              });
-            } else if (error.response.data.errors.username) {
-              _this2.$store.commit("showSnackbar", {
-                color: false,
-                text: error.response.data.errors.username[0]
-              });
-            }
-          }
-
-          if (!customError) {
-            _this2.$store.commit("errorSnackbar");
-          }
-        }
-      });
-    },
-    processPasswordUpdate: function processPasswordUpdate() {
-      var _this3 = this;
-
-      axios.post("/account/password", this.formPasswordData).then(function (response) {
-        var user = response.data.status;
-
-        _this3.$store.commit("showSnackbar", {
-          color: true,
-          text: "Password has been updated."
-        });
-
-        _this3.formPasswordData.old_password = _this3.formPasswordData.new_password = _this3.formPasswordData.new_password_confirmation = null;
-      })["catch"](function (error) {
-        if (error.response) {
-          console.log(error.response);
-
-          if (error.response.data.error) {
-            _this3.$store.commit("showSnackbar", {
-              color: false,
-              text: error.response.data.error
-            });
-          } else {
-            _this3.$store.commit("errorSnackbar");
-          }
-        }
-      });
-    },
-    updateAction: function updateAction() {
-      if (this.tab == 0 || this.tab == 1) {
-        this.processUpdateAccount();
-      } else if (this.tab == 2) {
-        this.processPasswordUpdate();
-      }
-    }
+  data: function data() {
+    return {};
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/accountContainer.vue?vue&type=template&id=83a1276c&":
-/*!*************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/accountContainer.vue?vue&type=template&id=83a1276c& ***!
-  \*************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae& ***!
+  \******************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -269,286 +69,51 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-container",
-    [
-      _c(
-        "v-row",
-        [
-          _c(
-            "v-col",
-            { attrs: { sm: "8", "offset-sm": "2" } },
-            [
+    "v-snackbar",
+    {
+      attrs: {
+        app: "",
+        right: "",
+        top: "",
+        rounded: "",
+        timeout: "2000",
+        color: _vm.color,
+        value: _vm.visible
+      },
+      on: {
+        input: function($event) {
+          return _vm.$store.commit("closeSnackbar")
+        }
+      },
+      scopedSlots: _vm._u([
+        {
+          key: "action",
+          fn: function(ref) {
+            var attrs = ref.attrs
+            return [
               _c(
-                "v-card",
-                { staticClass: "px-5", attrs: { outlined: "" } },
-                [
-                  _c(
-                    "v-card-title",
-                    [
-                      _vm._v(
-                        "\n                    My Account\n                    "
-                      ),
-                      _c("v-spacer"),
-                      _vm._v(" "),
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { color: "blue darken-4", text: "" },
-                          on: { click: _vm.updateAction }
-                        },
-                        [
-                          _vm._v(
-                            "\n                        Update\n                    "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
-                    [
-                      _c(
-                        "v-tabs",
-                        {
-                          attrs: {
-                            "background-color": "transparent",
-                            grow: ""
-                          },
-                          model: {
-                            value: _vm.tab,
-                            callback: function($$v) {
-                              _vm.tab = $$v
-                            },
-                            expression: "tab"
-                          }
-                        },
-                        [
-                          _c("v-tab", [_vm._v("Personal Information")]),
-                          _vm._v(" "),
-                          _c("v-tab", [_vm._v("Username")]),
-                          _vm._v(" "),
-                          _c("v-tab", [_vm._v("Password")])
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-tabs-items",
-                        {
-                          model: {
-                            value: _vm.tab,
-                            callback: function($$v) {
-                              _vm.tab = $$v
-                            },
-                            expression: "tab"
-                          }
-                        },
-                        [
-                          _c(
-                            "v-tab-item",
-                            [
-                              _c(
-                                "v-row",
-                                { staticClass: "py-5" },
-                                [
-                                  _c(
-                                    "v-col",
-                                    { attrs: { sm: "12" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: { label: "First Name" },
-                                        model: {
-                                          value: _vm.formUserData.first_name,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.formUserData,
-                                              "first_name",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "formUserData.first_name"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-col",
-                                    { attrs: { sm: "12" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: { label: "Last Name" },
-                                        model: {
-                                          value: _vm.formUserData.last_name,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.formUserData,
-                                              "last_name",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "formUserData.last_name"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-tab-item",
-                            [
-                              _c(
-                                "v-row",
-                                { staticClass: "py-5" },
-                                [
-                                  _c(
-                                    "v-col",
-                                    { attrs: { sm: "12" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: { label: "Username" },
-                                        model: {
-                                          value: _vm.formUserData.username,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.formUserData,
-                                              "username",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "formUserData.username"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-tab-item",
-                            [
-                              _c(
-                                "v-row",
-                                { staticClass: "py-5" },
-                                [
-                                  _c(
-                                    "v-col",
-                                    { attrs: { sm: "12" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          type: "password",
-                                          label: "Old Password"
-                                        },
-                                        model: {
-                                          value:
-                                            _vm.formPasswordData.old_password,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.formPasswordData,
-                                              "old_password",
-                                              $$v
-                                            )
-                                          },
-                                          expression:
-                                            "\n                                            formPasswordData.old_password\n                                        "
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-col",
-                                    { attrs: { sm: "12" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          type: "password",
-                                          label: "New Password"
-                                        },
-                                        model: {
-                                          value:
-                                            _vm.formPasswordData.new_password,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.formPasswordData,
-                                              "new_password",
-                                              $$v
-                                            )
-                                          },
-                                          expression:
-                                            "\n                                            formPasswordData.new_password\n                                        "
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-col",
-                                    { attrs: { sm: "12" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          type: "password",
-                                          label: "Confirm New Password"
-                                        },
-                                        model: {
-                                          value:
-                                            _vm.formPasswordData
-                                              .new_password_confirmation,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.formPasswordData,
-                                              "new_password_confirmation",
-                                              $$v
-                                            )
-                                          },
-                                          expression:
-                                            "\n                                            formPasswordData.new_password_confirmation\n                                        "
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
+                "v-btn",
+                _vm._b(
+                  {
+                    attrs: { dark: "", text: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$store.commit("closeSnackbar")
+                      }
+                    }
+                  },
+                  "v-btn",
+                  attrs,
+                  false
+                ),
+                [_vm._v("\n            Close\n        ")]
               )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
+            ]
+          }
+        }
+      ])
+    },
+    [_vm._v("\n    " + _vm._s(this.text) + "\n\n    ")]
   )
 }
 var staticRenderFns = []
@@ -558,17 +123,17 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/js/components/pages/accountContainer.vue":
-/*!************************************************************!*\
-  !*** ./resources/js/components/pages/accountContainer.vue ***!
-  \************************************************************/
+/***/ "./resources/js/components/common/snackbar.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/common/snackbar.vue ***!
+  \*****************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _accountContainer_vue_vue_type_template_id_83a1276c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accountContainer.vue?vue&type=template&id=83a1276c& */ "./resources/js/components/pages/accountContainer.vue?vue&type=template&id=83a1276c&");
-/* harmony import */ var _accountContainer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./accountContainer.vue?vue&type=script&lang=js& */ "./resources/js/components/pages/accountContainer.vue?vue&type=script&lang=js&");
+/* harmony import */ var _snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./snackbar.vue?vue&type=template&id=0663e0ae& */ "./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae&");
+/* harmony import */ var _snackbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./snackbar.vue?vue&type=script&lang=js& */ "./resources/js/components/common/snackbar.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -578,9 +143,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _accountContainer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _accountContainer_vue_vue_type_template_id_83a1276c___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _accountContainer_vue_vue_type_template_id_83a1276c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _snackbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -590,38 +155,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/pages/accountContainer.vue"
+component.options.__file = "resources/js/components/common/snackbar.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/pages/accountContainer.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************!*\
-  !*** ./resources/js/components/pages/accountContainer.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************/
+/***/ "./resources/js/components/common/snackbar.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/common/snackbar.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_accountContainer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./accountContainer.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/accountContainer.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_accountContainer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./snackbar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/snackbar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/pages/accountContainer.vue?vue&type=template&id=83a1276c&":
-/*!*******************************************************************************************!*\
-  !*** ./resources/js/components/pages/accountContainer.vue?vue&type=template&id=83a1276c& ***!
-  \*******************************************************************************************/
+/***/ "./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae& ***!
+  \************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_accountContainer_vue_vue_type_template_id_83a1276c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./accountContainer.vue?vue&type=template&id=83a1276c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/accountContainer.vue?vue&type=template&id=83a1276c&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_accountContainer_vue_vue_type_template_id_83a1276c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./snackbar.vue?vue&type=template&id=0663e0ae& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/snackbar.vue?vue&type=template&id=0663e0ae&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_accountContainer_vue_vue_type_template_id_83a1276c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_snackbar_vue_vue_type_template_id_0663e0ae___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
