@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <v-col sm="12" md="8" offset-md="2">
+            <v-col sm="12" md="8" offset-md="2" lg="4" offset-lg="4">
                 <vue-qr-reader
                     responsive="true"
                     @code-scanned="qrScanned"
@@ -9,15 +9,6 @@
                     :draw-on-found="drawOnFound"
                     :stop-on-scan="stopOnScan"
                 />
-                <v-btn text @click="qrScanned('eshopbnb-RI-1')">
-                    Scanned RI
-                </v-btn>
-                <v-btn text @click="qrScanned('eshopbnb-AP-4')">
-                    Scanned AP
-                </v-btn>
-                <v-btn text @click="qrScanned('eshopbnb11-AP-4')">
-                    Scanned unknown
-                </v-btn>
             </v-col>
         </v-row>
         <v-dialog v-model="dialog.show" max-width="450px">
@@ -150,8 +141,8 @@ export default {
                 });
         },
         qrScanned(event) {
-            // this.eventDetail = event.detail[0];
-            this.eventDetail = event;
+            this.eventDetail = event.detail[0];
+
             const parts = this.eventDetail.split("-");
 
             if (parts[0] == "eshopbnb") {

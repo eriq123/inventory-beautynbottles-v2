@@ -89,15 +89,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -173,8 +164,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     qrScanned: function qrScanned(event) {
-      // this.eventDetail = event.detail[0];
-      this.eventDetail = event;
+      this.eventDetail = event.detail[0];
       var parts = this.eventDetail.split("-");
 
       if (parts[0] == "eshopbnb") {
@@ -384,7 +374,15 @@ var render = function() {
         [
           _c(
             "v-col",
-            { attrs: { sm: "12", md: "8", "offset-md": "2" } },
+            {
+              attrs: {
+                sm: "12",
+                md: "8",
+                "offset-md": "2",
+                lg: "4",
+                "offset-lg": "4"
+              }
+            },
             [
               _c("vue-qr-reader", {
                 attrs: {
@@ -394,46 +392,7 @@ var render = function() {
                   "stop-on-scan": _vm.stopOnScan
                 },
                 on: { "code-scanned": _vm.qrScanned }
-              }),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { text: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.qrScanned("eshopbnb-RI-1")
-                    }
-                  }
-                },
-                [_vm._v("\n                Scanned RI\n            ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { text: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.qrScanned("eshopbnb-AP-4")
-                    }
-                  }
-                },
-                [_vm._v("\n                Scanned AP\n            ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { text: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.qrScanned("eshopbnb11-AP-4")
-                    }
-                  }
-                },
-                [_vm._v("\n                Scanned unknown\n            ")]
-              )
+              })
             ],
             1
           )
