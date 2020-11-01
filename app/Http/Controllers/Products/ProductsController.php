@@ -27,7 +27,10 @@ class ProductsController extends Controller
         $this->validation($request);
 
         $this->data['product'] = new Product();
+        $this->data['product']->qr_code = "eshopbnb-AP-";
         $this->saveProductName($request->name);
+
+        $this->data['product']->update(['qr_code' => 'eshopbnb-AP-' . $this->data['product']->id]);
 
         return response()->json($this->data);
     }

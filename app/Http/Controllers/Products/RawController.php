@@ -44,9 +44,12 @@ class RawController extends Controller
     {
         $this->validation($request);
         $this->data['raw'] = new Raw();
-        $this->data['raw']->qr_code = Carbon::now() . " " . $request->name;
+        $this->data['raw']->qr_code = "eshopbnb-RI-";
         $this->saveRawInformation($request);
 
+        $this->data['raw']->update(['qr_code' => 'eshopbnb-RI-' . $this->data['raw']->id]);
+
+        $this->prepareRaw();
         return response()->json($this->data);
     }
 
@@ -56,7 +59,13 @@ class RawController extends Controller
         $this->data['raw'] = Raw::findorFail($request->id);
         $this->saveRawInformation($request);
 
+        $this->prepareRaw();
         return response()->json($this->data);
+    }
+
+    private function prepareRaw()
+    {
+        $this->data['raw'] = Raw::with('base')->with('category')->where('id', $this->data['raw']->id)->first();
     }
 
     public function destroy(Request $request)
@@ -75,6 +84,5 @@ class RawController extends Controller
         $this->data['raw']->quantity = $request->quantity;
         $this->data['raw']->reorder_point = $request->reorder_point;
         $this->data['raw']->save();
-        $this->data['raw'] = Raw::with('base')->with('category')->where('id', $this->data['raw']->id)->first();
     }
 }

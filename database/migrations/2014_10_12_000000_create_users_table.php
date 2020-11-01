@@ -86,7 +86,7 @@ class CreateUsersTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('qr_code')->nullable();
+            $table->string('qr_code');
 
             $table->integer('purchase')->default(0);
             // $table->integer('rts')->default(0);

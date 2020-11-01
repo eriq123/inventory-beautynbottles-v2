@@ -31,7 +31,16 @@ class DatabaseSeeder extends Seeder
                     'username' => 'eriq',
                     'password' => bcrypt('qweasd'),
                     'active' => 1,
-                    'is_admin' => 0,
+                    'is_admin' => 1,
+                ],
+                [
+                    'id' => 3,
+                    'first_name' => 'Normal',
+                    'last_name' => 'User',
+                    'username' => 'user',
+                    'password' => bcrypt('qweasd'),
+                    'active' => 1,
+                    'is_admin' => 1,
                 ],
             ]
         );
@@ -66,18 +75,12 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'id' => 3,
-                    'base_id' => 1,
-                    'name' => "gallon",
-                    'value' => 385000,
-                ],
-                [
-                    'id' => 4,
                     'base_id' => 2,
                     'name' => "g",
                     'value' => 100,
                 ],
                 [
-                    'id' => 5,
+                    'id' => 4,
                     'base_id' => 2,
                     'name' => "kg",
                     'value' => 100000,
