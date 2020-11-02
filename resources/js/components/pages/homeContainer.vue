@@ -5,6 +5,7 @@
                 <vue-qr-reader
                     responsive="true"
                     @code-scanned="qrScanned"
+                    @error-captured="errorCaptured"
                     :use-back-camera="backCamera"
                     :draw-on-found="drawOnFound"
                     :stop-on-scan="stopOnScan"
@@ -115,12 +116,12 @@ export default {
             } else {
                 this.form.quantity = this.dialog.quantity * this.convert.value;
             }
+            this.dialog.show = false;
             axios
                 .post("/inventory/flow/store", this.form)
                 .then(response => {
                     console.log(response.data);
 
-                    this.dialog.show = false;
                     this.$store.commit("showSnackbar", {
                         color: true,
                         text: `Record has been updated!`
