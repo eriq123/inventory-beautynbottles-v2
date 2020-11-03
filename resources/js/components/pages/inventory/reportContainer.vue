@@ -112,15 +112,19 @@ export default {
             await axios
                 .post("/inventory/report/download", this.date)
                 .then(response => {
-                    const raw_collection = response.data.raw;
-                    this.data = raw_collection.map(item => {
-                        item.code = `RI - ${item.id
-                            .toString()
-                            .padStart(4, "0")}`;
-                        item.units = `${item.quantity} ${item.base.name}`;
-                        item.custom_sold = `(${item.sold})`;
-                        item.custom_loss = `(${item.loss})`;
-                        return item;
+                    this.data = response.data.log.map(item => {
+                        if (item.raw) {
+                            item.code = `RI - ${item.raw.id
+                                .toString()
+                                .padStart(4, "0")}`;
+                            item.name = item.raw.name;
+                            item.purchase = item.raw.purchase;
+                            item.rts = item.raw.rts;
+                            item.units = `${item.raw.quantity} ${item.raw.base.name}`;
+                            item.custom_sold = `(${item.raw.sold})`;
+                            item.custom_loss = `(${item.raw.loss})`;
+                            return item;
+                        }
                     });
                 })
                 .catch(error => {

@@ -139,13 +139,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _context.next = 3;
                 return axios.post("/inventory/report/download", _this.date).then(function (response) {
-                  var raw_collection = response.data.raw;
-                  _this.data = raw_collection.map(function (item) {
-                    item.code = "RI - ".concat(item.id.toString().padStart(4, "0"));
-                    item.units = "".concat(item.quantity, " ").concat(item.base.name);
-                    item.custom_sold = "(".concat(item.sold, ")");
-                    item.custom_loss = "(".concat(item.loss, ")");
-                    return item;
+                  _this.data = response.data.log.map(function (item) {
+                    if (item.raw) {
+                      item.code = "RI - ".concat(item.raw.id.toString().padStart(4, "0"));
+                      item.name = item.raw.name;
+                      item.purchase = item.raw.purchase;
+                      item.rts = item.raw.rts;
+                      item.units = "".concat(item.raw.quantity, " ").concat(item.raw.base.name);
+                      item.custom_sold = "(".concat(item.raw.sold, ")");
+                      item.custom_loss = "(".concat(item.raw.loss, ")");
+                      return item;
+                    }
                   });
                 })["catch"](function (error) {
                   if (error.response) {
