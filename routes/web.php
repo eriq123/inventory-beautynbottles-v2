@@ -15,6 +15,8 @@ Route::get('logout', 'AuthController@logout')->name('logout');
 Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/', 'MainController@index');
+    Route::get('/user', 'MainController@user');
+    Route::get('/logs', 'MainController@logs');
 
     Route::prefix('home')->group(function () {
         Route::post('/raw', 'HomeController@raw');
@@ -49,10 +51,7 @@ Route::middleware(['auth', 'web'])->group(function () {
     });
 
 
-    Route::get('/user', 'MainController@user');
-
     Route::prefix('products')->group(function () {
-
         Route::prefix('category')->group(function () {
             Route::post('view', 'Products\CategoryController@view');
             Route::post('add', 'Products\CategoryController@store');

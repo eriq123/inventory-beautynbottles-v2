@@ -17,6 +17,13 @@ class MainController extends Controller
         $this->data['user'] = json_encode(Auth::user());
     }
 
+    public function logs()
+    {
+        $this->getUser();
+        $this->data['route'] = json_encode("/logs");
+        return view('pages.logs', $this->data);
+    }
+
     public function units()
     {
         $this->getUser();
