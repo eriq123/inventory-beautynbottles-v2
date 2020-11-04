@@ -15,7 +15,9 @@ class ReportController extends Controller
         $from = new Carbon($request->from);
         $to = new Carbon($request->to);
         $this->data['log'] = Log::whereBetween('created_at', [$from->startOfDay(), $to->endOfDay()])->with(['raw' => function ($q) {
-            $q->withTrashed()->with('base')->with('category');
+            $q->withTrashed()->with(['base' => function ($q) {
+                $q->withTrashed();
+            }]);
         }])->get();
 
         return response()->json($this->data);
