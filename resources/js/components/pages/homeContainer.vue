@@ -72,6 +72,11 @@
 <script>
 import "vue-qr-reader";
 export default {
+    props: {
+        user: {
+            required: true
+        }
+    },
     components: {
         "app-qr-menu": () => import("./products/raw/rawMenu"),
         "app-qr-converted-units": () =>
@@ -151,14 +156,24 @@ export default {
                 if (parts[1] == "RI") {
                     this.form.id = parts[2];
                     this.form.type = "Raw item";
-                    this.form.action = "add";
-                    this.form.status = "Purchase";
+                    if (user.is_admin) {
+                        this.form.action = "minus";
+                        this.form.status = "Sold";
+                    } else {
+                        this.form.action = "add";
+                        this.form.status = "Purchase";
+                    }
                     this.prepareRawDialog(parts[2]);
                 } else if (parts[1] == "AP") {
                     this.form.id = parts[2];
                     this.form.type = "Products";
-                    this.form.action = "minus";
-                    this.form.status = "Sold";
+                    if (user.is_admin) {
+                        this.form.action = "minus";
+                        this.form.status = "Sold";
+                    } else {
+                        this.form.action = "minus";
+                        this.form.status = "Sold";
+                    }
                     this.prepareProductDialog(parts[2]);
                 } else {
                     this.unknownQRCodeAlert();

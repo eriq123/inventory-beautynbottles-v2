@@ -40,7 +40,7 @@
                             <v-btn text @click="dialog = false">Cancel</v-btn>
                             <app-download-excel
                                 class="green--text text--darken-3 v-btn v-btn--flat v-btn--text theme--light v-size--default"
-                                :name="header"
+                                :name="filename"
                                 :header="header"
                                 :data="data"
                                 :fields="fields"
@@ -87,6 +87,7 @@ export default {
             },
             data: [],
             header: null,
+            filename: null,
             dialog: false,
 
             date: {
@@ -167,7 +168,8 @@ export default {
                 options
             );
 
-            this.header = `Inventory Report ${from_date} - ${to_date}`;
+            this.filename = `Inventory Report ${from_date} - ${to_date}`;
+            this.header = `Eshop Beauty and Bottles On;ine Shop\n Inventory Report\n ${from_date} - ${to_date}`;
         },
         downloadFinished() {
             this.dialog = false;

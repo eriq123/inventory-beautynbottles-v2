@@ -1,5 +1,5 @@
 @extends('layout.master')
 
 @section('content')
-<app-home></app-home>
+<app-home :user="{{$user}}"></app-home>
 @endsection
