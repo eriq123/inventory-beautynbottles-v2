@@ -169,7 +169,7 @@ export default {
             );
 
             this.filename = `Inventory Report ${from_date} - ${to_date}`;
-            this.header = `Eshop Beauty and Bottles On;ine Shop\n Inventory Report\n ${from_date} - ${to_date}`;
+            this.header = `Eshop Beauty and Bottles Online Shop\n Inventory Report\n ${from_date} - ${to_date}`;
         },
         downloadFinished() {
             this.dialog = false;
