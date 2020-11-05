@@ -158,10 +158,10 @@ export default {
                     this.form.type = "Raw item";
                     if (user.is_admin) {
                         this.form.action = "minus";
-                        this.form.status = "Sold";
+                        this.form.status = "Purchase";
                     } else {
                         this.form.action = "add";
-                        this.form.status = "Purchase";
+                        this.form.status = "Sold";
                     }
                     this.prepareRawDialog(parts[2]);
                 } else if (parts[1] == "AP") {
