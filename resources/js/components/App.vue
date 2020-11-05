@@ -23,7 +23,7 @@
 
             <v-btn text @click="logout" class="pink--text text--accent-1">
                 <v-icon class="mr-1">mdi-logout</v-icon>
-                logout
+                <span class="d-none d-sm-flex">logout</span>
             </v-btn>
         </v-app-bar>
 
