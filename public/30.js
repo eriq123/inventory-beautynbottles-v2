@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[28],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[30],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/qrContainer.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
@@ -9,6 +9,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jspdf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jspdf */ "./node_modules/jspdf/dist/jspdf.es.min.js");
 //
 //
 //
@@ -19,75 +20,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    "app-qrcode": function appQrcode() {
-      return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! qrcode.vue */ "./node_modules/qrcode.vue/dist/qrcode.vue.esm.js"));
-    }
-  },
   props: {
     items: {
       required: true
     }
   },
-  data: function data() {
-    return {};
-  },
-  created: function created() {
-    var script = document.createElement("script");
-    script.type = "application/javascript";
-    script.src = "https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js";
-    document.head.appendChild(script);
-  },
   methods: {
-    processPrint: function processPrint() {
-      $("#excludeFromPDF").hide();
-      var element = document.getElementById("pdfPrint");
-      var opt = {
-        margin: 1,
-        filename: "QR Codes.pdf",
-        image: {
-          type: "jpeg",
-          quality: 1
+    rawPDF: function rawPDF() {
+      var doc = new jspdf__WEBPACK_IMPORTED_MODULE_0__["jsPDF"]();
+      doc.html($("#pdfcontainer").get(0), {
+        callback: function callback(doc) {
+          doc.save();
         },
-        html2canvas: {
-          scale: 2
-        },
-        pagebreak: {
-          mode: "avoid-all",
-          before: ".pageBreaker"
-        },
-        jsPDF: {
-          format: "a4",
-          orientation: "portrait"
-        }
-      };
-      html2pdf().set(opt).from(element).save();
-      $("#excludeFromPDF").show();
+        filename: "filename",
+        x: 10,
+        y: 10
+      });
     }
   }
 });
@@ -111,89 +61,23 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { id: "pdfPrint" } },
+    { attrs: { id: "pdfcontainer" } },
     [
+      _c("v-btn", { attrs: { text: "" }, on: { click: _vm.rawPDF } }, [
+        _vm._v("Click me")
+      ]),
+      _vm._v(" "),
       _c(
         "v-row",
-        { attrs: { id: "excludeFromPDF" } },
-        [
-          _c(
-            "v-col",
-            { attrs: { cols: "12" } },
-            [
-              _c(
-                "v-btn",
-                {
-                  attrs: { text: "", color: "pink accent-2" },
-                  on: { click: _vm.processPrint }
-                },
-                [
-                  _c("v-icon", { attrs: { left: "" } }, [
-                    _vm._v("mdi-download")
-                  ]),
-                  _vm._v(" "),
-                  _c("h3", [_vm._v("Download in PDF format")])
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
+        _vm._l(_vm.items, function(item) {
+          return _c("v-col", { key: item.id, attrs: { cols: "3" } }, [
+            _vm._v("\n            " + _vm._s(item.name) + "\n        ")
+          ])
+        }),
         1
-      ),
-      _vm._v(" "),
-      _vm._l(_vm.items, function(newItem, index) {
-        return _c(
-          "v-row",
-          { key: index, staticClass: "pa-2" },
-          [
-            _c("v-col", { attrs: { cols: "12" } }, [
-              _c("h2", { staticStyle: { "text-align": "center" } }, [
-                _vm._v("\n                Raw items\n            ")
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._l(newItem, function(item, index) {
-              return _c(
-                "v-col",
-                { key: index, attrs: { cols: "3" } },
-                [
-                  _c(
-                    "p",
-                    {
-                      staticStyle: {
-                        "text-align": "center",
-                        "margin-bottom": "16px"
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(item.name) +
-                          "\n            "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("app-qrcode", {
-                    staticStyle: { "text-align": "center" },
-                    attrs: { value: item.qr_code, level: "H" }
-                  }),
-                  _vm._v(" "),
-                  index % 23 == 0 && index !== 0
-                    ? _c("div", { staticClass: "pageBreaker" })
-                    : _vm._e()
-                ],
-                1
-              )
-            })
-          ],
-          2
-        )
-      })
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -207,15 +91,14 @@ render._withStripped = true
 /*!*******************************************************!*\
   !*** ./resources/js/components/pages/qrContainer.vue ***!
   \*******************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _qrContainer_vue_vue_type_template_id_d6e5b74c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./qrContainer.vue?vue&type=template&id=d6e5b74c& */ "./resources/js/components/pages/qrContainer.vue?vue&type=template&id=d6e5b74c&");
 /* harmony import */ var _qrContainer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./qrContainer.vue?vue&type=script&lang=js& */ "./resources/js/components/pages/qrContainer.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _qrContainer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _qrContainer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -245,7 +128,7 @@ component.options.__file = "resources/js/components/pages/qrContainer.vue"
 /*!********************************************************************************!*\
   !*** ./resources/js/components/pages/qrContainer.vue?vue&type=script&lang=js& ***!
   \********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

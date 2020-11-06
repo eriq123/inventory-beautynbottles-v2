@@ -34,6 +34,7 @@
     </div>
 
     <script src="{{ mix('js/app.js') }}"></script>
+    @yield('js')
     <script>
         $.ajaxSetup({
             headers: {

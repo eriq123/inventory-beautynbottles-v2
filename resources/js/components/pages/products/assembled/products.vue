@@ -13,6 +13,13 @@
                     >
                         Add
                     </v-btn>
+
+                    <v-spacer></v-spacer>
+
+                    <v-btn text color="pink accent-2" @click="productQR">
+                        <v-icon left>mdi-qrcode-scan</v-icon>
+                        Assembled Product qr codes
+                    </v-btn>
                 </v-card-title>
 
                 <v-data-table
@@ -122,6 +129,9 @@ export default {
         this.getProducts();
     },
     methods: {
+        productQR() {
+            window.location.href = "/qr/products";
+        },
         showAddForm() {
             this.formData.action = "add";
             this.formData.id = 0;

@@ -13,6 +13,13 @@
                     >
                         Add
                     </v-btn>
+
+                    <v-spacer></v-spacer>
+
+                    <v-btn text color="pink accent-2" @click="rawQR">
+                        <v-icon left>mdi-qrcode-scan</v-icon>
+                        Raw item qr codes
+                    </v-btn>
                 </v-card-title>
 
                 <v-data-table
@@ -80,7 +87,6 @@
 
 <script>
 export default {
-    components: {},
     data() {
         return {
             headers: [
@@ -117,6 +123,9 @@ export default {
         this.getCategories();
     },
     methods: {
+        rawQR() {
+            window.location.href = "/qr/raw_items";
+        },
         getCategories() {
             this.loading = true;
             axios
