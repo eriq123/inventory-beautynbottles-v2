@@ -3,7 +3,7 @@
         <v-row id="excludeFromPDF">
             <v-col cols="12">
                 <v-btn text @click="processPrint" color="pink accent-2">
-                    <v-icon left>mdi-download</v-icon>
+                    <v-icon left>mdi-file-pdf-outline</v-icon>
                     <h3>Download in PDF format</h3>
                 </v-btn>
             </v-col>

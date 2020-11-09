@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     protected $table = 'logs';
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
 
     public function user()
     {

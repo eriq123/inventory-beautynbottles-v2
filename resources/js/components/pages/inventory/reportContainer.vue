@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <v-col>
+            <v-col cols="12">
                 <v-switch
                     class="ml-3"
                     v-model="toggle.state"
@@ -13,47 +13,52 @@
                 >
                 </v-switch>
                 <v-btn text color="pink accent-2" @click="dialog = !dialog">
-                    <v-icon left>mdi-download</v-icon>
+                    <v-icon left>mdi-clipboard-arrow-down-outline</v-icon>
                     Download Report
                 </v-btn>
 
-                <v-dialog v-model="dialog" max-width="350px">
-                    <v-card>
-                        <v-card-title>
-                            Inventory report
-                        </v-card-title>
-                        <v-card-text>
-                            <app-datepicker
-                                :date="date.from"
-                                @savedate="savefromdate"
-                                :label="`Start Date`"
-                            ></app-datepicker>
-
-                            <app-datepicker
-                                :date="date.to"
-                                @savedate="savetodate"
-                                :label="`End Date`"
-                            ></app-datepicker>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn text @click="dialog = false">Cancel</v-btn>
-                            <app-download-excel
-                                class="green--text text--darken-3 v-btn v-btn--flat v-btn--text theme--light v-size--default"
-                                :name="filename"
-                                :header="header"
-                                :data="data"
-                                :fields="fields"
-                                :before-generate="getExcelData"
-                                :before-finish="downloadFinished"
-                            >
-                                Save
-                            </app-download-excel>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
+                <v-btn text color="pink accent-2" @click="viewLogs">
+                    <v-icon left>mdi-file-document-outline</v-icon>
+                    Action Logs
+                </v-btn>
             </v-col>
         </v-row>
+
+        <v-dialog v-model="dialog" max-width="350px">
+            <v-card>
+                <v-card-title>
+                    Inventory report
+                </v-card-title>
+                <v-card-text>
+                    <app-datepicker
+                        :date="date.from"
+                        @savedate="savefromdate"
+                        :label="`Start Date`"
+                    ></app-datepicker>
+
+                    <app-datepicker
+                        :date="date.to"
+                        @savedate="savetodate"
+                        :label="`End Date`"
+                    ></app-datepicker>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="dialog = false">Cancel</v-btn>
+                    <app-download-excel
+                        class="green--text text--darken-3 v-btn v-btn--flat v-btn--text theme--light v-size--default"
+                        :name="filename"
+                        :header="header"
+                        :data="data"
+                        :fields="fields"
+                        :before-generate="getExcelData"
+                        :before-finish="downloadFinished"
+                    >
+                        Save
+                    </app-download-excel>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <app-report-datatable
             :toggleState="toggle.state"
             @toggleChange="toggleChange"
@@ -98,6 +103,9 @@ export default {
     },
     created() {},
     methods: {
+        viewLogs() {
+            window.location.href = "/logs";
+        },
         savefromdate(date) {
             this.date.from = date;
         },

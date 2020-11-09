@@ -16,7 +16,11 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/', 'MainController@index');
     Route::get('/user', 'MainController@user');
-    Route::get('/logs', 'MainController@logs');
+
+    Route::prefix('logs')->group(function () {
+        Route::get('/', 'MainController@logs');
+        Route::post('/view', 'LogsController@view');
+    });
 
     Route::prefix('qr')->group(function () {
         Route::get('/raw_items', 'QRController@raw_items');
