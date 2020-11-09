@@ -301,7 +301,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit("showconverts", item);
     }
   },
-  computed: {}
+  computed: {
+    customID: function customID() {
+      return this.formData.id > 0 ? "UNIT - ".concat(this.formData.id.toString().padStart(4, "0")) : "N/A";
+    }
+  }
 });
 
 /***/ }),

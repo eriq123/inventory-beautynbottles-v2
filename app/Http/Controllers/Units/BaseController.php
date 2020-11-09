@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Units;
 
 use App\Base;
+use App\Convert;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,12 @@ class BaseController extends Controller
 
         $this->data['base'] = new Base();
         $this->saveBaseName($request->name);
+
+        $convert = new Convert();
+        $convert->base_id = $this->data['base']->id;
+        $convert->name = $this->data['base']->name;
+        $convert->value = 1;
+        $convert->save();
 
         return response()->json($this->data);
     }

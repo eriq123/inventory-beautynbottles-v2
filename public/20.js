@@ -51,6 +51,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     "app-qrcode": function appQrcode() {
@@ -148,35 +155,58 @@ var render = function() {
     "v-container",
     { attrs: { id: "pdfPrint" } },
     [
-      _c(
-        "v-row",
-        { attrs: { id: "excludeFromPDF" } },
-        [
-          _c(
-            "v-col",
-            { attrs: { cols: "12" } },
+      _vm.items.length > 0
+        ? _c(
+            "v-row",
+            { attrs: { id: "excludeFromPDF" } },
             [
               _c(
-                "v-btn",
-                {
-                  attrs: { text: "", color: "pink accent-2" },
-                  on: { click: _vm.processPrint }
-                },
+                "v-col",
+                { attrs: { cols: "12" } },
                 [
-                  _c("v-icon", { attrs: { left: "" } }, [
-                    _vm._v("mdi-file-pdf-outline")
-                  ]),
-                  _vm._v(" "),
-                  _c("h3", [_vm._v("Download in PDF format")])
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "", color: "pink accent-2" },
+                      on: { click: _vm.processPrint }
+                    },
+                    [
+                      _c("v-icon", { attrs: { left: "" } }, [
+                        _vm._v("mdi-file-pdf-outline")
+                      ]),
+                      _vm._v(" "),
+                      _c("h3", [_vm._v("Download in PDF format")])
+                    ],
+                    1
+                  )
                 ],
                 1
               )
             ],
             1
           )
-        ],
-        1
-      ),
+        : _c(
+            "v-row",
+            [
+              _c(
+                "v-col",
+                { attrs: { cols: "12" } },
+                [
+                  _c(
+                    "v-alert",
+                    { attrs: { outlined: "", text: "", type: "error" } },
+                    [
+                      _vm._v(
+                        "\n                There are no items detected.\n            "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
       _vm._v(" "),
       _vm._l(_vm.items, function(newItem, index) {
         return _c(

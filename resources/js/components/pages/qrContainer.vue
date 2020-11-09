@@ -1,11 +1,18 @@
 <template>
     <v-container id="pdfPrint">
-        <v-row id="excludeFromPDF">
+        <v-row id="excludeFromPDF" v-if="items.length > 0">
             <v-col cols="12">
                 <v-btn text @click="processPrint" color="pink accent-2">
                     <v-icon left>mdi-file-pdf-outline</v-icon>
                     <h3>Download in PDF format</h3>
                 </v-btn>
+            </v-col>
+        </v-row>
+        <v-row v-else>
+            <v-col cols="12">
+                <v-alert outlined text type="error">
+                    There are no items detected.
+                </v-alert>
             </v-col>
         </v-row>
         <v-row class="pa-2" v-for="(newItem, index) in items" :key="index">
