@@ -65,6 +65,9 @@
                                                 <v-text-field
                                                     autofocus
                                                     label="Unit Name"
+                                                    v-on:keyup.enter="
+                                                        submitForm
+                                                    "
                                                     v-model="formData.name"
                                                 ></v-text-field>
                                             </td>
@@ -72,6 +75,9 @@
                                                 <v-text-field
                                                     type="number"
                                                     label="Quantity"
+                                                    v-on:keyup.enter="
+                                                        submitForm
+                                                    "
                                                     v-model="formData.value"
                                                 ></v-text-field>
                                             </td>

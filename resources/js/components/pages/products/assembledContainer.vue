@@ -51,6 +51,9 @@
                                             <v-text-field
                                                 type="number"
                                                 label="Quantity"
+                                                v-on:keyup.enter="
+                                                    processAddAndUpdate
+                                                "
                                                 v-model="dialog.quantity"
                                                 autofocus
                                             >

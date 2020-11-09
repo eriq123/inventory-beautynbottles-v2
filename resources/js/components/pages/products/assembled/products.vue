@@ -55,6 +55,7 @@
                                 <v-text-field
                                     autofocus
                                     label="Product Name"
+                                    v-on:keyup.enter="submitForm"
                                     v-model="formData.product_name"
                                 ></v-text-field>
                             </td>

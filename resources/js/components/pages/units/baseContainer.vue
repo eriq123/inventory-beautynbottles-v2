@@ -61,6 +61,9 @@
                                                 <v-text-field
                                                     autofocus
                                                     label="Unit Name"
+                                                    v-on:keyup.enter="
+                                                        submitForm
+                                                    "
                                                     v-model="formData.base_name"
                                                 ></v-text-field>
                                             </td>

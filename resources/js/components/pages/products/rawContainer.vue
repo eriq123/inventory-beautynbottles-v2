@@ -31,6 +31,7 @@
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
                                             label="Raw item name"
+                                            v-on:keyup.enter="processrawsave"
                                             v-model="formData.name"
                                         >
                                         </v-text-field>
@@ -66,6 +67,7 @@
                                         <v-text-field
                                             type="number"
                                             label="Quantity"
+                                            v-on:keyup.enter="processrawsave"
                                             v-model="formInput.quantity"
                                         >
                                             <template #append-outer>
@@ -97,6 +99,7 @@
                                         <v-text-field
                                             type="number"
                                             label="Reorder Point"
+                                            v-on:keyup.enter="processrawsave"
                                             v-model="formInput.reorder_point"
                                         >
                                             <template #append-outer>

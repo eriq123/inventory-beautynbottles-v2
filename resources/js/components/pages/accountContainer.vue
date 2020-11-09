@@ -27,12 +27,14 @@
                                     <v-col sm="12">
                                         <v-text-field
                                             label="First Name"
+                                            v-on:keyup.enter="updateAction"
                                             v-model="formUserData.first_name"
                                         ></v-text-field>
                                     </v-col>
                                     <v-col sm="12">
                                         <v-text-field
                                             label="Last Name"
+                                            v-on:keyup.enter="updateAction"
                                             v-model="formUserData.last_name"
                                         ></v-text-field>
                                     </v-col>
@@ -43,6 +45,7 @@
                                     <v-col sm="12">
                                         <v-text-field
                                             label="Username"
+                                            v-on:keyup.enter="updateAction"
                                             v-model="formUserData.username"
                                         ></v-text-field>
                                     </v-col>
@@ -54,6 +57,7 @@
                                         <v-text-field
                                             type="password"
                                             label="Old Password"
+                                            v-on:keyup.enter="updateAction"
                                             v-model="
                                                 formPasswordData.old_password
                                             "
@@ -63,6 +67,7 @@
                                         <v-text-field
                                             type="password"
                                             label="New Password"
+                                            v-on:keyup.enter="updateAction"
                                             v-model="
                                                 formPasswordData.new_password
                                             "
@@ -73,6 +78,7 @@
                                         <v-text-field
                                             type="password"
                                             label="Confirm New Password"
+                                            v-on:keyup.enter="updateAction"
                                             v-model="
                                                 formPasswordData.new_password_confirmation
                                             "
