@@ -156,7 +156,7 @@ export default {
                 if (parts[1] == "RI") {
                     this.form.id = parts[2];
                     this.form.type = "Raw item";
-                    if (user.is_admin) {
+                    if (this.user.is_admin) {
                         this.form.action = "minus";
                         this.form.status = "Purchase";
                     } else {
@@ -167,7 +167,7 @@ export default {
                 } else if (parts[1] == "AP") {
                     this.form.id = parts[2];
                     this.form.type = "Products";
-                    if (user.is_admin) {
+                    if (this.user.is_admin) {
                         this.form.action = "minus";
                         this.form.status = "Sold";
                     } else {
