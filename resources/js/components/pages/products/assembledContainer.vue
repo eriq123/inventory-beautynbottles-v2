@@ -139,7 +139,6 @@
                                     hint="Click the add button after selecting your preferred raw item."
                                     persistent-hint
                                     return-object
-                                    autofocus
                                     clearable
                                     open-on-clear
                                     color="pink accent-1"
@@ -152,8 +151,14 @@
                                     :headers="assembled.headers"
                                     :items="assembled.items"
                                     :loading="assembled.loading"
+                                    :search="search"
                                     @click:row="showEditDialog"
                                 >
+                                    <template v-slot:top>
+                                        <datatable-search
+                                            v-model="search"
+                                        ></datatable-search>
+                                    </template>
                                     <template #item.id="{item}">
                                         RI -
                                         {{
@@ -180,10 +185,12 @@ export default {
         "app-assembled-products": () => import("./assembled/products"),
         "app-raw-menu": () => import("./raw/rawMenu"),
         "app-raw-converted-units": () => import("./raw/rawConvertedUnits"),
-        "app-assembled-qrcode": () => import("qrcode.vue")
+        "app-assembled-qrcode": () => import("qrcode.vue"),
+        "datatable-search": () => import("@/components/common/datatable-search")
     },
     data() {
         return {
+            search: null,
             selected: false,
             dialog: {
                 action: "Add",

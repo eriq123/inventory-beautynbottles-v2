@@ -169,8 +169,14 @@
                                     :headers="headers"
                                     :items="items"
                                     :loading="loading"
+                                    :search="search"
                                     @click:row="showEditDialog"
                                 >
+                                    <template v-slot:top>
+                                        <datatable-search
+                                            v-model="search"
+                                        ></datatable-search>
+                                    </template>
                                     <template #item.id="{item}">
                                         RI -
                                         {{
@@ -201,10 +207,12 @@ export default {
         "app-raw-menu": () => import("./raw/rawMenu"),
         "app-raw-dialog": () => import("./raw/rawDialog"),
         "app-raw-converted-units": () => import("./raw/rawConvertedUnits"),
-        "app-raw-qrcode": () => import("qrcode.vue")
+        "app-raw-qrcode": () => import("qrcode.vue"),
+        "datatable-search": () => import("@/components/common/datatable-search")
     },
     data() {
         return {
+            search: null,
             selected: false,
 
             showForm: false,

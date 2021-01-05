@@ -13,7 +13,6 @@
                     >
                         Add
                     </v-btn>
-
                     <v-spacer></v-spacer>
 
                     <v-btn text color="pink accent-2" @click="rawQR">
@@ -27,7 +26,11 @@
                     :items="items"
                     :loading="loading"
                     @click:row="showRawItems"
+                    :search="search"
                 >
+                    <template v-slot:top>
+                        <datatable-search v-model="search"></datatable-search>
+                    </template>
                     <template #item.id="{item}">
                         CI - {{ item.id.toString().padStart(4, "0") }}
                     </template>
@@ -88,8 +91,12 @@
 
 <script>
 export default {
+    components: {
+        "datatable-search": () => import("@/components/common/datatable-search")
+    },
     data() {
         return {
+            search: null,
             headers: [
                 {
                     text: "Code",

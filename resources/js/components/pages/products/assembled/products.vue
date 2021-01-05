@@ -26,8 +26,12 @@
                     :headers="headers"
                     :items="items"
                     :loading="loading"
+                    :search="search"
                     @click:row="productSelected"
                 >
+                    <template v-slot:top>
+                        <datatable-search v-model="search"></datatable-search>
+                    </template>
                     <template #item.id="{item}">
                         AP - {{ item.id.toString().padStart(4, "0") }}
                     </template>
@@ -93,9 +97,12 @@ export default {
             type: Boolean
         }
     },
-    components: {},
+    components: {
+        "datatable-search": () => import("@/components/common/datatable-search")
+    },
     data() {
         return {
+            search: null,
             headers: [
                 {
                     text: "Code",

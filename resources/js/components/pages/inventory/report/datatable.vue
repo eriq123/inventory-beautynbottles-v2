@@ -3,10 +3,14 @@
         :headers="headers"
         :items="items"
         :loading="loading"
+        :search="search"
         :show-expand="toggleState"
         :expanded.sync="expanded"
         @click:row="openExpanded"
     >
+        <template v-slot:top>
+            <datatable-search v-model="search"></datatable-search>
+        </template>
         <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length">
                 <v-chip-group column>
@@ -46,6 +50,9 @@
 
 <script>
 export default {
+    components: {
+        "datatable-search": () => import("@/components/common/datatable-search")
+    },
     props: {
         toggleState: {
             required: true,
@@ -54,6 +61,7 @@ export default {
     },
     data() {
         return {
+            search: null,
             expanded: [],
             headers: [],
             items: [],
