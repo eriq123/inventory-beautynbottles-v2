@@ -4,32 +4,37 @@
             <v-app-bar-nav-icon
                 @click="sidebar = !sidebar"
             ></v-app-bar-nav-icon>
-            <v-toolbar-title>
+            <v-toolbar-title @click="home" style="cursor: pointer;">
                 <v-icon small color="pink accent-1">mdi-basket</v-icon>
                 ESHOP BEAUTY & BOTTLES
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
 
-            <v-btn href="/account" color="pink accent-1" text>
+            <v-btn
+                href="/account"
+                class="d-none d-md-flex align-center"
+                color="pink accent-1"
+                text
+            >
                 <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
                 <template v-if="getUserInfo.is_admin">
                     {{ fullName }} (ADMIN)
                 </template>
                 <template v-else> {{ fullName }} (MODERATOR) </template>
             </v-btn>
-
-            <v-divider vertical></v-divider>
-
-            <v-btn text @click="logout" class="pink--text text--accent-1">
-                <v-icon class="mr-1">mdi-logout</v-icon>
-                <span class="d-none d-sm-flex">logout</span>
+            <v-btn href="/account" class="d-md-none" color="pink accent-1" text>
+                <v-icon class="mr-1">mdi-account-circle-outline</v-icon>
+                {{ firstName }}
             </v-btn>
         </v-app-bar>
 
         <v-navigation-drawer v-model="sidebar" app>
             <template v-if="getUserInfo.is_admin">
                 <app-sidebar :items="admin.home" :route="route"></app-sidebar>
+
+                <v-divider></v-divider>
+
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
                         <v-list-item-title>Inventory</v-list-item-title>
@@ -39,6 +44,8 @@
                         :route="route"
                     ></app-sidebar>
                 </v-list-group>
+
+                <v-divider></v-divider>
 
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
@@ -53,6 +60,9 @@
 
             <template v-else>
                 <app-sidebar :items="users.home" :route="route"></app-sidebar>
+
+                <v-divider></v-divider>
+
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
                         <v-list-item-title>Inventory</v-list-item-title>
@@ -62,6 +72,8 @@
                         :route="route"
                     ></app-sidebar>
                 </v-list-group>
+
+                <v-divider></v-divider>
 
                 <v-list-group value="true" color="pink accent-1">
                     <template v-slot:activator>
@@ -73,6 +85,10 @@
                     ></app-sidebar>
                 </v-list-group>
             </template>
+
+            <v-divider></v-divider>
+
+            <app-sidebar :items="logoutRoute" :route="route"></app-sidebar>
         </v-navigation-drawer>
 
         <app-snackbar
@@ -84,7 +100,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 export default {
     props: ["route", "user"],
     components: {
@@ -95,6 +110,13 @@ export default {
         return {
             sidebar: true,
 
+            logoutRoute: [
+                {
+                    icon: "logout",
+                    title: "Logout",
+                    link: "/logout"
+                }
+            ],
             users: {
                 home: [
                     {
@@ -163,8 +185,8 @@ export default {
         this.getUserInfo = this.user;
     },
     methods: {
-        logout() {
-            window.location.href = "/logout";
+        home() {
+            window.location.href = "/";
         }
     },
     computed: {
@@ -172,6 +194,9 @@ export default {
             return (
                 this.getUserInfo.first_name + " " + this.getUserInfo.last_name
             );
+        },
+        firstName() {
+            return this.getUserInfo.first_name;
         }
     }
 };
