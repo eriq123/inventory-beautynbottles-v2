@@ -17,8 +17,6 @@ class LogsController extends Controller
             }]);
         }])->get();
 
-        // $this->data['log'] = Log::with('user')->with('raw')->get();
-
         return response()->json($this->data);
     }
 }

@@ -7,6 +7,10 @@
             <v-col>
                 <v-card flat>
                     <v-card-title>
+                        <v-btn text @click="selected = false">
+                            <v-icon left>mdi-arrow-left</v-icon>
+                            <!-- Back to categories -->
+                        </v-btn>
                         {{ this.formData.category_name }} raw items
                         <v-btn
                             text
@@ -143,12 +147,7 @@
                             </app-raw-dialog>
                         </v-dialog>
 
-                        <v-spacer></v-spacer>
-
-                        <v-btn text @click="selected = false">
-                            <v-icon left>mdi-arrow-left</v-icon>
-                            Back to categories
-                        </v-btn>
+                        <!-- <v-spacer></v-spacer> -->
                     </v-card-title>
                     <v-card-text>
                         <p v-if="!base_count">

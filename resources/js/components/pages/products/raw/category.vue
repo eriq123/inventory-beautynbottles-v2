@@ -15,9 +15,14 @@
                     </v-btn>
                     <v-spacer></v-spacer>
 
-                    <v-btn text color="pink accent-2" @click="rawQR">
+                    <v-btn
+                        text
+                        color="pink accent-2"
+                        class="d-none d-lg-block"
+                        @click="rawQR"
+                    >
                         <v-icon left>mdi-qrcode-scan</v-icon>
-                        Raw item qr codes
+                        Raw items
                     </v-btn>
                 </v-card-title>
 

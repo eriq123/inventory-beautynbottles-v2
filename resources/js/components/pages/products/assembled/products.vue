@@ -16,9 +16,14 @@
 
                     <v-spacer></v-spacer>
 
-                    <v-btn text color="pink accent-2" @click="productQR">
+                    <v-btn
+                        text
+                        color="pink accent-2"
+                        class="d-none d-lg-block"
+                        @click="productQR"
+                    >
                         <v-icon left>mdi-qrcode-scan</v-icon>
-                        Assembled Product qr codes
+                        Assembled Products
                     </v-btn>
                 </v-card-title>
 

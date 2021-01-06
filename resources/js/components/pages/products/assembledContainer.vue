@@ -9,6 +9,10 @@
             <v-col>
                 <v-card flat>
                     <v-card-title>
+                        <v-btn text @click="selected = false">
+                            <v-icon left>mdi-arrow-left</v-icon>
+                            <!-- Back to Products -->
+                        </v-btn>
                         Assemble {{ this.product_name }}
                         <v-btn
                             text
@@ -109,12 +113,7 @@
                             </v-card>
                         </v-dialog>
 
-                        <v-spacer></v-spacer>
-
-                        <v-btn text @click="selected = false">
-                            <v-icon left>mdi-arrow-left</v-icon>
-                            Back to Products
-                        </v-btn>
+                        <!-- <v-spacer></v-spacer> -->
                     </v-card-title>
                     <v-card-text>
                         <v-row>

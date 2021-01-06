@@ -15,6 +15,9 @@
                             {{ item.user.first_name }}
                             {{ item.user.last_name }}
                         </template>
+                        <template #item.custom_id="{item}">
+                            {{ item.raw_id | customID }}
+                        </template>
                         <template #item.date="{item}">
                             {{ item.created_at }}
                         </template>
@@ -36,6 +39,10 @@ export default {
                 {
                     text: "YYYY-MM-DD",
                     value: "date"
+                },
+                {
+                    text: "Code",
+                    value: "custom_id"
                 },
                 {
                     text: "Raw item",
@@ -79,6 +86,11 @@ export default {
                     }
                     this.loading = false;
                 });
+        }
+    },
+    filters: {
+        customID: function(id) {
+            return id > 0 ? `RI - ${id.toString().padStart(4, "0")}` : "N/A";
         }
     }
 };

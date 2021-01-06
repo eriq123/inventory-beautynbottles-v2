@@ -96,8 +96,8 @@ export default {
             dialog: false,
 
             date: {
-                from: new Date().toISOString(),
-                to: new Date().toISOString()
+                from: null,
+                to: null
             }
         };
     },
@@ -194,8 +194,7 @@ export default {
         },
         downloadFinished() {
             this.dialog = false;
-            this.date.from = new Date().toISOString();
-            this.date.to = new Date().toISOString();
+            this.date.from = this.date.to = null;
             this.$store.commit("showSnackbar", {
                 color: true,
                 text: "Inventory report download done."
