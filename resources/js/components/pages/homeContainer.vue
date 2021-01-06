@@ -1,7 +1,18 @@
 <template>
     <v-container>
         <v-row>
-            <v-col sm="12" md="8" offset-md="2" lg="4" offset-lg="4">
+            <v-col
+                sm="12"
+                md="8"
+                offset-md="2"
+                lg="4"
+                offset-lg="4"
+                class="pink--text text--accent-2 text-center"
+            >
+                <h1>
+                    Qr Code Scanner
+                </h1>
+                <p>Place your eshop qr code here.</p>
                 <vue-qr-reader
                     responsive="true"
                     @code-scanned="qrScanned"
@@ -67,6 +78,31 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-row class="my-5">
+            <v-col
+                sm="12"
+                md="8"
+                offset-md="2"
+                lg="4"
+                offset-lg="4"
+                class="pink--text text--accent-2"
+            >
+                <p class=" text-center">FAQs</p>
+
+                <v-expansion-panels accordion>
+                    <v-expansion-panel v-for="(faq, i) in faqs" :key="i">
+                        <v-expansion-panel-header>
+                            {{ faq.question }}
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content class="text-justify">
+                            <span class="font-weight-light">{{
+                                faq.answer
+                            }}</span>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 <script>
@@ -111,7 +147,24 @@ export default {
             },
             base: {
                 collection: []
-            }
+            },
+            faqs: [
+                {
+                    question: "How am i supposed to use the qr scanner?",
+                    answer:
+                        "Make sure the qr code is seen clearly, once identified it will show you a border around the qr and a dialog will pop up."
+                },
+                {
+                    question: "Camera permission denied?",
+                    answer:
+                        "Please make sure to allow the usage of your back camera, then try again."
+                },
+                {
+                    question: "Unknown qr code. Please try again error?",
+                    answer:
+                        "Only qr codes that are generated in this website can be scanned, if that is the case, please check the updated qr code list as the code may have been updated or deleted."
+                }
+            ]
         };
     },
     methods: {
