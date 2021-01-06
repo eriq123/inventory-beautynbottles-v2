@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Log extends Model
 {
+    use SoftDeletes;
+
+    protected $fillable = ['user_id', 'raw_id', 'quantity', 'status'];
     protected $table = 'logs';
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',

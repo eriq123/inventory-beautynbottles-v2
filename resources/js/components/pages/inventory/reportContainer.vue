@@ -84,8 +84,8 @@ export default {
             fields: {
                 Code: "code",
                 "Raw Item": "name",
-                Purchase: "purchase",
-                Rts: "rts",
+                Purchase: "custom_purchase",
+                Rts: "custom_rts",
                 Sold: "custom_sold",
                 Loss: "custom_loss",
                 "Available units": "units"
@@ -98,10 +98,15 @@ export default {
             date: {
                 from: null,
                 to: null
-            }
+            },
+            today: null
         };
     },
-    created() {},
+    async created() {
+        await axios.post("/inventory/report/today").then(response => {
+            this.date.from = this.date.to = this.today = response.data;
+        });
+    },
     methods: {
         viewLogs() {
             window.location.href = "/logs";
@@ -121,29 +126,15 @@ export default {
             await axios
                 .post("/inventory/report/download", this.date)
                 .then(response => {
+                    this.data = response.data.log;
                     if (response.data.log.length > 0) {
                         downloadingStart = 1;
-                        this.data = response.data.log.map(item => {
-                            if (item.raw) {
-                                item.code = `RI - ${item.raw.id
-                                    .toString()
-                                    .padStart(4, "0")}`;
-                                item.name = item.raw.name;
-                                item.purchase = item.raw.purchase;
-                                item.rts = item.raw.rts;
-                                item.units = `${item.raw.quantity} ${item.raw.base.name}`;
-                                item.custom_sold = `(${item.raw.sold})`;
-                                item.custom_loss = `(${item.raw.loss})`;
-                                return item;
-                            }
-                        });
                     } else {
                         this.$store.commit("showSnackbar", {
                             color: false,
                             text:
                                 "There are no records found. Please check the action logs."
                         });
-                        this.data = response.data.log;
                     }
                 })
                 .catch(error => {
@@ -194,7 +185,7 @@ export default {
         },
         downloadFinished() {
             this.dialog = false;
-            this.date.from = this.date.to = null;
+            this.date.from = this.date.to = this.today;
             this.$store.commit("showSnackbar", {
                 color: true,
                 text: "Inventory report download done."

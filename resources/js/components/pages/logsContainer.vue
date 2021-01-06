@@ -10,19 +10,12 @@
                         :headers="headers"
                         :items="items"
                         :loading="loading"
+                        :search="search"
                     >
-                        <template #item.user="{item}">
-                            {{ item.user.first_name }}
-                            {{ item.user.last_name }}
-                        </template>
-                        <template #item.custom_id="{item}">
-                            {{ item.raw_id | customID }}
-                        </template>
-                        <template #item.date="{item}">
-                            {{ item.created_at }}
-                        </template>
-                        <template #item.custom_quantity="{item}">
-                            {{ item.quantity }} {{ item.raw.base.name }}
+                        <template v-slot:top>
+                            <datatable-search
+                                v-model="search"
+                            ></datatable-search>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -32,13 +25,17 @@
 </template>
 <script>
 export default {
+    components: {
+        "datatable-search": () => import("@/components/common/datatable-search")
+    },
     data() {
         return {
+            search: null,
             headers: [
                 ,
                 {
                     text: "YYYY-MM-DD",
-                    value: "date"
+                    value: "created_at"
                 },
                 {
                     text: "Code",
@@ -60,7 +57,7 @@ export default {
                 {
                     text: "User",
                     align: "start",
-                    value: "user"
+                    value: "full_name"
                 }
             ],
             items: [],
@@ -86,11 +83,6 @@ export default {
                     }
                     this.loading = false;
                 });
-        }
-    },
-    filters: {
-        customID: function(id) {
-            return id > 0 ? `RI - ${id.toString().padStart(4, "0")}` : "N/A";
         }
     }
 };

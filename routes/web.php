@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
@@ -11,6 +12,43 @@ Route::post('login', 'AuthController@login')->name('login.post');
 Route::post('register', 'AuthController@register')->name('register.post');
 Route::get('logout', 'AuthController@logout')->name('logout');
 
+Route::get('/reset-logs', function () {
+    App\Log::query()->forceDelete();
+    App\Raw::query()->update([
+        'purchase' => 0,
+        'rts' => 0,
+        'sold' => 0,
+        'loss' => 0,
+    ]);
+
+    return 'success';
+});
+
+Route::get('/transfer-logs', function () {
+    DB::transaction(function () {
+
+        $raws = App\Raw::all();
+
+        foreach ($raws as $raw) {
+            if ($raw->quantity > 0) {
+
+                $raw->purchase = $raw->quantity;
+                $raw->save();
+
+                $data = [
+                    'user_id' => 2,
+                    'raw_id' => $raw->id,
+                    'quantity' => $raw->quantity,
+                    'status' => 'Purchase'
+                ];
+
+                App\Log::create($data);
+            }
+        }
+    });
+
+    return "done";
+});
 
 Route::middleware(['auth', 'web'])->group(function () {
 
@@ -99,6 +137,7 @@ Route::middleware(['auth', 'web'])->group(function () {
             Route::prefix('report')->group(function () {
                 Route::get('/', 'MainController@report');
                 Route::post('download', 'Inventory\ReportController@download');
+                Route::post('today', 'Inventory\ReportController@today');
             });
         });
     });
