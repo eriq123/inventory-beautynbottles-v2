@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Raw extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['qr_code'];
+    protected $fillable = ['qr_code', 'purchase'];
 
     public function getNameAttribute($value)
     {
