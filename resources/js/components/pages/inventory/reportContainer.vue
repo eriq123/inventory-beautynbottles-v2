@@ -1,201 +1,198 @@
 <template>
-    <v-container>
-        <v-row>
-            <v-col cols="12">
-                <v-switch
-                    class="ml-3"
-                    v-model="toggle.state"
-                    inset
-                    ripple
-                    :disabled="toggle.disabled"
-                    :loading="toggle.disabled"
-                    :label="`Filtered by: ${switchLabel}`"
-                >
-                </v-switch>
-                <v-btn text color="pink accent-2" @click="dialog = !dialog">
-                    <v-icon left>mdi-clipboard-arrow-down-outline</v-icon>
-                    Download Report
-                </v-btn>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <v-switch
+          class="ml-3"
+          v-model="toggle.state"
+          inset
+          ripple
+          :disabled="toggle.disabled"
+          :loading="toggle.disabled"
+          :label="`Filtered by: ${switchLabel}`"
+        >
+        </v-switch>
+        <v-btn text color="pink accent-2" @click="dialog = !dialog">
+          <v-icon left>mdi-clipboard-arrow-down-outline</v-icon>
+          Download Report
+        </v-btn>
 
-                <v-btn text color="pink accent-2" @click="viewLogs">
-                    <v-icon left>mdi-file-document-outline</v-icon>
-                    Action Logs
-                </v-btn>
-            </v-col>
-        </v-row>
+        <v-btn text color="pink accent-2" @click="viewLogs">
+          <v-icon left>mdi-file-document-outline</v-icon>
+          Action Logs
+        </v-btn>
+      </v-col>
+    </v-row>
 
-        <v-dialog v-model="dialog" max-width="350px">
-            <v-card>
-                <v-card-title>
-                    Inventory report
-                </v-card-title>
-                <v-card-text>
-                    <app-datepicker
-                        :date="date.from"
-                        @savedate="savefromdate"
-                        :label="`Start Date`"
-                    ></app-datepicker>
+    <v-dialog v-model="dialog" max-width="350px">
+      <v-card>
+        <v-card-title> Inventory report </v-card-title>
+        <v-card-text>
+          <app-datepicker
+            :date="date.from"
+            @savedate="savefromdate"
+            :label="`Start Date`"
+          ></app-datepicker>
 
-                    <app-datepicker
-                        :date="date.to"
-                        @savedate="savetodate"
-                        :label="`End Date`"
-                    ></app-datepicker>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn text @click="dialog = false">Cancel</v-btn>
-                    <app-download-excel
-                        class="green--text text--darken-3 v-btn v-btn--flat v-btn--text theme--light v-size--default"
-                        :name="filename"
-                        :header="header"
-                        :data="data"
-                        :fields="fields"
-                        :before-generate="getExcelData"
-                        :before-finish="downloadFinished"
-                    >
-                        Save
-                    </app-download-excel>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <app-report-datatable
-            :toggleState="toggle.state"
-            @toggleChange="toggleChange"
-        ></app-report-datatable>
-    </v-container>
+          <app-datepicker
+            :date="date.to"
+            @savedate="savetodate"
+            :label="`End Date`"
+          ></app-datepicker>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="dialog = false">Cancel</v-btn>
+          <app-download-excel
+            class="green--text text--darken-3 v-btn v-btn--flat v-btn--text theme--light v-size--default"
+            :name="filename"
+            :header="header"
+            :data="data"
+            :fields="fields"
+            :before-generate="getExcelData"
+            :before-finish="downloadFinished"
+          >
+            Save
+          </app-download-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <app-report-datatable
+      :toggleState="toggle.state"
+      @toggleChange="toggleChange"
+    ></app-report-datatable>
+  </v-container>
 </template>
 <script>
 import JsonExcel from "vue-json-excel";
 
 export default {
-    components: {
-        "app-report-datatable": () => import("./report/datatable.vue"),
-        "app-download-excel": JsonExcel,
-        "app-datepicker": () => import("./report/datepicker.vue")
-    },
-    data() {
-        return {
-            toggle: {
-                state: false,
-                loading: false,
-                disabled: false
-            },
-            fields: {
-                Code: "code",
-                "Raw Item": "name",
-                Purchase: "custom_purchase",
-                Rts: "custom_rts",
-                Sold: "custom_sold",
-                Loss: "custom_loss",
-                "Available units": "units"
-            },
-            data: [],
-            header: null,
-            filename: null,
-            dialog: false,
+  components: {
+    "app-report-datatable": () => import("./report/datatable.vue"),
+    "app-download-excel": JsonExcel,
+    "app-datepicker": () => import("./report/datepicker.vue"),
+  },
+  data() {
+    return {
+      toggle: {
+        state: false,
+        loading: false,
+        disabled: false,
+      },
+      fields: {
+        Code: "code",
+        "Category - Raw Item": "name",
+        Purchase: "custom_purchase",
+        Rts: "custom_rts",
+        Sold: "custom_sold",
+        Loss: "custom_loss",
+        "Available units": "units",
+      },
+      data: [],
+      header: null,
+      filename: null,
+      dialog: false,
 
-            date: {
-                from: null,
-                to: null
-            },
-            today: null
-        };
+      date: {
+        from: null,
+        to: null,
+      },
+      today: null,
+    };
+  },
+  async created() {
+    await axios.post("/inventory/report/today").then((response) => {
+      this.date.from = this.date.to = this.today = response.data;
+    });
+  },
+  methods: {
+    viewLogs() {
+      window.location.href = "/logs";
     },
-    async created() {
-        await axios.post("/inventory/report/today").then(response => {
-            this.date.from = this.date.to = this.today = response.data;
-        });
+    savefromdate(date) {
+      this.date.from = date;
     },
-    methods: {
-        viewLogs() {
-            window.location.href = "/logs";
-        },
-        savefromdate(date) {
-            this.date.from = date;
-        },
-        savetodate(date) {
-            this.date.to = date;
-        },
-        toggleChange(value) {
-            this.toggle.disabled = this.toggle.loading = value;
-        },
-        async getExcelData(value) {
-            this.prepareHeader();
-            let downloadingStart = 0;
-            await axios
-                .post("/inventory/report/download", this.date)
-                .then(response => {
-                    this.data = response.data.log;
-                    if (response.data.log.length > 0) {
-                        downloadingStart = 1;
-                    } else {
-                        this.$store.commit("showSnackbar", {
-                            color: false,
-                            text:
-                                "There are no records found. Please check the action logs."
-                        });
-                    }
-                })
-                .catch(error => {
-                    if (error.response) {
-                        console.log(error.response);
-                        if (error.response.data.error_message) {
-                            this.$store.commit("showSnackbar", {
-                                color: false,
-                                text: error.response.data.error_message
-                            });
-                        } else {
-                            this.$store.commit("errorSnackbar");
-                        }
-                    } else {
-                        console.log(error);
-                    }
-                });
-
-            if (downloadingStart) {
-                this.$store.commit("showSnackbar", {
-                    color: true,
-                    text: "Downloading..."
-                });
+    savetodate(date) {
+      this.date.to = date;
+    },
+    toggleChange(value) {
+      this.toggle.disabled = this.toggle.loading = value;
+    },
+    async getExcelData(value) {
+      this.prepareHeader();
+      let downloadingStart = 0;
+      await axios
+        .post("/inventory/report/download", this.date)
+        .then((response) => {
+          this.data = response.data.log;
+          if (response.data.log.length > 0) {
+            downloadingStart = 1;
+          } else {
+            this.$store.commit("showSnackbar", {
+              color: false,
+              text: "There are no records found. Please check the action logs.",
+            });
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response);
+            if (error.response.data.error_message) {
+              this.$store.commit("showSnackbar", {
+                color: false,
+                text: error.response.data.error_message,
+              });
+            } else {
+              this.$store.commit("errorSnackbar");
             }
-        },
-        prepareHeader() {
-            this.$store.commit("showSnackbar", {
-                color: true,
-                text: "Please wait while preparing data."
-            });
-            const options = {
-                year: "numeric",
-                month: "long",
-                day: "numeric"
-            };
+          } else {
+            console.log(error);
+          }
+        });
 
-            const from_date = new Date(this.date.from).toLocaleDateString(
-                "en-US",
-                options
-            );
-            const to_date = new Date(this.date.to).toLocaleDateString(
-                "en-US",
-                options
-            );
-
-            this.filename = `Inventory Report ${from_date} - ${to_date}`;
-            this.header = `Eshop Beauty and Bottles Online Shop\n Inventory Report\n ${from_date} - ${to_date}`;
-        },
-        downloadFinished() {
-            this.dialog = false;
-            this.date.from = this.date.to = this.today;
-            this.$store.commit("showSnackbar", {
-                color: true,
-                text: "Inventory report download done."
-            });
-        }
+      if (downloadingStart) {
+        this.$store.commit("showSnackbar", {
+          color: true,
+          text: "Downloading...",
+        });
+      }
     },
-    computed: {
-        switchLabel() {
-            return this.toggle.state == true ? "Products" : "Raw Items";
-        }
-    }
+    prepareHeader() {
+      this.$store.commit("showSnackbar", {
+        color: true,
+        text: "Please wait while preparing data.",
+      });
+      const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+
+      const from_date = new Date(this.date.from).toLocaleDateString(
+        "en-US",
+        options
+      );
+      const to_date = new Date(this.date.to).toLocaleDateString(
+        "en-US",
+        options
+      );
+
+      this.filename = `Inventory Report ${from_date} - ${to_date}`;
+      this.header = `Eshop Beauty and Bottles Online Shop\n Inventory Report\n ${from_date} - ${to_date}`;
+    },
+    downloadFinished() {
+      this.dialog = false;
+      this.date.from = this.date.to = this.today;
+      this.$store.commit("showSnackbar", {
+        color: true,
+        text: "Inventory report download done.",
+      });
+    },
+  },
+  computed: {
+    switchLabel() {
+      return this.toggle.state == true ? "Products" : "Raw Items";
+    },
+  },
 };
 </script>

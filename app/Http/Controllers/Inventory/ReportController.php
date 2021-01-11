@@ -20,25 +20,30 @@ class ReportController extends Controller
     {
         $from = new Carbon($request->from);
         $to = new Carbon($request->to);
-        $this->data['log'] = Log::whereBetween('created_at', [$from->startOfDay(), $to->endOfDay()])->with(['raw' => function ($q) {
-            $q->withTrashed()->with(['base' => function ($q) {
-                $q->withTrashed();
-            }]);
-        }])->groupBy('raw_id')
+        $log = Log::whereBetween('created_at', [$from->startOfDay(), $to->endOfDay()])
+            ->with(['raw' => function ($q) {
+                $q->withTrashed()
+                    ->with(['base' => function ($q) {
+                        $q->withTrashed();
+                    }])
+                    ->with(['category' => function ($q) {
+                        $q->withTrashed();
+                    }]);
+            }])->groupBy('raw_id')
             ->select(
                 DB::raw(
                     "SUM(IF(status='Purchase',quantity,0)) as purchase,\n
-                    SUM(IF(status='Sold',quantity,0)) as sold,\n 
-                    SUM(IF(status='RTS',quantity,0)) as rts, \n
-                    SUM(IF(status='Loss',quantity,0)) as loss"
+                        SUM(IF(status='Sold',quantity,0)) as sold,\n 
+                        SUM(IF(status='RTS',quantity,0)) as rts, \n
+                        SUM(IF(status='Loss',quantity,0)) as loss"
                 ),
                 'raw_id'
             )
             ->get();
 
-        $this->data['log']->map(function ($item) {
+        $log->map(function ($item) {
             $item->code = "RI - " . str_pad($item->raw->id, 4, 0, STR_PAD_LEFT);
-            $item->name = $item->raw->name;
+            $item->name = $item->raw->category->name . " - " . $item->raw->name;
             $item->custom_purchase = $item->purchase / 100;
             $item->custom_rts = $item->rts / 100;
             $item->custom_sold = "(" . ($item->sold / 100) . ")";
@@ -46,6 +51,10 @@ class ReportController extends Controller
             $item->units = $item->raw->quantity . " " . $item->raw->base->name;
             return $item;
         });
+
+        $sortLogs = $log->sortBy('name');
+        $this->data['log'] = $sortLogs->values()->all();
+
         return response()->json($this->data);
     }
 }
