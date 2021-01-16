@@ -17,9 +17,9 @@ const app = new Vue({
         "app-units": () => import("./components/pages/units/convertContainer.vue"),
         "app-account": () => import("./components/pages/accountContainer.vue"),
         "app-product-raw": () =>
-            import("./components/pages/products/rawContainer.vue"),
+            import("./components/pages/products/raw/index.vue"),
         "app-product-assembled": () =>
-            import("./components/pages/products/assembledContainer.vue"),
+            import("./components/pages/products/assembled/index.vue"),
         "app-product-flow": () =>
             import("./components/pages/inventory/flowContainer.vue"),
         "app-product-report": () =>

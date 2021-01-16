@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Products;
 
+use App\Base;
 use App\Convert;
 use App\Http\Controllers\Controller;
 use App\Log;
@@ -14,12 +15,33 @@ use Illuminate\Support\Facades\DB;
 class RawController extends Controller
 {
     private $log;
+    private function formatCode($id)
+    {
+        return "RI - " . str_pad($id, 4, 0, STR_PAD_LEFT);
+    }
+
     public function view(Request $request)
     {
         if ($request->id) {
-            $this->data['raw'] = Raw::with('base')->with('category')->where('category_id', $request->id)->get();
+            $raw = Raw::with(['base' => function ($q) {
+                $q->withTrashed();
+            }])->with('category')->where('category_id', $request->id)->get();
+
+            $raw->map(function ($item) {
+                $item->code =  $this->formatCode($item->id);
+                $item->units_needed = $item->quantity . " " . $item->base->name;
+                $item->custom_reorder_point = $item->reorder_point . " " . $item->base->name;
+                return $item;
+            });
+
+            $sort = $raw->sortBy('name');
+            $this->data['raw'] = $sort->values()->all();
+            $this->data['base'] = Base::all();
+            $this->data['convert'] = Convert::with('base')->get();
         } else {
-            $this->data['raw'] = Raw::with('base')->with('category')->get();
+            $this->data['raw'] = Raw::with(['base' => function ($q) {
+                $q->withTrashed();
+            }])->with('category')->get(); //autocomplete need this
         }
         return response()->json($this->data);
     }
@@ -87,7 +109,9 @@ class RawController extends Controller
 
     private function prepareRaw()
     {
-        $this->data['raw'] = Raw::with('base')->with('category')->where('id', $this->data['raw']->id)->first();
+        $this->data['raw'] = Raw::with(['base' => function ($q) {
+            $q->withTrashed();
+        }])->with('category')->where('id', $this->data['raw']->id)->first();
     }
 
     public function destroy(Request $request)

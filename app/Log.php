@@ -12,7 +12,7 @@ class Log extends Model
     protected $fillable = ['user_id', 'raw_id', 'quantity', 'status'];
     protected $table = 'logs';
     protected $casts = [
-        'created_at' => 'datetime:Y-m-d',
+        'created_at' => 'datetime:Y-m-d H:i',
     ];
 
     public function user()

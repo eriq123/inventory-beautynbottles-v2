@@ -6,11 +6,11 @@
                     <v-card-title>
                         <span class="mr-1">Units of Measurement:</span>
 
-                        <app-raw-menu
+                        <app-menu
                             :menu="items"
                             :selected="menu.name"
                             @selectedmenu="selectunitsofmeasurement"
-                        ></app-raw-menu>
+                        ></app-menu>
 
                         <v-btn
                             text
@@ -103,7 +103,7 @@
 <script>
 export default {
     components: {
-        "app-raw-menu": () => import("@/components/pages/products/raw/rawMenu")
+    "app-menu": () => import("@/components/common/menu"),
     },
     data() {
         return {

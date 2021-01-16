@@ -12,45 +12,19 @@ Route::post('login', 'AuthController@login')->name('login.post');
 Route::post('register', 'AuthController@register')->name('register.post');
 Route::get('logout', 'AuthController@logout')->name('logout');
 
-Route::get('/reset-logs', function () {
-    App\Log::query()->forceDelete();
-    App\Raw::query()->update([
-        'purchase' => 0,
-        'rts' => 0,
-        'sold' => 0,
-        'loss' => 0,
-    ]);
-
-    return 'success';
-});
-
-Route::get('/transfer-logs', function () {
-    DB::transaction(function () {
-
-        $raws = App\Raw::all();
-
-        foreach ($raws as $raw) {
-            if ($raw->quantity > 0) {
-
-                $raw->purchase = $raw->quantity;
-                $raw->save();
-
-                $data = [
-                    'user_id' => 2,
-                    'raw_id' => $raw->id,
-                    'quantity' => $raw->quantity,
-                    'status' => 'Purchase'
-                ];
-
-                App\Log::create($data);
-            }
-        }
-    });
-
-    return "done";
-});
-
 Route::middleware(['auth', 'web'])->group(function () {
+
+    Route::get('/category-type-raw', function () {
+        $categories = App\Category::all();
+        foreach ($categories as $category) {
+            $category->type = 'raw';
+            $category->save();
+        }
+        App\Product::query()->update([
+            'category_id' => 2,
+        ]);
+        return 'success';
+    });
 
     Route::get('/', 'MainController@index');
     Route::get('/user', 'MainController@user');
@@ -73,18 +47,18 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::prefix('units')->group(function () {
         Route::get('/', 'MainController@units');
 
-        Route::post('all', 'UnitsController@all');
-        Route::post('convertsByBase', 'UnitsController@getConvertByBase');
+        // Route::get('all', 'UnitsController@all'); //rawContainer unused
+        // Route::post('convertsByBase', 'UnitsController@getConvertByBase'); //assembledContainer unused
 
         Route::prefix('base')->group(function () {
-            Route::post('view', 'Units\BaseController@view');
+            Route::post('view', 'Units\BaseController@view'); //get method
             Route::post('add', 'Units\BaseController@store');
             Route::post('update', 'Units\BaseController@update');
             Route::post('delete', 'Units\BaseController@destroy');
         });
 
         Route::prefix('convert')->group(function () {
-            Route::post('view', 'Units\ConvertController@view');
+            Route::post('view', 'Units\ConvertController@view'); //get method
             Route::post('add', 'Units\ConvertController@store');
             Route::post('update', 'Units\ConvertController@update');
             Route::post('delete', 'Units\ConvertController@destroy');
@@ -100,6 +74,7 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::prefix('products')->group(function () {
         Route::prefix('category')->group(function () {
+            Route::get('/{id}', 'Products\CategoryController@findProductsByCategoryId');
             Route::post('view', 'Products\CategoryController@view');
             Route::post('add', 'Products\CategoryController@store');
             Route::post('update', 'Products\CategoryController@update');
@@ -121,7 +96,6 @@ Route::middleware(['auth', 'web'])->group(function () {
             Route::post('detach', 'Products\AssembledController@detach');
             Route::post('view', 'Products\AssembledController@view');
         });
-        Route::post('view', 'Products\ProductsController@view');
         Route::post('add', 'Products\ProductsController@store');
         Route::post('update', 'Products\ProductsController@update');
         Route::post('delete', 'Products\ProductsController@destroy');
