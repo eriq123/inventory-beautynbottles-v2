@@ -68,8 +68,9 @@ class RawController extends Controller
 
             $this->data['raw']->update(['qr_code' => 'eshopbnb-RI-' . $this->data['raw']->id]);
 
-            $this->prepareRaw();
+            $this->prepareData(1);
             $this->addToLogs($request, 'store');
+            $this->prepareData(2);
         });
         return response()->json($this->data);
     }
@@ -101,17 +102,24 @@ class RawController extends Controller
             $this->data['raw'] = Raw::findorFail($request->id);
             $this->saveRawInformation($request);
 
-            $this->prepareRaw();
+            $this->prepareData(1);
             $this->addToLogs($request, 'update');
+            $this->prepareData(2);
         });
         return response()->json($this->data);
     }
 
-    private function prepareRaw()
+    private function prepareData($phase)
     {
-        $this->data['raw'] = Raw::with(['base' => function ($q) {
-            $q->withTrashed();
-        }])->with('category')->where('id', $this->data['raw']->id)->first();
+        if ($phase == 1) {
+            $this->data['raw'] = Raw::with(['base' => function ($q) {
+                $q->withTrashed();
+            }])->with('category')->where('id', $this->data['raw']->id)->first();
+        } else {
+            $this->data['raw']->code =  $this->formatCode($this->data['raw']->id);
+            $this->data['raw']->units_needed = $this->data['raw']->quantity . " " . $this->data['raw']->base->name;
+            $this->data['raw']->custom_reorder_point = $this->data['raw']->reorder_point . " " . $this->data['raw']->base->name;
+        }
     }
 
     public function destroy(Request $request)

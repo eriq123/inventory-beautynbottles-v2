@@ -278,7 +278,7 @@ export default {
       this.dialog.show = true;
     },
 
-    formData(name = null, base_id = 0, quantity = 1, reorder_point = null) {
+    formData(name = null, base_id = 0, quantity = 1, reorder_point = 1) {
       this.form.name = name;
       this.form.base_id = base_id;
       this.form.quantity = quantity;
