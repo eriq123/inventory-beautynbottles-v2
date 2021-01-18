@@ -254,6 +254,7 @@ export default {
       this.dialog.title = "Add";
       this.itemIndex = -1;
       this.dialog.qr_code = null;
+      this.form.id = null;
       this.formData();
       if (this.units.length > 0) {
         this.form.base_id = this.units[0].id;
@@ -268,6 +269,7 @@ export default {
       this.itemIndex = this.datatable.items.indexOf(item);
       this.dialog.qr_code = item.qr_code;
       this.formData(item.name, item.base_id, item.quantity, item.reorder_point);
+      this.form.id = item.id;
       this.form.base_id = item.base_id;
       this.dialog.conversion.reorder_point.label = this.dialog.conversion.quantity.label = this.dialog.unit_label =
         item.base.name;
