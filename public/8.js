@@ -61,6 +61,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     categoryName: {
@@ -180,6 +181,8 @@ var render = function() {
                 },
                 [_vm._v("\n      Create\n    ")]
               ),
+              _vm._v(" "),
+              _vm._t("qr"),
               _vm._v(" "),
               _vm._t("dialog")
             ]

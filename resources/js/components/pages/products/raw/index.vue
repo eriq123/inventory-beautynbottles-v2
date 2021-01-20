@@ -14,6 +14,18 @@
         @showItems="showItems"
         v-if="!category.isSelected"
       >
+        <template #qr>
+          <v-spacer></v-spacer>
+          <v-btn
+            text
+            color="pink accent-2"
+            class="d-none d-lg-block"
+            @click="qrLink"
+          >
+            <v-icon left>mdi-qrcode-scan</v-icon>
+            Raw items
+          </v-btn>
+        </template>
         <template #info-alert v-if="!category.isSelected">
           <info-alert text="Click on table rows to view raw items." />
         </template>
@@ -242,6 +254,10 @@ export default {
           });
         this.datatable.loading = false;
       }
+    },
+
+    qrLink() {
+      window.location.href = "/qr/raw_items";
     }
   }
 };

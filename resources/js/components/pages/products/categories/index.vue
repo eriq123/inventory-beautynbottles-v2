@@ -19,6 +19,7 @@
         Create
       </v-btn>
 
+      <slot name="qr"></slot>
       <slot name="dialog"></slot>
     </template>
 
