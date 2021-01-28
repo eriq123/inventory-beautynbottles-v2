@@ -241,13 +241,13 @@ export default {
 
     onEdit(item) {
       this.dialog.title = "Update";
+      this.form.quantity = item.pivot.quantity;
       this.dialog.category_name = item.category.name;
       this.dialog.raw_name = item.name;
       this.form.raw_id = item.id;
       this.itemIndex = this.datatable.items.indexOf(item);
       this.dialog.converted_label = item.base.name;
       this.prepareUnits(item.base_id);
-
       this.dialog.show = true;
     },
 
