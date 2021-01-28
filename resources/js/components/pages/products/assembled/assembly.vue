@@ -38,6 +38,7 @@
               clearable
               v-model="form.quantity"
               @click:clear="form.quantity = ''"
+              v-on:keyup.enter="submit"
             >
               <template #append-outer>
                 <app-menu

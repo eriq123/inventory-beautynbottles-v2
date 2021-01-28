@@ -31,6 +31,7 @@
               label="Raw Item Name"
               v-model="form.name"
               hide-details
+              v-on:keyup.enter="submit"
             ></v-text-field>
           </v-col>
         </v-row>
