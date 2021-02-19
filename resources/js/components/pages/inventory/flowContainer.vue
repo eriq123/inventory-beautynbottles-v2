@@ -29,6 +29,7 @@
           @saveproductraw="saveproductraw"
           :id="dialog.id"
           :toggleState="toggle.state"
+          ref="flowDialog"
         >
           <template #quantity>
             <v-col sm="8" v-if="toggle.state">
@@ -37,6 +38,7 @@
                 type="number"
                 label="Quantity"
                 v-model="dialog.quantity"
+                v-on:keyup.enter="$refs.flowDialog.saveProductRaw"
               ></v-text-field>
             </v-col>
             <v-row v-if="!toggle.state">
@@ -46,6 +48,7 @@
                   label="Quantity"
                   v-model="dialog.quantity"
                   :loading="dialog.loading"
+                  v-on:keyup.enter="$refs.flowDialog.saveProductRaw"
                 >
                   <template #append-outer>
                     <app-menu
@@ -77,14 +80,14 @@ export default {
     "app-flow-datatable": () => import("./flow/datatable.vue"),
     "app-flow-dialog": () => import("./flow/dialog.vue"),
     "app-menu": () => import("@/components/common/menu"),
-    "app-converted-units": () => import("@/components/common/converted-units")
+    "app-converted-units": () => import("@/components/common/converted-units"),
   },
   data() {
     return {
       toggle: {
         state: false,
         loading: false,
-        disabled: false
+        disabled: false,
       },
 
       dialog: {
@@ -96,15 +99,15 @@ export default {
         id: 0,
         action: null,
         loading: false,
-        base_name: null
+        base_name: null,
       },
       stocks: 0,
       updatedItem: {},
       convert: {
         collection: [],
         name: null,
-        value: null
-      }
+        value: null,
+      },
     };
   },
   methods: {
@@ -128,9 +131,9 @@ export default {
       if (!this.toggle.state) {
         axios
           .post("/units/convert/view", {
-            id: data.item.base_id
+            id: data.item.base_id,
           })
-          .then(response => {
+          .then((response) => {
             this.convert.collection = response.data.convert;
             if (response.data.convert.length > 0) {
               this.convert.name = response.data.convert[0].name;
@@ -138,19 +141,19 @@ export default {
             } else {
               this.$store.commit("showSnackbar", {
                 color: false,
-                text: "Sub-unit is required. Please add one then try again."
+                text: "Sub-unit is required. Please add one then try again.",
               });
             }
 
             this.dialog.loading = false;
           })
-          .catch(error => {
+          .catch((error) => {
             if (error.response) {
               console.log(error.response);
               if (error.response.data.error_message) {
                 this.$store.commit("showSnackbar", {
                   color: false,
-                  text: error.response.data.error_message
+                  text: error.response.data.error_message,
                 });
               } else {
                 this.$store.commit("errorSnackbar");
@@ -170,7 +173,7 @@ export default {
         id: form.id,
         status: form.status,
         action: form.action,
-        type: this.switchLabel
+        type: this.switchLabel,
       };
 
       if (this.toggle.state) {
@@ -181,7 +184,7 @@ export default {
 
       axios
         .post("/inventory/flow/store", formData)
-        .then(response => {
+        .then((response) => {
           console.log(response.data);
           if (!this.toggle.state) {
             this.updatedItem = response.data.raw;
@@ -190,16 +193,16 @@ export default {
           this.dialog.show = false;
           this.$store.commit("showSnackbar", {
             color: true,
-            text: `Record has been updated!`
+            text: `Record has been updated!`,
           });
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response) {
             console.log(error.response);
             if (error.response.data.error_message) {
               this.$store.commit("showSnackbar", {
                 color: false,
-                text: error.response.data.error_message
+                text: error.response.data.error_message,
               });
             } else {
               this.$store.commit("errorSnackbar");
@@ -209,12 +212,12 @@ export default {
     },
     toggleChange(value) {
       this.toggle.disabled = this.toggle.loading = value;
-    }
+    },
   },
   computed: {
     switchLabel() {
       return this.toggle.state == true ? "Products" : "Raw Items";
-    }
-  }
+    },
+  },
 };
 </script>

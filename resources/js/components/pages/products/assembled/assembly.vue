@@ -69,6 +69,7 @@
         </v-col>
         <v-col cols="6" md="8">
           <v-autocomplete
+            @keydown.enter="onCreate"
             v-model="autocomplete.selected"
             :search-input.sync="autocomplete.name"
             :loading="autocomplete.loading"
@@ -128,14 +129,14 @@
 export default {
   props: {
     id: {
-      required: true
+      required: true,
     },
     name: {
-      type: String
+      type: String,
     },
     qr: {
-      type: String
-    }
+      type: String,
+    },
   },
   components: {
     "app-converted-units": () => import("@/components/common/converted-units"),
@@ -145,7 +146,8 @@ export default {
       import("@/components/pages/products/categories/dialog"),
     "datatable-search": () => import("@/components/common/datatable-search"),
     "info-alert": () => import("@/components/common/info-alert"),
-    "main-layout": () => import("@/components/layouts/categories-product/index")
+    "main-layout": () =>
+      import("@/components/layouts/categories-product/index"),
   },
   data() {
     return {
@@ -153,35 +155,35 @@ export default {
         items: [],
         loading: false,
         name: null,
-        selected: null
+        selected: null,
       },
       datatable: {
         headers: [
           {
             text: "Code",
             align: "start",
-            value: "code"
+            value: "code",
           },
           {
             text: "Raw Item Name",
             align: "start",
-            value: "name"
+            value: "name",
           },
           {
             text: "Quantity",
             value: "units_needed",
-            align: "end"
+            align: "end",
           },
           {
             text: "Actions",
             value: "actions",
             align: "center",
-            sortable: false
-          }
+            sortable: false,
+          },
         ],
         items: [],
         loading: false,
-        search: null
+        search: null,
       },
       dialog: {
         category_name: null,
@@ -192,15 +194,15 @@ export default {
         show: false,
         title: "N/A",
         units: [],
-        menu_label: null
+        menu_label: null,
       },
       form: {
         product_id: 0,
         quantity: 1,
-        raw_id: 0
+        raw_id: 0,
       },
       itemIndex: -1,
-      units: []
+      units: [],
     };
   },
   mounted() {
@@ -213,7 +215,7 @@ export default {
 
       axios
         .post("/products/assembled/view", { id: this.id })
-        .then(response => {
+        .then((response) => {
           this.datatable.items = response.data.product;
           this.units = response.data.convert;
           this.datatable.loading = this.dialog.loading = false;
@@ -221,22 +223,24 @@ export default {
         .then(() => {
           return axios.post("/products/raw/view");
         })
-        .then(response => {
+        .then((response) => {
           this.autocomplete.items = response.data.raw;
           this.autocomplete.loading = false;
         });
     },
 
     onCreate() {
-      this.dialog.title = "Add";
-      this.form.quantity = 1;
-      this.dialog.category_name = this.autocomplete.selected.category.name;
-      this.dialog.raw_name = this.autocomplete.selected.name;
-      this.form.raw_id = this.autocomplete.selected.id;
-      this.itemIndex = -1;
-      this.dialog.converted_label = this.autocomplete.selected.base.name;
-      this.prepareUnits(this.autocomplete.selected.base_id);
-      this.dialog.show = true;
+      if (this.autocomplete.selected) {
+        this.dialog.title = "Add";
+        this.form.quantity = 1;
+        this.dialog.category_name = this.autocomplete.selected.category.name;
+        this.dialog.raw_name = this.autocomplete.selected.name;
+        this.form.raw_id = this.autocomplete.selected.id;
+        this.itemIndex = -1;
+        this.dialog.converted_label = this.autocomplete.selected.base.name;
+        this.prepareUnits(this.autocomplete.selected.base_id);
+        this.dialog.show = true;
+      }
     },
 
     onEdit(item) {
@@ -253,7 +257,7 @@ export default {
 
     async prepareUnits(currentID) {
       const filterUnits = [...this.units];
-      this.dialog.units = await filterUnits.filter(item => {
+      this.dialog.units = await filterUnits.filter((item) => {
         if (item.base_id == currentID) {
           return item;
         }
@@ -268,15 +272,15 @@ export default {
     async onStore() {
       await axios
         .post("/products/assembled/attach", this.form)
-        .then(response => {
+        .then((response) => {
           console.log(response.data.product);
           this.$store.commit("showSnackbar", {
             color: true,
-            text: `${this.dialog.raw_name} added.`
+            text: `${this.dialog.raw_name} added.`,
           });
           this.datatable.items = response.data.product;
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response) {
             console.log(error.response);
             this.$store.commit("errorSnackbar");
@@ -288,14 +292,14 @@ export default {
     async onUpdate() {
       await axios
         .post("/products/assembled/update", this.form)
-        .then(response => {
+        .then((response) => {
           this.$store.commit("showSnackbar", {
             color: true,
-            text: `${this.dialog.raw_name} updated.`
+            text: `${this.dialog.raw_name} updated.`,
           });
           this.datatable.items = response.data.product;
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response) {
             console.log(error.response);
             this.$store.commit("errorSnackbar");
@@ -311,14 +315,14 @@ export default {
         this.dialog.raw_name = item.name;
         await axios
           .post("/products/assembled/detach", this.form)
-          .then(response => {
+          .then((response) => {
             this.$store.commit("showSnackbar", {
               color: true,
-              text: `${this.dialog.raw_name} removed.`
+              text: `${this.dialog.raw_name} removed.`,
             });
             this.datatable.items = response.data.product;
           })
-          .catch(error => {
+          .catch((error) => {
             if (error.response) {
               console.log(error.response);
               this.$store.commit("errorSnackbar");
@@ -343,10 +347,10 @@ export default {
       } else {
         this.$store.commit("showSnackbar", {
           color: false,
-          text: "Quantity field is required."
+          text: "Quantity field is required.",
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
