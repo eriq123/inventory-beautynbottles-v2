@@ -20,8 +20,7 @@
                             <div class="row">
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">account_circle</i>
-                                    <input id="username" type="text" name="username" class="validate" value="Eriq"
-                                        required>
+                                    <input id="username" type="text" name="username" class="validate" value="" required>
                                     <label for="username" class="active">Username</label>
 
                                     <p class="red-text center-align">
@@ -33,7 +32,7 @@
                             <div class="row">
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">lock</i>
-                                    <input id="password" type="password" name="password" class="validate" value="qweasd"
+                                    <input id="password" type="password" name="password" class="validate" value=""
                                         required>
                                     <label for="password" class="active">Password</label>
                                     <p class="red-text center-align">
