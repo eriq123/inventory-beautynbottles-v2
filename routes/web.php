@@ -14,15 +14,16 @@ Route::get('logout', 'AuthController@logout')->name('logout');
 
 Route::middleware(['auth', 'web'])->group(function () {
 
-    Route::get('/category-type-raw', function () {
-        $categories = App\Category::all();
-        foreach ($categories as $category) {
-            $category->type = 'raw';
-            $category->save();
+    Route::get('/category-delete-children', function () {
+        $categories = App\Category::onlyTrashed()->get();
+        foreach ($categories as $item) {
+            foreach ($item->raws as $raws) {
+                $raws->delete();
+            }
+            foreach ($item->products as $products) {
+                $products->delete();
+            }
         }
-        App\Product::query()->update([
-            'category_id' => 2,
-        ]);
         return 'success';
     });
 

@@ -90,7 +90,7 @@ __webpack_require__.r(__webpack_exports__);
       return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! @/components/common/datatable-search */ "./resources/js/components/common/datatable-search.vue"));
     },
     "main-layout": function mainLayout() {
-      return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! @/components/layouts/categories-product/index */ "./resources/js/components/layouts/categories-product/index.vue"));
+      return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! @/components/layouts/categories-product/index */ "./resources/js/components/layouts/categories-product/index.vue"));
     }
   },
   methods: {

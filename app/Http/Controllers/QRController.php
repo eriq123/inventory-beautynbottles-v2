@@ -9,28 +9,31 @@ use Illuminate\Support\Facades\Auth;
 
 class QRController extends Controller
 {
-
-    private function getUser()
-    {
-        $this->data['user'] = json_encode(Auth::user());
-    }
+    private $chunk = 20;
+    private $column = ['id', 'name', 'qr_code'];
 
     public function raw_items()
     {
-        $this->getUser();
-        $this->data['route'] = json_encode("/qr/raw_items");
-        $items = Raw::all();
-        $this->data['items'] = $items->chunk(24);
+        $this->data['items'] = Raw::with('category')->select('category_id')->distinct()->get();
+        foreach ($this->data['items'] as $value) {
+            $value->items = Raw::where('category_id', $value->category_id)
+                ->orderBy('name')
+                ->get($this->column)
+                ->chunk($this->chunk);
+        }
 
         return view('pages.qr', $this->data);
     }
 
     public function products()
     {
-        $this->getUser();
-        $this->data['route'] = json_encode("/qr/products");
-        $items = Product::all();
-        $this->data['items'] = $items->chunk(24);
+        $this->data['items'] = Product::with('category')->select('category_id')->distinct()->get();
+        foreach ($this->data['items'] as $value) {
+            $value->items = Product::where('category_id', $value->category_id)
+                ->orderBy('name')
+                ->get($this->column)
+                ->chunk($this->chunk);
+        }
 
         return view('pages.qr', $this->data);
     }

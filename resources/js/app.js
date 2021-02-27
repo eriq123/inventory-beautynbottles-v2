@@ -13,7 +13,7 @@ const app = new Vue({
     components: {
         "app-home": () => import("./components/pages/homeContainer.vue"),
         "app-logs": () => import("./components/pages/logsContainer.vue"),
-        "app-qr": () => import("./components/pages/qrContainer.vue"),
+        "qr-code": () => import("./components/pages/qr/code.vue"),
         "app-units": () => import("./components/pages/units/convertContainer.vue"),
         "app-account": () => import("./components/pages/accountContainer.vue"),
         "app-product-raw": () =>

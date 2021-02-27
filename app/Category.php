@@ -18,6 +18,10 @@ class Category extends Model
             foreach ($category->raws as $raws) {
                 $raws->delete();
             }
+
+            foreach ($category->products as $products) {
+                $products->delete();
+            }
         });
     }
 
@@ -29,5 +33,10 @@ class Category extends Model
     public function raws()
     {
         return $this->hasMany(Raw::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

@@ -20,6 +20,11 @@ class Product extends Model
         return $this->belongsToMany(Raw::class)->withPivot('quantity')->withTimestamps();
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function getQuantityAttribute($value)
     {
         return $value / 100;
